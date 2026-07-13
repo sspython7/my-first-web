@@ -1,0 +1,1332 @@
+<!DOCTYPE html>
+<html lang="ko" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>인생 소설 | 연금술사</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: 나눔명조, Noto Sans KR -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@400;700;800&family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        desertNavy: '#050814',
+                        desertDeep: '#0b1126',
+                        sandGold: '#E0A96D',
+                        crystalGold: '#D4AF37',
+                        starWhite: '#F8FAFC',
+                    },
+                    fontFamily: {
+                        serif: ['"Nanum Myeongjo"', 'serif'],
+                        sans: ['"Noto Sans KR"', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #050814;
+        }
+        .light ::webkit-scrollbar-track {
+            background: #fcfcf9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #D4AF3740;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #D4AF3780;
+        }
+
+        /* Custom Golden Cursor CSS (Fallback for SVG Cursor) */
+        body {
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5" fill="%23D4AF37" stroke="%23ffffff" stroke-width="1.5"/><circle cx="12" cy="12" r="1.5" fill="%23ffffff"/></svg>') 12 12, auto;
+        }
+        a, button, [role="button"], .runestone, .page-side {
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><circle cx="16" cy="16" r="8" fill="%23D4AF37" fill-opacity="0.2" stroke="%23D4AF37" stroke-width="1.5"/><polygon points="16,4 19,13 28,16 19,19 16,28 13,19 4,16 13,13" fill="%23D4AF37"/></svg>') 16 16, pointer !important;
+        }
+
+        /* Gold Dust Particle styling */
+        .gold-dust {
+            position: fixed;
+            pointer-events: none;
+            width: 5px;
+            height: 5px;
+            background: radial-gradient(circle, #fff7ed 0%, #D4AF37 70%, transparent 100%);
+            border-radius: 50%;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            animation: particleFade 1s cubic-bezier(0.1, 0.8, 0.3, 1) forwards;
+        }
+        @keyframes particleFade {
+            0% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+            100% { transform: translate(-50%, -50%) scale(0.1) translateY(40px); opacity: 0; }
+        }
+
+        /* Star Glow Effects */
+        .glow-gold {
+            text-shadow: 0 0 10px rgba(212, 175, 55, 0.6), 0 0 20px rgba(212, 175, 55, 0.3);
+        }
+        .shadow-gold-box {
+            box-shadow: 0 0 25px rgba(212, 175, 55, 0.15);
+        }
+        .shadow-gold-intense {
+            box-shadow: 0 0 35px rgba(212, 175, 55, 0.35);
+        }
+
+        /* Real 3D Book Flip System */
+        .book-viewport {
+            perspective: 2000px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .book-container {
+            width: 100%;
+            max-width: 860px;
+            height: 580px; 
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 1s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        .book-container.is-open {
+            transform: translateX(0);
+        }
+
+        .book-page-3d {
+            position: absolute;
+            width: 50%;
+            height: 100%;
+            top: 0;
+            right: 0;
+            transform-origin: left center;
+            transform-style: preserve-3d;
+            transition: transform 1s cubic-bezier(0.25, 1, 0.5, 1);
+            z-index: 1;
+        }
+
+        .page-side {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            backface-visibility: hidden;
+            border-radius: 0 8px 8px 0;
+            box-shadow: inset -3px 0 25px rgba(0, 0, 0, 0.45), 0 12px 30px rgba(0,0,0,0.65);
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+
+        .page-side::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(212,175,55,0.03) 0%, transparent 100%);
+            pointer-events: none;
+        }
+
+        .page-side.front-side {
+            z-index: 2;
+        }
+        .page-side.front-side:hover {
+            transform: skewY(0.3deg) scale(1.002);
+        }
+
+        .page-side.back-side {
+            transform: rotateY(180deg);
+            border-radius: 8px 0 0 8px;
+            box-shadow: inset 3px 0 25px rgba(0, 0, 0, 0.45), 0 12px 30px rgba(0,0,0,0.65);
+            z-index: 1;
+        }
+        .page-side.back-side:hover {
+            transform: rotateY(180deg) skewY(-0.3deg) scale(1.002);
+        }
+
+        .book-page-3d.flipped {
+            transform: rotateY(-180deg);
+        }
+
+        /* Desert Visual Animations */
+        @keyframes drift {
+            0% { transform: translateX(0) scaleY(1); }
+            50% { transform: translateX(-0.8%) scaleY(1.01); }
+            100% { transform: translateX(0) scaleY(1); }
+        }
+        .dune-wave-1 {
+            animation: drift 18s ease-in-out infinite;
+        }
+        .dune-wave-2 {
+            animation: drift 25s ease-in-out infinite;
+        }
+
+        /* Magical Glowing Runestone Styles */
+        .rune-cyan {
+            color: #22d3ee;
+            border-color: rgba(34, 211, 238, 0.25);
+            box-shadow: 0 0 12px rgba(34, 211, 238, 0.1);
+        }
+        .rune-cyan:hover {
+            border-color: #22d3ee;
+            box-shadow: 0 0 22px rgba(34, 211, 238, 0.4);
+            text-shadow: 0 0 10px #22d3ee, 0 0 20px rgba(34, 211, 238, 0.6);
+        }
+
+        .rune-amber {
+            color: #fbbf24;
+            border-color: rgba(251, 191, 36, 0.25);
+            box-shadow: 0 0 12px rgba(251, 191, 36, 0.1);
+        }
+        .rune-amber:hover {
+            border-color: #fbbf24;
+            box-shadow: 0 0 22px rgba(251, 191, 36, 0.4);
+            text-shadow: 0 0 10px #fbbf24, 0 0 20px rgba(251, 191, 36, 0.6);
+        }
+
+        .rune-purple {
+            color: #c084fc;
+            border-color: rgba(192, 132, 252, 0.25);
+            box-shadow: 0 0 12px rgba(192, 132, 252, 0.1);
+        }
+        .rune-purple:hover {
+            border-color: #c084fc;
+            box-shadow: 0 0 22px rgba(192, 132, 252, 0.4);
+            text-shadow: 0 0 10px #c084fc, 0 0 20px rgba(192, 132, 252, 0.6);
+        }
+
+        .rune-emerald {
+            color: #34d399;
+            border-color: rgba(52, 211, 153, 0.25);
+            box-shadow: 0 0 12px rgba(52, 211, 153, 0.1);
+        }
+        .rune-emerald:hover {
+            border-color: #34d399;
+            box-shadow: 0 0 22px rgba(52, 211, 153, 0.4);
+            text-shadow: 0 0 10px #34d399, 0 0 20px rgba(52, 211, 153, 0.6);
+        }
+
+        .rune-rose {
+            color: #f43f5e;
+            border-color: rgba(244, 63, 94, 0.25);
+            box-shadow: 0 0 12px rgba(244, 63, 94, 0.1);
+        }
+        .rune-rose:hover {
+            border-color: #f43f5e;
+            box-shadow: 0 0 22px rgba(244, 63, 94, 0.4);
+            text-shadow: 0 0 10px #f43f5e, 0 0 20px rgba(244, 63, 94, 0.6);
+        }
+
+        /* Alchemical Loading Intro Screen */
+        #intro-screen {
+            position: fixed;
+            inset: 0;
+            background-color: #050814;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+            transition: opacity 1s cubic-bezier(0.25, 1, 0.5, 1), visibility 1s;
+        }
+
+        /* Alchemical Magic Circle Rotation */
+        .alchemy-circle {
+            width: 140px;
+            height: 140px;
+            border: 2px solid #D4AF37;
+            border-radius: 50%;
+            position: relative;
+            animation: rotateIntro 10s linear infinite;
+            box-shadow: 0 0 30px rgba(212, 175, 55, 0.3);
+        }
+        .alchemy-circle::before {
+            content: '';
+            position: absolute;
+            inset: 10px;
+            border: 1px dashed #D4AF37;
+            border-radius: 50%;
+        }
+        .alchemy-circle::after {
+            content: '';
+            position: absolute;
+            inset: 20px;
+            border: 2px solid #D4AF37;
+            clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+        }
+        @keyframes rotateIntro {
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Sun Rays Animation in Light Mode */
+        @keyframes sunPulse {
+            0% { transform: scale(1); box-shadow: 0 0 40px rgba(251, 191, 36, 0.8); }
+            50% { transform: scale(1.08); box-shadow: 0 0 65px rgba(251, 191, 36, 0.95); }
+            100% { transform: scale(1); box-shadow: 0 0 40px rgba(251, 191, 36, 0.8); }
+        }
+        .sun-active {
+            animation: sunPulse 6s ease-in-out infinite !important;
+        }
+        
+        /* Language Hidden Utility */
+        [data-lang-content] {
+            transition: opacity 0.25s ease-in-out;
+        }
+    </style>
+</head>
+<body class="bg-desertNavy dark:bg-desertNavy text-slate-200 dark:text-slate-200 font-sans overflow-x-hidden relative min-h-screen transition-colors duration-500">
+
+    <!-- INTRO OPENING ANIMATION OVERLAY -->
+    <div id="intro-screen">
+        <div class="relative flex flex-col items-center">
+            <div class="alchemy-circle mb-6"></div>
+            <div class="font-serif text-sandGold text-lg tracking-widest uppercase animate-pulse" id="intro-text">
+                Transmuting Soul...
+            </div>
+        </div>
+    </div>
+
+    <!-- Scroll Progress Bar -->
+    <div id="scroll-bar" class="fixed top-0 left-0 h-1 bg-gradient-to-r from-sandGold to-crystalGold z-50 transition-all duration-100" style="width: 0%;"></div>
+
+    <!-- STARFIELD BACKGROUND CANVAS (Becomes pale sky in Light Mode) -->
+    <canvas id="starfield" class="fixed top-0 left-0 w-full h-full -z-20 pointer-events-none transition-all duration-500"></canvas>
+
+    <!-- FLOATING CONTROLS (Constellation Mode, Dark/Light Mode, KO/EN Switcher) -->
+    <div class="fixed top-6 right-6 z-50 flex items-center gap-2 sm:gap-3 flex-wrap justify-end">
+        
+        <!-- Language Switcher Button -->
+        <button id="lang-toggle" onclick="toggleLanguage()" class="px-3 py-1.5 sm:px-4 sm:py-2 bg-slate-900/80 dark:bg-slate-900/80 border border-sandGold/40 hover:border-crystalGold text-xs font-semibold tracking-wider text-sandGold rounded-full backdrop-blur-md transition-all duration-300 hover:scale-105 active:scale-95 flex items-center gap-1.5 shadow-gold-box">
+            <i class="fa-solid fa-globe"></i>
+            <span id="lang-btn-text">KO</span>
+        </button>
+
+        <!-- Theme Toggle Button (Dark / Light) -->
+        <button id="theme-toggle" onclick="toggleTheme()" class="w-9 h-9 sm:w-10 sm:h-10 bg-slate-900/80 dark:bg-slate-900/80 border border-sandGold/40 hover:border-crystalGold text-sm text-sandGold rounded-full backdrop-blur-md transition-all duration-300 hover:scale-105 active:scale-95 flex items-center justify-center shadow-gold-box" title="테마 변경">
+            <i id="theme-icon" class="fa-solid fa-moon"></i>
+        </button>
+
+        <!-- Constellation Mode Toggle -->
+        <button id="constellation-toggle" class="px-3 py-1.5 sm:px-4 sm:py-2 bg-slate-900/80 dark:bg-slate-900/80 border border-sandGold/40 hover:border-crystalGold text-xs font-medium tracking-widest text-sandGold rounded-full backdrop-blur-md transition-all duration-300 hover:scale-105 active:scale-95 flex items-center gap-2 shadow-gold-box">
+            <i class="fa-solid fa-wand-magic-sparkles animate-pulse"></i>
+            <span id="constellation-text" data-lang-content="constellation-on">별자리 그리기 ON</span>
+        </button>
+    </div>
+
+    <!-- HERO SECTION (Central Layout) -->
+    <header class="relative min-h-screen flex flex-col justify-center items-center px-4 overflow-hidden py-12 z-30 transition-all duration-500">
+        
+        <!-- Main Copy & Titles -->
+        <div class="text-center z-40 max-w-4xl mx-auto px-4 relative flex flex-col items-center">
+            
+            <!-- Glowing Sun/Moon Container (Dynamic Moon or Sun) -->
+            <div class="mb-5 flex flex-col items-center pointer-events-none">
+                <!-- Moon Structure -->
+                <div id="celestial-body" class="w-14 h-14 rounded-full bg-gradient-to-tr from-amber-50 to-amber-200 opacity-95 blur-[0.5px] shadow-[0_0_35px_rgba(255,255,255,0.7)] relative flex items-center justify-center transition-all duration-700">
+                    <div id="celestial-crescent" class="absolute w-11 h-11 rounded-full bg-desertNavy -top-1 -right-2.5 transition-all duration-700"></div>
+                </div>
+            </div>
+
+            <div class="inline-flex items-center gap-2 px-3 py-1 bg-slate-950/80 dark:bg-slate-950/80 border border-sandGold/25 rounded-full text-[11px] font-semibold uppercase tracking-widest text-sandGold mb-4 backdrop-blur-md transition-all duration-500">
+                <i class="fa-solid fa-book-open"></i> <span data-lang-content="hero-label">MY FAVORITE BOOK</span>
+            </div>
+            
+            <div class="font-serif text-lg sm:text-xl md:text-2xl text-sandGold font-bold tracking-widest mb-1 drop-shadow-md" data-lang-content="hero-sub">
+                이재원의 추천 책
+            </div>
+            
+            <h1 class="font-serif text-5xl sm:text-6xl md:text-8xl font-extrabold text-transparent bg-clip-text bg-gradient-to-b from-white via-amber-50 to-sandGold tracking-wide leading-tight mb-5 filter drop-shadow-lg" data-lang-content="hero-title">
+                연금술사
+            </h1>
+            <p class="font-serif text-base sm:text-lg md:text-xl text-sandGold/90 leading-relaxed italic mb-6 tracking-wide max-w-2xl" data-lang-content="hero-desc-1">
+                “자신의 삶을 사랑하고, 끊임없이 여정을 떠나는 이들을 위하여”
+            </p>
+            <p class="max-w-xl mx-auto text-xs sm:text-sm text-slate-400 dark:text-slate-400 font-light leading-relaxed mb-8 transition-colors duration-500" data-lang-content="hero-desc-2">
+                파울로 코엘료의 소설 『연금술사』는 제게 깊은 울림을 준 인생 책입니다.<br>
+                소설 속에서 깊은 인상을 남겼던 네 가지 명장면과 그 속에 담긴 의미를 소개합니다.
+            </p>
+            
+            <!-- Single Core Button -->
+            <div class="flex justify-center items-center pointer-events-auto relative z-50">
+                <button onclick="startJourney()" class="px-10 py-4 bg-gradient-to-r from-sandGold to-crystalGold text-slate-950 font-bold tracking-widest rounded-full shadow-gold-intense hover:scale-105 active:scale-95 transition-all duration-300 flex items-center gap-2 cursor-pointer text-sm sm:text-base">
+                    <span data-lang-content="hero-cta">여정 시작하기</span> <i class="fa-solid fa-compass"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Desert nightscape: Moonlight/Sunlight reflecting 3D Pyramids + Dynamic Sand Dunes -->
+        <div class="absolute bottom-0 left-0 w-full h-[320px] z-10 pointer-events-none select-none overflow-hidden">
+            <svg class="w-full h-full" viewBox="0 0 1440 320" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <!-- Moonlight (Dark mode) / Sunlight (Light mode) reflections -->
+                    <linearGradient id="pyr-light-grad" x1="0%" y1="100%" x2="100%" y2="0%">
+                        <stop offset="0%" stop-color="#8a5e34" id="pyr-light-stop1"/>
+                        <stop offset="40%" stop-color="#e0a96d" id="pyr-light-stop2"/>
+                        <stop offset="85%" stop-color="#fffbeb" id="pyr-light-stop3"/>
+                        <stop offset="100%" stop-color="#ffffff" id="pyr-light-stop4"/>
+                    </linearGradient>
+                    
+                    <!-- Shadow Face Gradient (Dynamic shadow) -->
+                    <linearGradient id="pyr-shadow-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="#2d1f10" id="pyr-shadow-stop1"/>
+                        <stop offset="100%" stop-color="#0b1126" id="pyr-shadow-stop2"/>
+                    </linearGradient>
+
+                    <!-- Dunes Gradients -->
+                    <linearGradient id="dune-grad-back" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" stop-color="#b08354" stop-opacity="0.6" id="dune-back-stop1"/>
+                        <stop offset="50%" stop-color="#5a3d22" stop-opacity="0.9" id="dune-back-stop2"/>
+                        <stop offset="100%" stop-color="#0b1126" stop-opacity="1" id="dune-back-stop3"/>
+                    </linearGradient>
+                    
+                    <linearGradient id="dune-grad-front" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" stop-color="#E0A96D" stop-opacity="0.8" id="dune-front-stop1"/>
+                        <stop offset="40%" stop-color="#8a5e34" stop-opacity="1" id="dune-front-stop2"/>
+                        <stop offset="100%" stop-color="#050814" stop-opacity="1" id="dune-front-stop3"/>
+                    </linearGradient>
+
+                    <!-- Filter for Gold Glowing Capstone (Pyramid Peak) -->
+                    <filter id="gold-glow" x="-20%" y="-20%" width="140%" height="140%">
+                        <feGaussianBlur stdDeviation="8" result="blur" />
+                        <feComposite in="SourceGraphic" in2="blur" operator="over" />
+                    </filter>
+                </defs>
+
+                <!-- 3D PYRAMIDS (Reflecting light based on modes) -->
+                <!-- Large Pyramid (Center-Right) -->
+                <!-- 1. Shadowed left side -->
+                <polygon points="500,320 700,60 700,320" fill="url(#pyr-shadow-grad)" opacity="0.95" />
+                <!-- 2. Lit right side (Almost pure white reflecting light) -->
+                <polygon points="700,320 700,60 900,320" fill="url(#pyr-light-grad)" opacity="1" />
+                <!-- 3. Dynamic Golden Capstone (Glows in Light Mode) -->
+                <polygon id="pyr-cap-large" points="685,82 700,60 715,82 700,86" fill="#D4AF37" opacity="0" filter="url(#gold-glow)"/>
+
+                <!-- Small Pyramid (Left) -->
+                <!-- 1. Shadowed left side -->
+                <polygon points="300,320 450,130 450,320" fill="url(#pyr-shadow-grad)" opacity="0.9" />
+                <!-- 2. Lit right side -->
+                <polygon points="450,320 450,130 600,320" fill="url(#pyr-light-grad)" opacity="0.95" />
+                <!-- 3. Dynamic Golden Capstone -->
+                <polygon id="pyr-cap-small" points="438,145 450,130 462,145 450,148" fill="#D4AF37" opacity="0" filter="url(#gold-glow)"/>
+                
+                <!-- Mid Ground Dune Layer -->
+                <path class="dune-wave-1" d="M0,220 C360,290 720,130 1080,240 C1260,290 1380,250 1440,230 L1440,320 L0,320 Z" fill="url(#dune-grad-back)"></path>
+                
+                <!-- Foreground Dune Layer (Desert Gold sand) -->
+                <path class="dune-wave-2" d="M0,260 C240,190 600,310 960,210 C1200,150 1360,250 1440,270 L1440,320 L0,320 Z" fill="url(#dune-grad-front)"></path>
+            </svg>
+        </div>
+    </header>
+
+    <!-- INTERACTIVE 3D BOOK SECTION -->
+    <section id="book-section" class="relative py-24 px-4 bg-desertDeep dark:bg-desertDeep border-t border-slate-900/40 transition-colors duration-500 z-30">
+        <!-- Decorative Background Layer -->
+        <div class="absolute right-0 bottom-0 w-64 h-64 opacity-15 pointer-events-none select-none">
+            <svg class="w-full h-full fill-sandGold" viewBox="0 0 100 100" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+                <polygon points="50,0 0,100 100,100" fill="url(#pyr-light-grad)"></polygon>
+            </svg>
+        </div>
+
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-12">
+                <span class="text-xs tracking-widest text-sandGold font-bold uppercase"><i class="fa-solid fa-star text-[9px] mr-1"></i> <span data-lang-content="book-subtitle">My Picked Scenes</span></span>
+                <h2 class="font-serif text-3xl sm:text-4xl text-white dark:text-white mt-2 transition-colors duration-500" data-lang-content="book-title">소설 속 인상 깊은 네 가지 장면</h2>
+                <p class="text-slate-400 dark:text-slate-400 text-xs sm:text-sm mt-3 max-w-xl mx-auto leading-relaxed transition-colors duration-500" data-lang-content="book-desc">
+                    페이지의 좌/우 면을 직접 클릭하면 책장이 부드럽게 넘어갑니다.<br>
+                    닫혀있는 책을 열어 보물 같은 장면들을 만나보세요.
+                </p>
+            </div>
+
+            <!-- Page Indicators / Navigation Controls -->
+            <div class="flex justify-center items-center gap-3 mb-8">
+                <button onclick="prevPage3D()" class="w-10 h-10 bg-slate-950/80 dark:bg-slate-950/80 hover:bg-slate-900 border border-sandGold/20 text-sandGold rounded-full flex items-center justify-center transition-all duration-300 hover:scale-105 active:scale-95 disabled:opacity-30 disabled:pointer-events-none" id="prev-btn-3d" disabled>
+                    <i class="fa-solid fa-arrow-left text-xs"></i>
+                </button>
+                <div class="px-5 py-2 rounded-full bg-slate-950/50 dark:bg-slate-950/50 border border-sandGold/10 text-xs tracking-widest text-sandGold font-semibold font-serif transition-colors duration-500" id="page-indicator-3d" data-lang-content="book-status-closed">
+                    책이 닫혀 있음
+                </div>
+                <button onclick="nextPage3D()" class="w-10 h-10 bg-slate-950/80 dark:bg-slate-950/80 hover:bg-slate-900 border border-sandGold/20 text-sandGold rounded-full flex items-center justify-center transition-all duration-300 hover:scale-105 active:scale-95" id="next-btn-3d">
+                    <i class="fa-solid fa-arrow-right text-xs"></i>
+                </button>
+            </div>
+
+            <!-- 3D Book Viewport -->
+            <div class="book-viewport py-10">
+                <div class="book-container is-closed-front" id="book-3d">
+                    
+                    <!-- PAGE 1: Front Cover & Scene 1 (Page 1) -->
+                    <div class="book-page-3d" id="p3d-1" style="z-index: 5;">
+                        <!-- Front Cover -->
+                        <div class="page-side front-side bg-gradient-to-b from-amber-950 to-slate-950 dark:from-amber-950 dark:to-slate-950 border border-sandGold/30 flex flex-col justify-between p-8 text-center cursor-pointer select-none shadow-gold-box" onclick="nextPage3D()">
+                            <div class="border border-sandGold/10 rounded-lg h-full w-full p-4 flex flex-col justify-between items-center">
+                                <span class="text-xs tracking-widest text-sandGold/80 uppercase font-bold" data-lang-content="cover-label">A Book That Inspired Me</span>
+                                <div class="my-auto py-4">
+                                    <i class="fa-solid fa-book-journal-whills text-6xl text-sandGold animate-pulse mb-6 block"></i>
+                                    <h3 class="font-serif text-3xl sm:text-4xl text-white font-extrabold tracking-wider leading-tight" data-lang-content="cover-title">연 금 술 사</h3>
+                                    <p class="text-[11px] text-amber-200/70 tracking-widest mt-3">The Alchemist</p>
+                                </div>
+                                <div class="text-xs text-slate-500 tracking-wider animate-pulse" data-lang-content="cover-help">
+                                    [ 책을 누르면 펼쳐집니다 ]
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Back of Paper (Page 1 - 자아의 신화) -->
+                        <div class="page-side back-side bg-slate-950/95 dark:bg-slate-950/95 border-y border-l border-sandGold/20 flex flex-col justify-between p-8 sm:p-10 cursor-pointer" onclick="prevPage3D()">
+                            <div class="absolute top-2 left-2 right-2 bottom-2 border border-sandGold/5 rounded pointer-events-none"></div>
+                            <div class="flex flex-col justify-center h-full">
+                                <div class="flex items-center gap-3 mb-4">
+                                    <span class="w-7 h-7 rounded-full bg-sandGold/10 flex items-center justify-center text-sandGold font-bold font-serif text-sm">01</span>
+                                    <h4 class="font-serif text-lg sm:text-xl md:text-2xl text-amber-100 font-bold" data-lang-content="p1-title">안주하지 않는 용기</h4>
+                                </div>
+                                <p class="font-serif text-lg sm:text-xl md:text-2xl text-sandGold font-bold italic leading-relaxed mb-5 border-l-2 border-sandGold/30 pl-4 py-1" data-lang-content="p1-quote">
+                                    "안주하는 순간, 꿈은 단지 기억 너머 박제가 된다."
+                                </p>
+                                <p class="text-sm sm:text-base md:text-lg text-slate-200 leading-relaxed font-light" data-lang-content="p1-desc">
+                                    산티아고는 편안하고 확실한 크리스탈 가게 주인의 삶을 선택해 안락함에 정착할 수 있었음에도, 마음속 깊은 떨림을 믿고 다시 거친 사막으로 발을 디뎠습니다. 현실의 안도감에 안주하려는 본능을 이겨내고 나아가는 첫걸음의 소중함을 말해줍니다.
+                                </p>
+                            </div>
+                            <span class="text-xs text-slate-500 font-serif block text-left">P. 01</span>
+                        </div>
+                    </div>
+
+                    <!-- PAGE 2: Scene 2 (Page 2) & Scene 3 (Page 3) -->
+                    <div class="book-page-3d" id="p3d-2" style="z-index: 4;">
+                        <!-- Front of Paper (Page 2 - 징조) -->
+                        <div class="page-side front-side bg-slate-950/95 dark:bg-slate-950/95 border-y border-r border-sandGold/20 flex flex-col justify-between p-8 sm:p-10 cursor-pointer" onclick="nextPage3D()">
+                            <div class="absolute top-2 left-2 right-2 bottom-2 border border-sandGold/5 rounded pointer-events-none"></div>
+                            <div class="flex flex-col justify-center h-full">
+                                <div class="flex items-center gap-3 mb-4">
+                                    <span class="w-7 h-7 rounded-full bg-sandGold/10 flex items-center justify-center text-sandGold font-bold font-serif text-sm">02</span>
+                                    <h4 class="font-serif text-lg sm:text-xl md:text-2xl text-amber-100 font-bold" data-lang-content="p2-title">늘 존재하는 징조</h4>
+                                </div>
+                                <p class="font-serif text-lg sm:text-xl md:text-2xl text-sandGold font-bold italic leading-relaxed mb-5 border-l-2 border-sandGold/30 pl-4 py-1" data-lang-content="p2-quote">
+                                    "우주는 우리가 눈치채지 못할 뿐, 늘 표지를 남긴다네."
+                                </p>
+                                <p class="text-sm sm:text-base md:text-lg text-slate-200 leading-relaxed font-light" data-lang-content="p2-desc">
+                                    산티아고는 모래 한 알, 하늘 위 독수리의 날갯짓 속에서 우주가 보내는 메시지(징조)를 직관적으로 읽고 위기를 대비해 나갑니다. 우리가 무심코 지나치는 사소한 변화와 신호 속에, 삶의 방향을 전환해 줄 기회들이 늘 숨어있음을 보여줍니다.
+                                </p>
+                            </div>
+                            <span class="text-xs text-slate-500 font-serif block text-right">P. 02</span>
+                        </div>
+                        
+                        <!-- Back of Paper (Page 3 - 진짜 보물) -->
+                        <div class="page-side back-side bg-slate-950/95 dark:bg-slate-950/95 border-y border-l border-sandGold/20 flex flex-col justify-between p-8 sm:p-10 cursor-pointer" onclick="prevPage3D()">
+                            <div class="absolute top-2 left-2 right-2 bottom-2 border border-sandGold/5 rounded pointer-events-none"></div>
+                            <div class="flex flex-col justify-center h-full">
+                                <div class="flex items-center gap-3 mb-4">
+                                    <span class="w-7 h-7 rounded-full bg-sandGold/10 flex items-center justify-center text-sandGold font-bold font-serif text-sm">03</span>
+                                    <h4 class="font-serif text-lg sm:text-xl md:text-2xl text-amber-100 font-bold" data-lang-content="p3-title">발밑에 숨겨진 진짜 보물</h4>
+                                </div>
+                                <p class="font-serif text-lg sm:text-xl md:text-2xl text-sandGold font-bold italic leading-relaxed mb-5 border-l-2 border-sandGold/30 pl-4 py-1" data-lang-content="p3-quote">
+                                    "가장 소중한 보물은 처음 자네가 누워있던 곳에 있었지."
+                                </p>
+                                <p class="text-sm sm:text-base md:text-lg text-slate-200 leading-relaxed font-light" data-lang-content="p3-desc">
+                                    험난한 여정 끝에 도착한 피라미드 아래에는 황금이 없었습니다. 진짜 보물은 출발지였던 낡은 무화과나무 밑에 잠들어 있었습니다. 목적지에 도달하는 것보다 그 과정에서 겪은 수많은 깨달음과 성장이 결국 인생을 채워주는 보물이었음을 깨닫게 만듭니다.
+                                </p>
+                            </div>
+                            <span class="text-xs text-slate-500 font-serif block text-left">P. 03</span>
+                        </div>
+                    </div>
+
+                    <!-- PAGE 3: Scene 4 (Page 4) & Back Cover -->
+                    <div class="book-page-3d" id="p3d-3" style="z-index: 3;">
+                        <!-- Front of Paper (Page 4 - 만물은 하나) -->
+                        <div class="page-side front-side bg-slate-950/95 dark:bg-slate-950/95 border-y border-r border-sandGold/20 flex flex-col justify-between p-8 sm:p-10 cursor-pointer" onclick="nextPage3D()">
+                            <div class="absolute top-2 left-2 right-2 bottom-2 border border-sandGold/5 rounded pointer-events-none"></div>
+                            <div class="flex flex-col justify-center h-full">
+                                <div class="flex items-center gap-3 mb-4">
+                                    <span class="w-7 h-7 rounded-full bg-sandGold/10 flex items-center justify-center text-sandGold font-bold font-serif text-sm">04</span>
+                                    <h4 class="font-serif text-lg sm:text-xl md:text-2xl text-amber-100 font-bold" data-lang-content="p4-title">만물은 하나</h4>
+                                </div>
+                                <p class="font-serif text-lg sm:text-xl md:text-2xl text-sandGold font-bold italic leading-relaxed mb-5 border-l-2 border-sandGold/30 pl-4 py-1" data-lang-content="p4-quote">
+                                    "우리가 진정으로 간절히 원할 때, 만물은 하나가 된다네."
+                                </p>
+                                <p class="text-sm sm:text-base md:text-lg text-slate-200 leading-relaxed font-light" data-lang-content="p4-desc">
+                                    사막 한가운데서 자신을 바람으로 변화시키는 산티아고의 모습은 소설의 가장 영성적이고 압도적인 순간입니다. 세상의 모든 존재가 하나의 연결된 숨을 쉬고 있으며, 강한 소망과 믿음이 물리적 한계마저 극복하는 근원이 된다는 장엄한 진리를 건넵니다.
+                                </p>
+                            </div>
+                            <span class="text-xs text-slate-500 font-serif block text-right">P. 04</span>
+                        </div>
+                        
+                        <!-- Back Cover -->
+                        <div class="page-side back-side bg-gradient-to-b from-slate-950 to-amber-950 dark:from-slate-950 dark:to-amber-950 border border-sandGold/30 flex flex-col justify-between p-8 text-center select-none shadow-gold-box cursor-pointer" onclick="prevPage3D()">
+                            <div class="border border-sandGold/10 rounded-lg h-full w-full p-4 flex flex-col justify-between items-center" onclick="event.stopPropagation()">
+                                <span class="text-xs tracking-widest text-sandGold/80 uppercase font-bold" data-lang-content="backcover-label">The End of my Story</span>
+                                <div class="my-auto py-4">
+                                    <i class="fa-solid fa-hourglass-end text-5xl text-sandGold mb-4 block animate-bounce"></i>
+                                    <h3 class="font-serif text-2xl text-white font-extrabold tracking-wider leading-relaxed" data-lang-content="backcover-title">자아의 신화는<br><span class="text-sandGold">언제나 현재 진행형</span></h3>
+                                    <p class="text-xs text-slate-400 mt-3 leading-relaxed" data-lang-content="backcover-desc">"자아의 신화는 언제나 현재 진행형이라네."</p>
+                                </div>
+                                <button onclick="event.stopPropagation(); resetBook3D()" class="px-6 py-3 bg-sandGold/10 border border-sandGold/30 hover:border-sandGold hover:bg-sandGold/20 rounded-full text-xs font-bold text-sandGold tracking-widest transition-all duration-300 relative z-50">
+                                    <span data-lang-content="backcover-btn">처음부터 다시 읽기</span> <i class="fa-solid fa-rotate-right ml-1"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="text-center mt-6">
+                <p class="text-xs sm:text-sm text-slate-500 font-serif italic" data-lang-content="book-foot-help">※ 책의 양쪽 페이지를 직접 클릭하면 부드럽게 한 장씩 양방향으로 넘어갑니다.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- UNIVERSE WHISPER / OMEN CARD GENERATOR -->
+    <section class="relative py-24 px-4 bg-desertNavy dark:bg-desertNavy transition-colors duration-500 z-30 overflow-hidden border-t border-slate-900/60">
+        <div class="absolute bottom-0 right-[10%] w-[180px] h-[100px] opacity-10 pointer-events-none">
+            <svg class="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+                <polygon points="50,0 0,100 100,100" fill="url(#pyr-light-grad)"></polygon>
+            </svg>
+        </div>
+
+        <div class="max-w-4xl mx-auto">
+            <div class="bg-gradient-to-tr from-slate-950/95 to-slate-900/60 border border-sandGold/20 rounded-3xl p-8 sm:p-12 shadow-gold-box backdrop-blur-md relative overflow-hidden">
+                <!-- Decorative Circle -->
+                <div class="absolute -right-24 -bottom-24 w-64 h-64 rounded-full border border-sandGold/5 pointer-events-none flex items-center justify-center">
+                    <div class="w-48 h-48 rounded-full border border-dashed border-sandGold/5"></div>
+                </div>
+
+                <div class="text-center max-w-2xl mx-auto mb-10">
+                    <span class="text-xs font-bold uppercase tracking-widest text-sandGold block mb-2"><i class="fa-solid fa-wand-magic-sparkles"></i> <span data-lang-content="oracle-sub">Oracle of the Desert</span></span>
+                    <h3 class="font-serif text-2xl sm:text-3xl text-white dark:text-white transition-colors duration-500" data-lang-content="oracle-title">오늘의 징조</h3>
+                    <p class="text-slate-400 dark:text-slate-400 text-xs sm:text-sm mt-3 transition-colors duration-500" data-lang-content="oracle-desc">
+                        신비한 에너지를 머금은 5개의 고대 룬스톤 문양 중 하나를 선택하세요.<br>소설 속 지혜의 메시지를 빌려, 오늘 가슴 깊이 품을 문장을 선물합니다.
+                    </p>
+                </div>
+
+                <!-- Runestone Buttons -->
+                <div class="flex flex-wrap justify-center gap-4 sm:gap-6 mb-12">
+                    <button onclick="drawOmen(1)" class="runestone rune-cyan w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-gradient-to-b from-slate-900 to-slate-950 border hover:scale-110 active:scale-95 transition-all duration-300 flex items-center justify-center text-2xl font-serif">𐎠</button>
+                    <button onclick="drawOmen(2)" class="runestone rune-amber w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-gradient-to-b from-slate-900 to-slate-950 border hover:scale-110 active:scale-95 transition-all duration-300 flex items-center justify-center text-2xl font-serif">𐎡</button>
+                    <button onclick="drawOmen(3)" class="runestone rune-purple w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-gradient-to-b from-slate-900 to-slate-950 border hover:scale-110 active:scale-95 transition-all duration-300 flex items-center justify-center text-2xl font-serif">𐎢</button>
+                    <button onclick="drawOmen(4)" class="runestone rune-emerald w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-gradient-to-b from-slate-900 to-slate-950 border hover:scale-110 active:scale-95 transition-all duration-300 flex items-center justify-center text-2xl font-serif">𐏃</button>
+                    <button onclick="drawOmen(5)" class="runestone rune-rose w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-gradient-to-b from-slate-900 to-slate-950 border hover:scale-110 active:scale-95 transition-all duration-300 flex items-center justify-center text-2xl font-serif">𐎧</button>
+                </div>
+
+                <!-- Omen Result Display Card -->
+                <div id="omen-card" class="max-w-xl mx-auto hidden bg-slate-950/95 dark:bg-slate-950/95 border-2 border-crystalGold/30 rounded-2xl p-6 sm:p-8 shadow-gold-intense text-center relative overflow-hidden transition-all duration-500 scale-95 opacity-0">
+                    <div class="absolute top-2 right-2">
+                        <button onclick="closeOmen()" class="text-slate-500 hover:text-sandGold p-2 text-sm">
+                            <i class="fa-solid fa-times"></i>
+                        </button>
+                    </div>
+                    <div id="omen-icon-container" class="w-12 h-12 rounded-full mx-auto flex items-center justify-center text-lg mb-4">
+                        <i id="omen-icon" class="fa-solid"></i>
+                    </div>
+                    <div id="omen-type" class="text-xs font-bold tracking-widest uppercase mb-2">우주의 지혜</div>
+                    <blockquote id="omen-quote" class="font-serif text-sm sm:text-lg text-slate-200 leading-relaxed italic mb-4">
+                        "보물을 찾고 싶다면, 먼저 징조를 따르게나."
+                    </blockquote>
+                    <p id="omen-interpretation" class="text-xs sm:text-sm text-slate-400 font-light leading-relaxed border-t border-slate-900/60 pt-4">
+                        해당 징조에 대한 지혜로운 해설이 여기에 출력됩니다.
+                    </p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="relative bg-desertDeep dark:bg-desertDeep text-slate-400 dark:text-slate-400 py-16 px-4 border-t border-sandGold/10 overflow-hidden z-20 transition-all duration-500">
+        <div class="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-desertNavy to-transparent opacity-60 pointer-events-none"></div>
+
+        <div class="max-w-5xl mx-auto relative z-10 text-center">
+            <h3 class="font-serif text-2xl sm:text-3xl text-white dark:text-white mb-4 transition-colors duration-500" data-lang-content="footer-quote">
+                "그대의 마음이 머무는 곳에,<br>그대의 보물이 있을 것이네."
+            </h3>
+            <p class="text-xs sm:text-sm text-slate-500 max-w-xl mx-auto leading-relaxed mb-8" data-lang-content="footer-desc">
+                우리가 걷는 인생의 모든 단계는 때론 어둡고 막막해 보일지도 모릅니다.<br>
+                하지만 우주의 징조들을 신뢰하며 나아갈 때, 우리는 우리 안의 진짜 금을 발견할 것입니다.
+            </p>
+
+            <div class="flex justify-center gap-6 mb-12">
+                <a href="#" class="w-10 h-10 rounded-full border border-slate-800 hover:border-sandGold/50 hover:text-white flex items-center justify-center transition-all duration-300 hover:scale-110">
+                    <i class="fa-solid fa-envelope text-xs"></i>
+                </a>
+                <a href="#" class="w-10 h-10 rounded-full border border-slate-800 hover:border-sandGold/50 hover:text-white flex items-center justify-center transition-all duration-300 hover:scale-110">
+                    <i class="fa-brands fa-github text-xs"></i>
+                </a>
+                <a href="https://search.shopping.naver.com/search/all?query=%EC%97%B0%EA%B8%88%EC%88%A0%EC%82%AC" target="_blank" class="w-10 h-10 rounded-full border border-slate-800 hover:border-sandGold/50 hover:text-white flex items-center justify-center transition-all duration-300 hover:scale-110" title="도서 정보 보기">
+                    <i class="fa-solid fa-book-bookmark text-xs"></i>
+                </a>
+            </div>
+
+            <div class="text-[10px] tracking-widest text-slate-600 uppercase">
+                <p class="mb-2">The Alchemist - A Journey of Destiny</p>
+                <p>&copy; 2026 The Alchemist. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- INTERACTIVE SCRIPTS -->
+    <script>
+        // Global variables
+        let isLightMode = false;
+        let currentLanguage = 'ko'; // 'ko' or 'en'
+        let constellationMode = true;
+        let stars = [];
+        let numStars = 100;
+        let mouse = { x: null, y: null, radius: 150 };
+
+        // TRANSLATION DICTIONARY
+        const TRANSLATIONS = {
+            'ko': {
+                'constellation-on': '별자리 그리기 ON',
+                'constellation-off': '별자리 그리기 OFF',
+                'hero-label': 'MY FAVORITE BOOK',
+                'hero-sub': '이재원의 추천 책',
+                'hero-title': '연금술사',
+                'hero-desc-1': '“자신의 삶을 사랑하고, 끊임없이 여정을 떠나는 이들을 위하여”',
+                'hero-desc-2': '파울로 코엘료의 소설 『연금술사』는 제게 깊은 울림을 준 인생 책입니다. 소설 속에서 깊은 인상을 남겼던 네 가지 명장면과 그 속에 담긴 의미를 소개합니다.',
+                'hero-cta': '여정 시작하기',
+                'book-subtitle': 'My Picked Scenes',
+                'book-title': '소설 속 인상 깊은 네 가지 장면',
+                'book-desc': '페이지의 좌/우 면을 직접 클릭하면 책장이 부드럽게 넘어갑니다. 닫혀있는 책을 열어 보물 같은 장면들을 만나보세요.',
+                'book-status-closed': '책이 닫혀 있음',
+                'book-status-p1': '자아의 신화 (P. 01)',
+                'book-status-p2': '늘 존재하는 징조 (P. 02)',
+                'book-status-p3': '발밑에 숨겨진 진짜 보물 (P. 03)',
+                'book-status-p4': '만물은 하나 (P. 04)',
+                'book-status-back': '뒷표지 닫힘',
+                'cover-label': 'A Book That Inspired Me',
+                'cover-title': '연 금 술 사',
+                'cover-help': '[ 책을 누르면 펼쳐집니다 ]',
+                'p1-title': '안주하지 않는 용기',
+                'p1-quote': '"안주하는 순간, 꿈은 단지 기억 너머 박제가 된다."',
+                'p1-desc': '산티아고는 편안하고 확실한 크리스탈 가게 주인의 삶을 선택해 안락함에 정착할 수 있었음에도, 마음속 깊은 떨림을 믿고 다시 거친 사막으로 발을 디뎠습니다. 현실의 안도감에 안주하려는 본능을 이겨내고 나아가는 첫걸음의 소중함을 말해줍니다.',
+                'p2-title': '늘 존재하는 징조',
+                'p2-quote': '"우주는 우리가 눈치채지 못할 뿐, 늘 표지를 남긴다네."',
+                'p2-desc': '산티아고는 모래 한 알, 하늘 위 독수리의 날갯짓 속에서 우주가 보내는 메시지(징조)를 직관적으로 읽고 위기를 대비해 나갑니다. 우리가 무심코 지나치는 사소한 변화와 신호 속에, 삶의 방향을 전환해 줄 기회들이 늘 숨어있음을 보여줍니다.',
+                'p3-title': '발밑에 숨겨진 진짜 보물',
+                'p3-quote': '"가장 소중한 보물은 처음 자네가 누워있던 곳에 있었지."',
+                'p3-desc': '험난한 여정 끝에 도착한 피라미드 아래에는 황금이 없었습니다. 진짜 보물은 출발지였던 낡은 무화과나무 밑에 잠들어 있었습니다. 목적지에 도달하는 것보다 그 과정에서 겪은 수많은 깨달음과 성장이 결국 인생을 채워주는 보물이었음을 깨닫게 만듭니다.',
+                'p4-title': '만물은 하나',
+                'p4-quote': '"우리가 진정으로 간절히 원할 때, 만물은 하나가 된다네."',
+                'p4-desc': '사막 한가운데서 자신을 바람으로 변화시키는 산티아고의 모습은 소설의 가장 영성적이고 압도적인 순간입니다. 세상의 모든 존재가 하나의 연결된 숨을 쉬고 있으며, 강한 소망과 믿음이 물리적 한계마저 극복하는 근원이 된다는 장엄한 진리를 건넵니다.',
+                'backcover-label': 'The End of my Story',
+                'backcover-title': '자아의 신화는 언제나 현재 진행형',
+                'backcover-desc': '"자아의 신화는 언제나 현재 진행형이라네."',
+                'backcover-btn': '처음부터 다시 읽기',
+                'book-foot-help': '※ 책의 양쪽 페이지를 직접 클릭하면 부드럽게 한 장씩 양방향으로 넘어갑니다.',
+                'oracle-sub': 'Oracle of the Desert',
+                'oracle-title': '오늘의 징조',
+                'oracle-desc': '신비한 에너지를 머금은 5개의 고대 룬스톤 문양 중 하나를 선택하세요. 소설 속 지혜의 메시지를 빌려, 오늘 가슴 깊이 품을 문장을 선물합니다.',
+                'footer-quote': '"그대의 마음이 머무는 곳에, 그대의 보물이 있을 것이네."',
+                'footer-desc': '우리가 걷는 인생의 모든 단계는 때론 어둡고 막막해 보일지도 모릅니다. 하지만 우주의 징조들을 신뢰하며 나아갈 때, 우리는 우리 안의 진짜 금을 발견할 것입니다.'
+            },
+            'en': {
+                'constellation-on': 'Constellations ON',
+                'constellation-off': 'Constellations OFF',
+                'hero-label': 'MY FAVORITE BOOK',
+                'hero-sub': 'Jaewon\'s Recommendation',
+                'hero-title': 'The Alchemist',
+                'hero-desc-1': '“For those who love their lives and endlessly journey on”',
+                'hero-desc-2': 'Paulo Coelho\'s novel "The Alchemist" is a book of my life that resonates deeply. Here are four impressive scenes and their values.',
+                'hero-cta': 'Begin Journey',
+                'book-subtitle': 'My Picked Scenes',
+                'book-title': 'Four Profound Scenes in the Novel',
+                'book-desc': 'Directly click on the left or right side of the pages to flip. Open the book to discover hidden treasures.',
+                'book-status-closed': 'The Book is Closed',
+                'book-status-p1': 'Personal Legend (P. 01)',
+                'book-status-p2': 'Ever-Present Omens (P. 02)',
+                'book-status-p3': 'The Treasure Inside (P. 03)',
+                'book-status-p4': 'All is One (P. 04)',
+                'book-status-back': 'Back Cover Closed',
+                'cover-label': 'A Book That Inspired Me',
+                'cover-title': 'THE ALCHEMIST',
+                'cover-help': '[ Click to Open the Book ]',
+                'p1-title': 'Courage Not to Settle',
+                'p1-quote': '"When you settle, dreams turn into taxidermy beyond memory."',
+                'p1-desc': 'Santiago could have chosen comfort and settled into the secure life of a crystal shop merchant, yet he trusted his inner tremor and stepped into the wild desert once more. It shows the value of taking that first brave step away from safety.',
+                'p2-title': 'Ever-Present Omens',
+                'p2-quote': '"The universe always leaves signs, we just fail to notice them."',
+                'p2-desc': 'In a single grain of sand and the majestic flight of eagles, Santiago read the signs of the universe to prepare for danger. It shows how critical opportunities to shift our path hide in the subtle daily signals we ignore.',
+                'p3-title': 'The Treasure Inside',
+                'p3-quote': '"The most precious treasure was where you first slept."',
+                'p3-desc': 'There was no gold beneath the pyramids after all his struggles. The real treasure lay under the old sycamore tree at his starting point. It reveals that the endless growth and wisdom gained on the road, rather than the goal, is the true treasure.',
+                'p4-title': 'All Things Are One',
+                'p4-quote': '"When we truly desire something, all things become one."',
+                'p4-desc': 'Santiago transforming himself into the wind is the most spiritual and breathtaking climax of the novel. It teaches the profound truth that all creation shares a single breath, and fierce belief conquers even physical boundaries.',
+                'backcover-label': 'The End of my Story',
+                'backcover-title': 'Personal Legend is Still in Motion',
+                'backcover-desc': '"Personal Legend is always work in progress."',
+                'backcover-btn': 'Restart Journey',
+                'book-foot-help': '※ Click left/right pages of the book directly to flip back and forth dynamically.',
+                'oracle-sub': 'Oracle of the Desert',
+                'oracle-title': 'Today\'s Omen',
+                'oracle-desc': 'Choose one of the 5 ancient runestones infused with mystical energy. Draw a wise message from the novel to light up your path.',
+                'footer-quote': '"Wherever your heart is, there you will find your treasure."',
+                'footer-desc': 'Every stage of the journey may seem dark and daunting. But as we trust the universe\'s omens, we will realize the real gold within ourselves.'
+            }
+        };
+
+        // CUSTOM MOUSE CURSOR & GOLDEN PARTICLE DUST
+        window.addEventListener('mousemove', (e) => {
+            mouse.x = e.clientX;
+            mouse.y = e.clientY;
+
+            // Generate occasional golden dust trails
+            if (Math.random() < 0.12) {
+                createGoldDust(e.clientX, e.clientY);
+            }
+        });
+
+        function createGoldDust(x, y) {
+            const dust = document.createElement('div');
+            dust.className = 'gold-dust';
+            dust.style.left = x + 'px';
+            dust.style.top = y + 'px';
+            document.body.appendChild(dust);
+
+            // Random micro trajectory
+            const angle = Math.random() * Math.PI * 2;
+            const distance = Math.random() * 25 + 5;
+            const tx = Math.cos(angle) * distance;
+            const ty = Math.sin(angle) * distance;
+
+            dust.animate([
+                { transform: 'translate(-50%, -50%) scale(1)', opacity: 1 },
+                { transform: `translate(calc(-50% + ${tx}px), calc(-50% + ${ty}px)) scale(0)`, opacity: 0 }
+            ], {
+                duration: 800 + Math.random() * 400,
+                easing: 'ease-out'
+            }).onfinish = () => dust.remove();
+        }
+
+        // Custom particle explosions on click
+        window.addEventListener('click', (e) => {
+            for (let i = 0; i < 8; i++) {
+                createGoldDust(e.clientX, e.clientY);
+            }
+        });
+
+        // INTRO LOADING AND APPEARANCE ANIMATION
+        window.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => {
+                const introScreen = document.getElementById('intro-screen');
+                introScreen.style.opacity = '0';
+                introScreen.style.visibility = 'hidden';
+                
+                // Add staggered entrance animations to hero titles
+                setTimeout(() => {
+                    const heroElements = document.querySelectorAll('header h1, header p, header div, header button');
+                    heroElements.forEach((el, index) => {
+                        el.style.opacity = '0';
+                        el.style.transform = 'translateY(25px)';
+                        el.animate([
+                            { opacity: 0, transform: 'translateY(25px)' },
+                            { opacity: 1, transform: 'translateY(0)' }
+                        ], {
+                            duration: 1000,
+                            delay: index * 150,
+                            fill: 'forwards',
+                            easing: 'cubic-bezier(0.25, 1, 0.5, 1)'
+                        });
+                    });
+                }, 300);
+            }, 1800);
+        });
+
+        // LIGHT / DARK THEME TOGGLE LOGIC
+        function toggleTheme() {
+            isLightMode = !isLightMode;
+            const html = document.documentElement;
+            const themeIcon = document.getElementById('theme-icon');
+            const celestialBody = document.getElementById('celestial-body');
+            const celestialCrescent = document.getElementById('celestial-crescent');
+            const starfield = document.getElementById('starfield');
+
+            // Pyramids Capstones (Peak Glows in Light Mode)
+            const capLarge = document.getElementById('pyr-cap-large');
+            const capSmall = document.getElementById('pyr-cap-small');
+
+            if (isLightMode) {
+                // LIGHT MODE ACTIVATED
+                html.classList.add('light');
+                themeIcon.className = 'fa-solid fa-sun';
+                
+                // Transmuting Moon to Sun
+                celestialBody.className = 'w-16 h-16 rounded-full bg-gradient-to-r from-amber-400 via-orange-500 to-yellow-300 opacity-95 blur-[0.2px] relative flex items-center justify-center transition-all duration-700 sun-active';
+                celestialCrescent.style.opacity = '0'; // Hide moon slice to form complete Sun
+
+                // Highlight pyramid golden peaks (Capstone)
+                capLarge.style.opacity = '1';
+                capSmall.style.opacity = '1';
+
+                // Change SVG Gradients for daytime desert look
+                // 1. Pyramid Lights (Sunlit Side - Pure White glare)
+                document.getElementById('pyr-light-stop1').setAttribute('stop-color', '#c2935c');
+                document.getElementById('pyr-light-stop2').setAttribute('stop-color', '#fff3e0');
+                document.getElementById('pyr-light-stop3').setAttribute('stop-color', '#ffffff');
+                document.getElementById('pyr-light-stop4').setAttribute('stop-color', '#ffffff');
+
+                // 2. Pyramid Shadows (Warm shadow side)
+                document.getElementById('pyr-shadow-stop1').setAttribute('stop-color', '#a16c38');
+                document.getElementById('pyr-shadow-stop2').setAttribute('stop-color', '#5c3814');
+
+                // 3. Dunes Gradients (Sunlit Sand)
+                document.getElementById('dune-back-stop1').setAttribute('stop-color', '#f59e0b');
+                document.getElementById('dune-back-stop2').setAttribute('stop-color', '#d97706');
+                document.getElementById('dune-back-stop3').setAttribute('stop-color', '#fafaf9');
+
+                document.getElementById('dune-front-stop1').setAttribute('stop-color', '#fcd34d');
+                document.getElementById('dune-front-stop2').setAttribute('stop-color', '#f59e0b');
+                document.getElementById('dune-front-stop3').setAttribute('stop-color', '#f5f5f4');
+            } else {
+                // DARK MODE ACTIVATED
+                html.classList.remove('light');
+                themeIcon.className = 'fa-solid fa-moon';
+
+                // Transmuting Sun back to Crescent Moon
+                celestialBody.className = 'w-14 h-14 rounded-full bg-gradient-to-tr from-amber-50 to-amber-200 opacity-95 blur-[0.5px] relative flex items-center justify-center transition-all duration-700';
+                celestialCrescent.style.opacity = '1';
+
+                // Hide pyramid peaks glow
+                capLarge.style.opacity = '0';
+                capSmall.style.opacity = '0';
+
+                // Revert to Night Theme SVG Gradients
+                document.getElementById('pyr-light-stop1').setAttribute('stop-color', '#8a5e34');
+                document.getElementById('pyr-light-stop2').setAttribute('stop-color', '#e0a96d');
+                document.getElementById('pyr-light-stop3').setAttribute('stop-color', '#fffbeb');
+                document.getElementById('pyr-light-stop4').setAttribute('stop-color', '#ffffff');
+
+                document.getElementById('pyr-shadow-stop1').setAttribute('stop-color', '#2d1f10');
+                document.getElementById('pyr-shadow-stop2').setAttribute('stop-color', '#0b1126');
+
+                document.getElementById('dune-back-stop1').setAttribute('stop-color', '#b08354');
+                document.getElementById('dune-back-stop2').setAttribute('stop-color', '#5a3d22');
+                document.getElementById('dune-back-stop3').setAttribute('stop-color', '#0b1126');
+
+                document.getElementById('dune-front-stop1').setAttribute('stop-color', '#E0A96D');
+                document.getElementById('dune-front-stop2').setAttribute('stop-color', '#8a5e34');
+                document.getElementById('dune-front-stop3').setAttribute('stop-color', '#050814');
+            }
+
+            // Adjust Canvas background color
+            initCanvas();
+        }
+
+        // LANGUAGE TOGGLE SYSTEM
+        function toggleLanguage() {
+            currentLanguage = (currentLanguage === 'ko') ? 'en' : 'ko';
+            document.getElementById('lang-btn-text').innerText = currentLanguage.toUpperCase();
+            
+            // Translate all elements with 'data-lang-content'
+            const elements = document.querySelectorAll('[data-lang-content]');
+            elements.forEach(el => {
+                const translationKey = el.getAttribute('data-lang-content');
+                if (TRANSLATIONS[currentLanguage][translationKey]) {
+                    el.style.opacity = '0';
+                    setTimeout(() => {
+                        el.innerHTML = TRANSLATIONS[currentLanguage][translationKey];
+                        el.style.opacity = '1';
+                    }, 150);
+                }
+            });
+
+            // Refresh Omen texts if active
+            const omenCard = document.getElementById('omen-card');
+            if (!omenCard.classList.contains('hidden') && currentOmenId !== null) {
+                drawOmen(currentOmenId);
+            }
+
+            // Refresh dynamic book indicator
+            updateBookState3D();
+        }
+
+        // Starfield Canvas Logic
+        const canvas = document.getElementById('starfield');
+        const ctx = canvas.getContext('2d');
+
+        function initCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            
+            numStars = Math.floor((canvas.width * canvas.height) / 10000);
+            if(numStars > 180) numStars = 180;
+            if(numStars < 40) numStars = 40;
+
+            stars = [];
+            for (let i = 0; i < numStars; i++) {
+                stars.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    size: Math.random() * 1.5 + 0.5,
+                    alpha: Math.random() * 0.8 + 0.2,
+                    speed: Math.random() * 0.02 + 0.005,
+                    direction: Math.random() > 0.5 ? 1 : -1
+                });
+            }
+        }
+
+        window.addEventListener('resize', () => {
+            initCanvas();
+        });
+
+        window.addEventListener('mouseleave', () => {
+            mouse.x = null;
+            mouse.y = null;
+        });
+
+        function animateStars() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Dynamic Sky Coloring via Canvas in Light Mode
+            if (isLightMode) {
+                let grad = ctx.createLinearGradient(0, 0, 0, canvas.height);
+                grad.addColorStop(0, '#bae6fd'); // sky-200
+                grad.addColorStop(0.5, '#bae6fd');
+                grad.addColorStop(1, '#ffedd5'); // orange-100
+                ctx.fillStyle = grad;
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+            } else {
+                let grad = ctx.createLinearGradient(0, 0, 0, canvas.height);
+                grad.addColorStop(0, '#050814');
+                grad.addColorStop(1, '#0b1126');
+                ctx.fillStyle = grad;
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+            }
+            
+            // Render Stars (or floating gold dust particles in daytime)
+            stars.forEach(star => {
+                star.alpha += star.speed * star.direction;
+                if (star.alpha > 1 || star.alpha < 0.2) {
+                    star.direction *= -1;
+                }
+
+                if (isLightMode) {
+                    // Floating golden specks in sunlight
+                    ctx.fillStyle = `rgba(217, 119, 6, ${star.alpha * 0.4})`;
+                } else {
+                    // Twinkling white stars in deep space
+                    ctx.fillStyle = `rgba(255, 255, 255, ${star.alpha})`;
+                }
+
+                ctx.beginPath();
+                ctx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
+                ctx.fill();
+
+                star.x += 0.03;
+                if (star.x > canvas.width) star.x = 0;
+            });
+
+            // Draw Constellations
+            if (constellationMode) {
+                for (let i = 0; i < stars.length; i++) {
+                    for (let j = i + 1; j < stars.length; j++) {
+                        const dist = Math.hypot(stars[i].x - stars[j].x, stars[i].y - stars[j].y);
+                        
+                        if (dist < 110) {
+                            let opacity = (1 - (dist / 110)) * 0.12;
+                            
+                            if (mouse.x && mouse.y) {
+                                const distToMouseI = Math.hypot(stars[i].x - mouse.x, stars[i].y - mouse.y);
+                                const distToMouseJ = Math.hypot(stars[j].x - mouse.x, stars[j].y - mouse.y);
+                                if (distToMouseI < mouse.radius || distToMouseJ < mouse.radius) {
+                                    opacity = (1 - (dist / 110)) * 0.35;
+                                }
+                            }
+
+                            if (isLightMode) {
+                                ctx.strokeStyle = `rgba(217, 119, 6, ${opacity * 0.5})`; // Warm gold-amber links
+                            } else {
+                                ctx.strokeStyle = `rgba(224, 169, 109, ${opacity})`; // Cool sand gold links
+                            }
+                            ctx.lineWidth = 0.5;
+                            ctx.beginPath();
+                            ctx.moveTo(stars[i].x, stars[i].y);
+                            ctx.lineTo(stars[j].x, stars[j].y);
+                            ctx.stroke();
+                        }
+                    }
+                }
+            }
+
+            requestAnimationFrame(animateStars);
+        }
+
+        // Initialize Starfield on Window Load
+        window.onload = function() {
+            initCanvas();
+            animateStars();
+        }
+
+        // Toggle Constellation Mode
+        const constellationBtn = document.getElementById('constellation-toggle');
+        const constellationTxt = document.getElementById('constellation-text');
+        
+        constellationBtn.addEventListener('click', () => {
+            constallationStateToggle();
+        });
+
+        function constallationStateToggle() {
+            constellationMode = !constellationMode;
+            if (constellationMode) {
+                constellationTxt.setAttribute('data-lang-content', 'constellation-on');
+                constellationTxt.innerText = TRANSLATIONS[currentLanguage]['constellation-on'];
+                constellationBtn.classList.add('shadow-gold-box');
+                constellationBtn.classList.remove('opacity-65');
+            } else {
+                constellationTxt.setAttribute('data-lang-content', 'constellation-off');
+                constellationTxt.innerText = TRANSLATIONS[currentLanguage]['constellation-off'];
+                constellationBtn.classList.remove('shadow-gold-box');
+                constellationBtn.classList.add('opacity-65');
+            }
+        }
+
+        // Dynamic Scroll Progress Bar
+        window.addEventListener('scroll', () => {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.getElementById('scroll-bar').style.width = scrolled + '%';
+        });
+
+        // Smooth Scroll Helper
+        function scrollToSection(id) {
+            const element = document.getElementById(id);
+            if (element) {
+                element.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        // REAL 3D BOOK FLOW CONTROLLER
+        let currentPaper = 0; // 0: Closed(Front Cover), 1: Pages 1&2, 2: Pages 3&4, 3: Back Cover Closed
+        const maxPaper = 3;
+
+        const book = document.getElementById('book-3d');
+        const p1 = document.getElementById('p3d-1');
+        const p2 = document.getElementById('p3d-2');
+        const p3 = document.getElementById('p3d-3');
+
+        function startJourney() {
+            scrollToSection('book-section');
+            setTimeout(() => {
+                if (currentPaper === 0) {
+                    nextPage3D();
+                }
+            }, 800);
+        }
+
+        function updateBookState3D() {
+            const prevBtn = document.getElementById('prev-btn-3d');
+            const nextBtn = document.getElementById('next-btn-3d');
+            const indicator = document.getElementById('page-indicator-3d');
+
+            prevBtn.disabled = (currentPaper === 0);
+            nextBtn.disabled = (currentPaper === maxPaper);
+
+            // Update text dynamically based on current language
+            if (currentPaper === 0) {
+                indicator.setAttribute('data-lang-content', 'book-status-closed');
+                indicator.innerText = TRANSLATIONS[currentLanguage]['book-status-closed'];
+                book.className = "book-container is-closed-front";
+            } else if (currentPaper === 1) {
+                indicator.setAttribute('data-lang-content', 'book-status-p1');
+                indicator.innerText = TRANSLATIONS[currentLanguage]['book-status-p1'];
+                book.className = "book-container is-open";
+            } else if (currentPaper === 2) {
+                indicator.setAttribute('data-lang-content', 'book-status-p3');
+                indicator.innerText = TRANSLATIONS[currentLanguage]['book-status-p3'];
+                book.className = "book-container is-open";
+            } else if (currentPaper === maxPaper) {
+                indicator.setAttribute('data-lang-content', 'book-status-back');
+                indicator.innerText = TRANSLATIONS[currentLanguage]['book-status-back'];
+                book.className = "book-container is-closed-back";
+            }
+
+            // Paper 1 (p1)
+            if (currentPaper > 0) {
+                p1.classList.add('flipped');
+                p1.style.zIndex = 1;
+            } else {
+                p1.classList.remove('flipped');
+                p1.style.zIndex = 5; 
+            }
+
+            // Paper 2 (p2)
+            if (currentPaper > 1) {
+                p2.classList.add('flipped');
+                p2.style.zIndex = 2;
+            } else {
+                p2.classList.remove('flipped');
+                p2.style.zIndex = 4;
+            }
+
+            // Paper 3 (p3)
+            if (currentPaper > 2) {
+                p3.classList.add('flipped');
+                p3.style.zIndex = 3;
+            } else {
+                p3.classList.remove('flipped');
+                p3.style.zIndex = 3;
+            }
+        }
+
+        function nextPage3D() {
+            if (currentPaper < maxPaper) {
+                currentPaper++;
+                updateBookState3D();
+            }
+        }
+
+        function prevPage3D() {
+            if (currentPaper > 0) {
+                currentPaper--;
+                updateBookState3D();
+            }
+        }
+
+        function resetBook3D() {
+            currentPaper = 0;
+            updateBookState3D();
+        }
+
+        // MULTILINGUAL RUNESTONE / OMEN DATA
+        let currentOmenId = null;
+
+        const omensList = {
+            'ko': [
+                {
+                    stone: '𐎠',
+                    icon: 'fa-wand-magic-sparkles',
+                    colorClass: 'bg-cyan-500/10 text-cyan-400 border-cyan-500/30 shadow-[0_0_15px_rgba(34,211,238,0.3)]',
+                    title: '초심자의 행운 (Beginner\'s Luck)',
+                    quote: '"자네가 꿈을 실현하고 싶어 할 때, 온 우주는 자네를 도와준다네."',
+                    desc: '무엇인가를 향한 진지한 도전을 시작했을 때, 우주는 가장 먼저 초심자의 행운이라는 달콤한 버프를 줍니다. 눈앞의 행운을 기뻐하되 다가올 진정한 배움의 장벽도 유쾌하게 넘어가 보세요.'
+                },
+                {
+                    stone: '𐎡',
+                    icon: 'fa-wind',
+                    colorClass: 'bg-amber-500/10 text-amber-400 border-amber-500/30 shadow-[0_0_15px_rgba(251,191,36,0.3)]',
+                    title: '사막의 바람 (The Wind)',
+                    quote: '"바람은 결코 한 곳에 머무르지 않고, 온 누리를 돌며 새로워진다네."',
+                    desc: '막혀있던 생각과 고민이 꼬여있다면, 가벼운 전환을 시도해 보세요. 자신을 가두고 있던 고정관념의 틀에서 벗어나는 순간, 자유로운 깨달음과 뜻밖의 통찰이 번개처럼 지나갈 것입니다.'
+                },
+                {
+                    stone: '𐎢',
+                    icon: 'fa-gem',
+                    colorClass: 'bg-purple-500/10 text-purple-400 border-purple-500/30 shadow-[0_0_15px_rgba(192,132,252,0.3)]',
+                    title: '마음의 소리 (The Voice of Heart)',
+                    quote: '"눈을 감고 마음의 소리를 듣게나. 그대의 마음이 있는 곳에 그대의 보물이 있네."',
+                    desc: '모든 길은 자신의 진정한 마음에 귀를 기울이는 것부터 시작합니다. 주변의 소음과 불안한 지름길의 유혹에 휩쓸리지 말고, 내면이 정말 원하고 갈구하는 성장을 지혜롭게 따라가세요.'
+                },
+                {
+                    stone: '𐏃',
+                    icon: 'fa-eye',
+                    colorClass: 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30 shadow-[0_0_15px_rgba(52,211,153,0.3)]',
+                    title: '우주의 표지 (Signs)',
+                    quote: '"세상 만물은 끊임없이 신호를 보내고 있네. 그것을 표지라 부르지."',
+                    desc: '오늘 하루 일어나는 사소한 발견과 변화를 가벼이 흘리지 마세요. 스치듯 지나는 소식, 동료가 슬쩍 나눈 짧은 배움의 단서 속에 여러분의 의문을 일거에 풀어줄 지혜로운 열쇠가 담겨 있습니다.'
+                },
+                {
+                    stone: '𐎧',
+                    icon: 'fa-fire',
+                    colorClass: 'bg-rose-500/10 text-rose-400 border-rose-500/30 shadow-[0_0_15px_rgba(244,63,94,0.3)]',
+                    title: '마크툽 (Maktub)',
+                    quote: '"두려워하지 말게. 모든 고난 역시 삶의 위대한 한 페이지로 기록되어 있는 과정일 뿐이네."',
+                    desc: '때때로 마주하는 뜻밖의 좌절이나 일시적인 정체 현상조차도, 당신을 가장 순도 높고 고결한 존재로 담금질하기 위해 정교히 마련된 장치입니다. 과정 자체를 사랑하며 꿋꿋이 나아가세요.'
+                }
+            ],
+            'en': [
+                {
+                    stone: '𐎠',
+                    icon: 'fa-wand-magic-sparkles',
+                    colorClass: 'bg-cyan-500/10 text-cyan-400 border-cyan-500/30 shadow-[0_0_15px_rgba(34,211,238,0.3)]',
+                    title: 'Beginner\'s Luck',
+                    quote: '"When you want something, all the universe conspires in helping you to achieve it."',
+                    desc: 'When you take a sincere step towards your dream, the universe blesses you with beginner\'s luck first. Celebrate this immediate fortune, but be prepared to face and cross the real trials of growth with a joyful heart.'
+                },
+                {
+                    stone: '𐎡',
+                    icon: 'fa-wind',
+                    colorClass: 'bg-amber-500/10 text-amber-400 border-amber-500/30 shadow-[0_0_15px_rgba(251,191,36,0.3)]',
+                    title: 'The Wind',
+                    quote: '"The wind never stays in one place; it travels the whole earth to renew itself."',
+                    desc: 'If your thoughts and problems feel stuck, attempt a simple change of perspective. The moment you break free from rigid preconceptions, unexpected inspiration will strike like lightning.'
+                },
+                {
+                    stone: '𐎢',
+                    icon: 'fa-gem',
+                    colorClass: 'bg-purple-500/10 text-purple-400 border-purple-500/30 shadow-[0_0_15px_rgba(192,132,252,0.3)]',
+                    title: 'The Voice of Heart',
+                    quote: '"Listen to your heart. Wherever your heart is, that is where you will find your treasure."',
+                    desc: 'Every genuine journey begins by paying deep attention to your heart. Do not be swept away by external noises and shortcut temptations; wisely trace what your inner self truly seeks and desires.'
+                },
+                {
+                    stone: '𐏃',
+                    icon: 'fa-eye',
+                    colorClass: 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30 shadow-[0_0_15px_rgba(52,211,153,0.3)]',
+                    title: 'Signs',
+                    quote: '"The universe continually leaves clues. We call them signs."',
+                    desc: 'Do not take today\'s trivial events or minor occurrences for granted. A passing comment, or a small tip shared by a fellow developer, could hide the exact key to solving your current obstacle.'
+                },
+                {
+                    stone: '𐎧',
+                    icon: 'fa-fire',
+                    colorClass: 'bg-rose-500/10 text-rose-400 border-rose-500/30 shadow-[0_0_15px_rgba(244,63,94,0.3)]',
+                    title: 'Maktub',
+                    quote: '"Do not fear. All suffering is written as a chapter of the grand process of life."',
+                    desc: 'Even temporary halts and unforeseen errors are finely constructed catalysts to purify your potential. Fall in love with the process itself, and march forward with pride.'
+                }
+            ]
+        };
+
+        function drawOmen(stoneId) {
+            currentOmenId = stoneId;
+            const omenCard = document.getElementById('omen-card');
+            const data = omensList[currentLanguage][stoneId - 1];
+            const iconContainer = document.getElementById('omen-icon-container');
+
+            // Set multilingual content
+            document.getElementById('omen-icon').className = `fa-solid ${data.icon}`;
+            document.getElementById('omen-type').innerText = data.title;
+            document.getElementById('omen-quote').innerText = data.quote;
+            document.getElementById('omen-interpretation').innerText = data.desc;
+
+            // Apply glow styling based on chosen rune
+            iconContainer.className = `w-12 h-12 rounded-full mx-auto flex items-center justify-center text-lg mb-4 ${data.colorClass}`;
+
+            omenCard.classList.remove('hidden');
+            setTimeout(() => {
+                omenCard.classList.remove('scale-95', 'opacity-0');
+                omenCard.classList.add('scale-100', 'opacity-100');
+            }, 50);
+
+            setTimeout(() => {
+                omenCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }, 150);
+        }
+
+        function closeOmen() {
+            currentOmenId = null;
+            const omenCard = document.getElementById('omen-card');
+            omenCard.classList.remove('scale-100', 'opacity-100');
+            omenCard.classList.add('scale-95', 'opacity-0');
+            setTimeout(() => {
+                omenCard.classList.add('hidden');
+            }, 500);
+        }
+    </script>
+</body>
+</html>
