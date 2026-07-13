@@ -42,7 +42,7 @@
         ::-webkit-scrollbar-track {
             background: #050814;
         }
-        .light ::webkit-scrollbar-track {
+        .light ::-webkit-scrollbar-track {
             background: #fcfcf9;
         }
         ::-webkit-scrollbar-thumb {
@@ -53,11 +53,11 @@
             background: #D4AF3780;
         }
 
-        /* Custom Golden Cursor CSS (Fallback for SVG Cursor) */
+        /* Custom Golden Cursor CSS */
         body {
             cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5" fill="%23D4AF37" stroke="%23ffffff" stroke-width="1.5"/><circle cx="12" cy="12" r="1.5" fill="%23ffffff"/></svg>') 12 12, auto;
         }
-        a, button, [role="button"], .runestone, .page-side {
+        a, button, [role="button"], .runestone, .page-side, .timeline-node {
             cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><circle cx="16" cy="16" r="8" fill="%23D4AF37" fill-opacity="0.2" stroke="%23D4AF37" stroke-width="1.5"/><polygon points="16,4 19,13 28,16 19,19 16,28 13,19 4,16 13,13" fill="%23D4AF37"/></svg>') 16 16, pointer !important;
         }
 
@@ -288,6 +288,16 @@
         [data-lang-content] {
             transition: opacity 0.25s ease-in-out;
         }
+
+        /* Pouch Shaking Animation for Urim & Thummim */
+        @keyframes shake {
+            0%, 100% { transform: rotate(0deg); }
+            20%, 60% { transform: rotate(-8deg); }
+            40%, 80% { transform: rotate(8deg); }
+        }
+        .shaking {
+            animation: shake 0.4s ease-in-out 2;
+        }
     </style>
 </head>
 <body class="bg-desertNavy dark:bg-desertNavy text-slate-200 dark:text-slate-200 font-sans overflow-x-hidden relative min-h-screen transition-colors duration-500">
@@ -305,12 +315,11 @@
     <!-- Scroll Progress Bar -->
     <div id="scroll-bar" class="fixed top-0 left-0 h-1 bg-gradient-to-r from-sandGold to-crystalGold z-50 transition-all duration-100" style="width: 0%;"></div>
 
-    <!-- STARFIELD BACKGROUND CANVAS (Becomes pale sky in Light Mode) -->
+    <!-- STARFIELD BACKGROUND CANVAS -->
     <canvas id="starfield" class="fixed top-0 left-0 w-full h-full -z-20 pointer-events-none transition-all duration-500"></canvas>
 
-    <!-- FLOATING CONTROLS (Constellation Mode, Dark/Light Mode, KO/EN Switcher) -->
+    <!-- FLOATING CONTROLS (Language Switcher, Theme Toggle, Constellation Toggle) -->
     <div class="fixed top-6 right-6 z-50 flex items-center gap-2 sm:gap-3 flex-wrap justify-end">
-        
         <!-- Language Switcher Button -->
         <button id="lang-toggle" onclick="toggleLanguage()" class="px-3 py-1.5 sm:px-4 sm:py-2 bg-slate-900/80 dark:bg-slate-900/80 border border-sandGold/40 hover:border-crystalGold text-xs font-semibold tracking-wider text-sandGold rounded-full backdrop-blur-md transition-all duration-300 hover:scale-105 active:scale-95 flex items-center gap-1.5 shadow-gold-box">
             <i class="fa-solid fa-globe"></i>
@@ -331,38 +340,38 @@
 
     <!-- HERO SECTION (Central Layout) -->
     <header class="relative min-h-screen flex flex-col justify-center items-center px-4 overflow-hidden py-12 z-30 transition-all duration-500">
-        
         <!-- Main Copy & Titles -->
         <div class="text-center z-40 max-w-4xl mx-auto px-4 relative flex flex-col items-center">
             
-            <!-- Glowing Sun/Moon Container (Dynamic Moon or Sun) -->
+            <!-- Glowing Celestial Body -->
             <div class="mb-5 flex flex-col items-center pointer-events-none">
-                <!-- Moon Structure -->
                 <div id="celestial-body" class="w-14 h-14 rounded-full bg-gradient-to-tr from-amber-50 to-amber-200 opacity-95 blur-[0.5px] shadow-[0_0_35px_rgba(255,255,255,0.7)] relative flex items-center justify-center transition-all duration-700">
                     <div id="celestial-crescent" class="absolute w-11 h-11 rounded-full bg-desertNavy -top-1 -right-2.5 transition-all duration-700"></div>
                 </div>
             </div>
 
-            <div class="inline-flex items-center gap-2 px-3 py-1 bg-slate-950/80 dark:bg-slate-950/80 border border-sandGold/25 rounded-full text-[11px] font-semibold uppercase tracking-widest text-sandGold mb-4 backdrop-blur-md transition-all duration-500">
-                <i class="fa-solid fa-book-open"></i> <span data-lang-content="hero-label">MY FAVORITE BOOK</span>
+            <!-- Pre-title Info -->
+            <div class="inline-flex items-center gap-2 px-3.5 py-1 bg-slate-950/80 dark:bg-slate-950/80 border border-sandGold/25 rounded-full text-[11px] font-semibold uppercase tracking-widest text-sandGold mb-3.5 backdrop-blur-md transition-all duration-500">
+                <i class="fa-solid fa-book-open"></i> <span data-lang-content="hero-label">My Favorite Book</span>
             </div>
             
-            <div class="font-serif text-lg sm:text-xl md:text-2xl text-sandGold font-bold tracking-widest mb-1 drop-shadow-md" data-lang-content="hero-sub">
+            <!-- User recommendation badge -->
+            <div class="font-serif text-sm sm:text-base text-sandGold font-bold tracking-widest mb-1.5 drop-shadow-md" data-lang-content="hero-sub">
                 이재원의 추천 책
             </div>
             
+            <!-- Book Title -->
             <h1 class="font-serif text-5xl sm:text-6xl md:text-8xl font-extrabold text-transparent bg-clip-text bg-gradient-to-b from-white via-amber-50 to-sandGold tracking-wide leading-tight mb-5 filter drop-shadow-lg" data-lang-content="hero-title">
                 연금술사
             </h1>
             <p class="font-serif text-base sm:text-lg md:text-xl text-sandGold/90 leading-relaxed italic mb-6 tracking-wide max-w-2xl" data-lang-content="hero-desc-1">
-                “자신의 삶을 사랑하고, 끊임없이 여정을 떠나는 이들을 위하여”
+                “한 편의 소설로 읽는 인생의 지도, 산티아고와 함께 걷는 길”
             </p>
             <p class="max-w-xl mx-auto text-xs sm:text-sm text-slate-400 dark:text-slate-400 font-light leading-relaxed mb-8 transition-colors duration-500" data-lang-content="hero-desc-2">
-                파울로 코엘료의 소설 『연금술사』는 제게 깊은 울림을 준 인생 책입니다.<br>
-                소설 속에서 깊은 인상을 남겼던 네 가지 명장면과 그 속에 담긴 의미를 소개합니다.
+                파울로 코엘료의 소설 『연금술사』는 저에게 깊은 인상을 준 인생 책입니다.<br>소설 속에서 발견한 가장 가슴 뛰는 네 가지 명장면과 그 상징적 통찰을 여러분과 공유합니다.
             </p>
             
-            <!-- Single Core Button -->
+            <!-- Journey trigger CTA -->
             <div class="flex justify-center items-center pointer-events-auto relative z-50">
                 <button onclick="startJourney()" class="px-10 py-4 bg-gradient-to-r from-sandGold to-crystalGold text-slate-950 font-bold tracking-widest rounded-full shadow-gold-intense hover:scale-105 active:scale-95 transition-all duration-300 flex items-center gap-2 cursor-pointer text-sm sm:text-base">
                     <span data-lang-content="hero-cta">여정 시작하기</span> <i class="fa-solid fa-compass"></i>
@@ -370,7 +379,7 @@
             </div>
         </div>
 
-        <!-- Desert nightscape: Moonlight/Sunlight reflecting 3D Pyramids + Dynamic Sand Dunes -->
+        <!-- 3D Pyramids & Sand Dunes with Moonlight reflection -->
         <div class="absolute bottom-0 left-0 w-full h-[320px] z-10 pointer-events-none select-none overflow-hidden">
             <svg class="w-full h-full" viewBox="0 0 1440 320" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
                 <defs>
@@ -401,7 +410,7 @@
                         <stop offset="100%" stop-color="#050814" stop-opacity="1" id="dune-front-stop3"/>
                     </linearGradient>
 
-                    <!-- Filter for Gold Glowing Capstone (Pyramid Peak) -->
+                    <!-- Filter for Gold Glowing Capstone -->
                     <filter id="gold-glow" x="-20%" y="-20%" width="140%" height="140%">
                         <feGaussianBlur stdDeviation="8" result="blur" />
                         <feComposite in="SourceGraphic" in2="blur" operator="over" />
@@ -410,19 +419,13 @@
 
                 <!-- 3D PYRAMIDS (Reflecting light based on modes) -->
                 <!-- Large Pyramid (Center-Right) -->
-                <!-- 1. Shadowed left side -->
                 <polygon points="500,320 700,60 700,320" fill="url(#pyr-shadow-grad)" opacity="0.95" />
-                <!-- 2. Lit right side (Almost pure white reflecting light) -->
                 <polygon points="700,320 700,60 900,320" fill="url(#pyr-light-grad)" opacity="1" />
-                <!-- 3. Dynamic Golden Capstone (Glows in Light Mode) -->
                 <polygon id="pyr-cap-large" points="685,82 700,60 715,82 700,86" fill="#D4AF37" opacity="0" filter="url(#gold-glow)"/>
 
                 <!-- Small Pyramid (Left) -->
-                <!-- 1. Shadowed left side -->
                 <polygon points="300,320 450,130 450,320" fill="url(#pyr-shadow-grad)" opacity="0.9" />
-                <!-- 2. Lit right side -->
                 <polygon points="450,320 450,130 600,320" fill="url(#pyr-light-grad)" opacity="0.95" />
-                <!-- 3. Dynamic Golden Capstone -->
                 <polygon id="pyr-cap-small" points="438,145 450,130 462,145 450,148" fill="#D4AF37" opacity="0" filter="url(#gold-glow)"/>
                 
                 <!-- Mid Ground Dune Layer -->
@@ -493,13 +496,13 @@
                             <div class="flex flex-col justify-center h-full">
                                 <div class="flex items-center gap-3 mb-4">
                                     <span class="w-7 h-7 rounded-full bg-sandGold/10 flex items-center justify-center text-sandGold font-bold font-serif text-sm">01</span>
-                                    <h4 class="font-serif text-lg sm:text-xl md:text-2xl text-amber-100 font-bold" data-lang-content="p1-title">안주하지 않는 용기</h4>
+                                    <h4 class="font-serif text-xl sm:text-2xl text-amber-100 font-bold" data-lang-content="p1-title">안주하지 않는 용기</h4>
                                 </div>
-                                <p class="font-serif text-lg sm:text-xl md:text-2xl text-sandGold font-bold italic leading-relaxed mb-5 border-l-2 border-sandGold/30 pl-4 py-1" data-lang-content="p1-quote">
+                                <p class="font-serif text-xl sm:text-2xl text-sandGold font-bold italic leading-relaxed mb-5 border-l-2 border-sandGold/30 pl-4 py-1" data-lang-content="p1-quote">
                                     "안주하는 순간, 꿈은 단지 기억 너머 박제가 된다."
                                 </p>
-                                <p class="text-sm sm:text-base md:text-lg text-slate-200 leading-relaxed font-light" data-lang-content="p1-desc">
-                                    산티아고는 편안하고 확실한 크리스탈 가게 주인의 삶을 선택해 안락함에 정착할 수 있었음에도, 마음속 깊은 떨림을 믿고 다시 거친 사막으로 발을 디뎠습니다. 현실의 안도감에 안주하려는 본능을 이겨내고 나아가는 첫걸음의 소중함을 말해줍니다.
+                                <p class="text-base sm:text-lg text-slate-300 leading-relaxed font-light" data-lang-content="p1-desc">
+                                    안전하고 번창하는 크리스탈 상점 점원의 평온함을 마다하고, 다시 거칠고 예측 불가능한 사막 한가운데로 첫 걸음을 내딛던 산티아고의 결단을 보여주는 장면입니다. 평범한 일상의 안락함이 주는 유혹을 단호히 극복하고 나아가는 인간 본연의 주체적 용기를 의미합니다.
                                 </p>
                             </div>
                             <span class="text-xs text-slate-500 font-serif block text-left">P. 01</span>
@@ -514,13 +517,13 @@
                             <div class="flex flex-col justify-center h-full">
                                 <div class="flex items-center gap-3 mb-4">
                                     <span class="w-7 h-7 rounded-full bg-sandGold/10 flex items-center justify-center text-sandGold font-bold font-serif text-sm">02</span>
-                                    <h4 class="font-serif text-lg sm:text-xl md:text-2xl text-amber-100 font-bold" data-lang-content="p2-title">늘 존재하는 징조</h4>
+                                    <h4 class="font-serif text-xl sm:text-2xl text-amber-100 font-bold" data-lang-content="p2-title">늘 존재하는 징조</h4>
                                 </div>
-                                <p class="font-serif text-lg sm:text-xl md:text-2xl text-sandGold font-bold italic leading-relaxed mb-5 border-l-2 border-sandGold/30 pl-4 py-1" data-lang-content="p2-quote">
+                                <p class="font-serif text-xl sm:text-2xl text-sandGold font-bold italic leading-relaxed mb-5 border-l-2 border-sandGold/30 pl-4 py-1" data-lang-content="p2-quote">
                                     "우주는 우리가 눈치채지 못할 뿐, 늘 표지를 남긴다네."
                                 </p>
-                                <p class="text-sm sm:text-base md:text-lg text-slate-200 leading-relaxed font-light" data-lang-content="p2-desc">
-                                    산티아고는 모래 한 알, 하늘 위 독수리의 날갯짓 속에서 우주가 보내는 메시지(징조)를 직관적으로 읽고 위기를 대비해 나갑니다. 우리가 무심코 지나치는 사소한 변화와 신호 속에, 삶의 방향을 전환해 줄 기회들이 늘 숨어있음을 보여줍니다.
+                                <p class="text-base sm:text-lg text-slate-300 leading-relaxed font-light" data-lang-content="p2-desc">
+                                    사막의 모래알 한 톨, 바람의 향기, 하늘 위 독수리의 엇갈리는 날갯짓 속에서 우주가 건네는 보이지 않는 계시와 '표지'를 조용히 해독해 내던 장면입니다. 일상의 스쳐 지나가는 우연한 조언과 예기치 못한 실패 속에 늘 우리를 인도할 최선의 해답들이 숨어있음을 의미합니다.
                                 </p>
                             </div>
                             <span class="text-xs text-slate-500 font-serif block text-right">P. 02</span>
@@ -532,13 +535,13 @@
                             <div class="flex flex-col justify-center h-full">
                                 <div class="flex items-center gap-3 mb-4">
                                     <span class="w-7 h-7 rounded-full bg-sandGold/10 flex items-center justify-center text-sandGold font-bold font-serif text-sm">03</span>
-                                    <h4 class="font-serif text-lg sm:text-xl md:text-2xl text-amber-100 font-bold" data-lang-content="p3-title">발밑에 숨겨진 진짜 보물</h4>
+                                    <h4 class="font-serif text-xl sm:text-2xl text-amber-100 font-bold" data-lang-content="p3-title">발밑에 숨겨진 진짜 보물</h4>
                                 </div>
-                                <p class="font-serif text-lg sm:text-xl md:text-2xl text-sandGold font-bold italic leading-relaxed mb-5 border-l-2 border-sandGold/30 pl-4 py-1" data-lang-content="p3-quote">
+                                <p class="font-serif text-xl sm:text-2xl text-sandGold font-bold italic leading-relaxed mb-5 border-l-2 border-sandGold/30 pl-4 py-1" data-lang-content="p3-quote">
                                     "가장 소중한 보물은 처음 자네가 누워있던 곳에 있었지."
                                 </p>
-                                <p class="text-sm sm:text-base md:text-lg text-slate-200 leading-relaxed font-light" data-lang-content="p3-desc">
-                                    험난한 여정 끝에 도착한 피라미드 아래에는 황금이 없었습니다. 진짜 보물은 출발지였던 낡은 무화과나무 밑에 잠들어 있었습니다. 목적지에 도달하는 것보다 그 과정에서 겪은 수많은 깨달음과 성장이 결국 인생을 채워주는 보물이었음을 깨닫게 만듭니다.
+                                <p class="text-base sm:text-lg text-slate-300 leading-relaxed font-light" data-lang-content="p3-desc">
+                                    험난한 여정을 지나 간신히 당도한 이집트 피라미드 밑이 아니라, 출발지였던 낡은 교회의 쓰러진 무화과나무 밑에서 마침내 금화를 발굴하는 장면입니다. 꿈의 정점이나 지향하는 결과보다, 도달하는 사막의 궤적 안에서 정화되고 단단해진 영혼의 '성장 과정' 그 자체가 보물임을 일깨웁니다.
                                 </p>
                             </div>
                             <span class="text-xs text-slate-500 font-serif block text-left">P. 03</span>
@@ -553,13 +556,13 @@
                             <div class="flex flex-col justify-center h-full">
                                 <div class="flex items-center gap-3 mb-4">
                                     <span class="w-7 h-7 rounded-full bg-sandGold/10 flex items-center justify-center text-sandGold font-bold font-serif text-sm">04</span>
-                                    <h4 class="font-serif text-lg sm:text-xl md:text-2xl text-amber-100 font-bold" data-lang-content="p4-title">만물은 하나</h4>
+                                    <h4 class="font-serif text-xl sm:text-2xl text-amber-100 font-bold" data-lang-content="p4-title">만물은 하나</h4>
                                 </div>
-                                <p class="font-serif text-lg sm:text-xl md:text-2xl text-sandGold font-bold italic leading-relaxed mb-5 border-l-2 border-sandGold/30 pl-4 py-1" data-lang-content="p4-quote">
-                                    "우리가 진정으로 간절히 원할 때, 만물은 하나가 된다네."
+                                <p class="font-serif text-xl sm:text-2xl text-sandGold font-bold italic leading-relaxed mb-5 border-l-2 border-sandGold/30 pl-4 py-1" data-lang-content="p4-quote">
+                                    "우리가 진정으로 원할 때, 만물은 하나가 된다네."
                                 </p>
-                                <p class="text-sm sm:text-base md:text-lg text-slate-200 leading-relaxed font-light" data-lang-content="p4-desc">
-                                    사막 한가운데서 자신을 바람으로 변화시키는 산티아고의 모습은 소설의 가장 영성적이고 압도적인 순간입니다. 세상의 모든 존재가 하나의 연결된 숨을 쉬고 있으며, 강한 소망과 믿음이 물리적 한계마저 극복하는 근원이 된다는 장엄한 진리를 건넵니다.
+                                <p class="text-base sm:text-lg text-slate-300 leading-relaxed font-light" data-lang-content="p4-desc">
+                                    군대 앞에 가로막혀 목숨의 위협을 받던 순간, 바람의 호흡과 일치되어 무자비한 사막의 모래바람으로 스스로의 물질 구조를 완전하게 변환시키던 절정의 영성 장면입니다. 세상 삼라만상의 모든 요소가 결국 단 하나의 생명으로 밀접하게 공명하고 연대하고 있음을 선사합니다.
                                 </p>
                             </div>
                             <span class="text-xs text-slate-500 font-serif block text-right">P. 04</span>
@@ -590,6 +593,262 @@
         </div>
     </section>
 
+    <!-- REAL CURVED S-SHAPE LEARNING ROADMAP SECTION (DESKTOP SNAKE, MOBILE VERTICAL WAVE) -->
+    <section id="roadmap-section" class="relative py-28 px-4 bg-desertNavy dark:bg-desertNavy transition-colors duration-500 z-30 overflow-hidden border-t border-slate-900/60">
+        
+        <!-- Subtle Star/Dune Background Graphics -->
+        <div class="absolute inset-0 opacity-[0.03] pointer-events-none">
+            <svg class="w-full h-full" xmlns="http://www.w3.org/2000/svg">
+                <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+                    <path d="M 40 0 L 0 0 0 40" fill="none" stroke="white" stroke-width="0.5"/>
+                </pattern>
+                <rect width="100%" height="100%" fill="url(#grid)" />
+            </svg>
+        </div>
+
+        <div class="max-w-6xl mx-auto relative">
+            <div class="text-center mb-16">
+                <span class="text-xs font-bold uppercase tracking-widest text-sandGold block mb-2">
+                    <i class="fa-solid fa-compass animate-spin" style="animation-duration: 4s;"></i> 
+                    <span data-lang-content="timeline-subtitle">25주간의 연금술 로드맵</span>
+                </span>
+                <h3 class="font-serif text-3xl sm:text-4xl text-white dark:text-white transition-colors duration-500" data-lang-content="timeline-title">
+                    위대한 학습 여정
+                </h3>
+                <p class="text-slate-400 dark:text-slate-400 text-xs sm:text-sm mt-3 max-w-xl mx-auto leading-relaxed transition-colors duration-500" data-lang-content="timeline-desc">
+                    0-베이징에서 시작해 SWEA 알고리즘 역량 등급을 취득하고 최정예 웹 서비스를 다지기까지,<br>산티아고의 사막 행로에 빗댄 단계별 성장 궤적입니다.
+                </p>
+            </div>
+
+            <!-- DYNAMIC S-CURVE SVG (Sits behind the cards and tracks coordinate changes) -->
+            <div id="timeline-container" class="relative min-h-[850px] md:min-h-[600px]">
+                <svg id="s-curve-svg" class="absolute inset-0 w-full h-full pointer-events-none z-0 overflow-visible">
+                    <defs>
+                        <!-- Dynamic Golden Glow Trail Gradient -->
+                        <linearGradient id="s-curve-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#D4AF37" stop-opacity="0.9" />
+                            <stop offset="50%" stop-color="#fbbf24" stop-opacity="0.8" />
+                            <stop offset="100%" stop-color="#D4AF37" stop-opacity="0.9" />
+                        </linearGradient>
+                        <filter id="shepherd-glow">
+                            <feGaussianBlur stdDeviation="3" result="blur"/>
+                            <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+                        </filter>
+                    </defs>
+                    <!-- Curved background dotted vector path -->
+                    <path id="s-curve-line" d="" fill="none" stroke="url(#s-curve-grad)" stroke-width="4.5" stroke-dasharray="10,8" stroke-linecap="round" class="transition-all duration-300"/>
+                    
+                    <!-- Shepherd Character holding a staff, walking along S-Curve -->
+                    <!-- SKELETON SCALE-UP: Scale shepherd up to 2.0x as requested -->
+                    <g id="s-curve-progress-ball" filter="url(#shepherd-glow)" class="transition-all duration-75" transform="scale(2)">
+                        <!-- Head -->
+                        <circle cx="0" cy="-15" r="5.5" fill="#F8FAFC" stroke="#D4AF37" stroke-width="1.5" />
+                        <!-- Cloak / Body -->
+                        <path d="M -6.5,4 L -2.5,-9 L 2.5,-9 L 6.5,4 Z" fill="#D4AF37" />
+                        <!-- Walking Staff (Shepherd's Crook) -->
+                        <path d="M 4,-14 L 4,8 M 4,-14 C 6.5,-14 6.5,-17.5 4,-17.5" stroke="#FFFFFF" stroke-width="1.5" fill="none" />
+                    </g>
+                </svg>
+
+                <!-- THE 4 ROADMAP MILESTONE NODES -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-y-24 md:gap-y-36 md:gap-x-12 relative z-10">
+                    
+                    <!-- Milestone 1: Month 1 (Spain Meadows) -->
+                    <!-- Top-Left Desktop, First Mobile -->
+                    <div class="order-1 flex flex-col items-center md:items-start text-center md:text-left timeline-card group" id="card-1">
+                        <!-- Node Circle (Floating anchor point) -->
+                        <div id="node-1-dot" class="timeline-node w-16 h-16 rounded-full bg-gradient-to-b from-slate-900 to-slate-950 border-2 border-sandGold/50 hover:border-crystalGold shadow-gold-box hover:shadow-gold-intense flex items-center justify-center text-xl text-sandGold transition-all duration-300 transform group-hover:scale-110 mb-5 relative z-10">
+                            <i class="fa-solid fa-campground"></i>
+                        </div>
+                        <div class="bg-slate-950/80 p-6 rounded-2xl border border-sandGold/10 hover:border-sandGold/30 max-w-sm transition-all duration-300 backdrop-blur-md">
+                            <span class="text-[10px] text-sandGold tracking-widest font-bold uppercase block mb-1">Month 1</span>
+                            <h4 class="font-serif text-lg text-white font-bold mb-2" data-lang-content="t1-title">파이썬 기초 문법 및 SWEA D1 해결</h4>
+                            <p class="text-xs sm:text-sm text-slate-300 font-light leading-relaxed border-t border-slate-900 pt-3" data-lang-content="t1-desc">
+                                변수, 조건문, 반복문 기초를 다지고 단순 연산 문제를 내 힘으로 해결합니다.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Milestone 2: Month 2-3 (Crystal Shop) -->
+                    <!-- Top-Right Desktop, Second Mobile -->
+                    <div class="order-2 flex flex-col items-center md:items-end text-center md:text-right timeline-card group" id="card-2">
+                        <!-- Node Circle -->
+                        <div id="node-2-dot" class="timeline-node w-16 h-16 rounded-full bg-gradient-to-b from-slate-900 to-slate-950 border-2 border-sandGold/50 hover:border-crystalGold shadow-gold-box hover:shadow-gold-intense flex items-center justify-center text-xl text-sandGold transition-all duration-300 transform group-hover:scale-110 mb-5 relative z-10">
+                            <i class="fa-solid fa-gem animate-pulse"></i>
+                        </div>
+                        <div class="bg-slate-950/80 p-6 rounded-2xl border border-sandGold/10 hover:border-sandGold/30 max-w-sm transition-all duration-300 backdrop-blur-md">
+                            <span class="text-[10px] text-sandGold tracking-widest font-bold uppercase block mb-1">Month 2-3</span>
+                            <h4 class="font-serif text-lg text-white font-bold mb-2" data-lang-content="t2-title">SWEA D2 정복 및 2차원 탐색 마스터</h4>
+                            <p class="text-xs sm:text-sm text-slate-300 font-light leading-relaxed border-t border-slate-900 pt-3" data-lang-content="t2-desc">
+                                중첩 반복문, 문자열 처리 및 격자판 상하좌우 탐색의 기본 기틀을 다집니다.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Milestone 3: Month 4 (Oasis with Palm Tree) -->
+                    <!-- Bottom-Right Desktop, Third Mobile -->
+                    <!-- STACK REWRITTEN: "print() 문" -> "문제풀이를 넘어 구조의 오류를 파악하기 위해 노력합니다." -->
+                    <div class="order-3 md:order-4 flex flex-col items-center md:items-end text-center md:text-right timeline-card group" id="card-3">
+                        <!-- Node Circle containing beautiful custom Palm Tree SVG -->
+                        <div id="node-3-dot" class="timeline-node w-16 h-16 rounded-full bg-gradient-to-b from-slate-900 to-slate-950 border-2 border-sandGold/50 hover:border-crystalGold shadow-gold-box hover:shadow-gold-intense flex items-center justify-center text-xl text-sandGold transition-all duration-300 transform group-hover:scale-110 mb-5 relative z-10">
+                            <!-- Custom inline Palm Tree SVG -->
+                            <svg class="w-8 h-8 text-sandGold" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M13 22H11" />
+                                <path d="M12 22C12 17 10.5 13 8 10" />
+                                <path d="M12 22C12 15 13.5 11 16 8" />
+                                <path d="M12 22V8" />
+                                <path d="M12 8C10 5 6 5 4 6C7 8 10 8 12 8Z" fill="currentColor" />
+                                <path d="M12 8C14 5 18 5 20 6C17 8 14 8 12 8Z" fill="currentColor" />
+                                <path d="M12 8C12 5 12 2 12 2C13 4 13 6 12 8Z" fill="currentColor" />
+                            </svg>
+                        </div>
+                        <div class="bg-slate-950/80 p-6 rounded-2xl border border-sandGold/10 hover:border-sandGold/30 max-w-sm transition-all duration-300 backdrop-blur-md">
+                            <span class="text-[10px] text-sandGold tracking-widest font-bold uppercase block mb-1">Month 4</span>
+                            <h4 class="font-serif text-lg text-white font-bold mb-2" data-lang-content="t3-title">SWEA D3 진입 및 스스로 디버깅 훈련</h4>
+                            <p class="text-xs sm:text-sm text-slate-300 font-light leading-relaxed border-t border-slate-900 pt-3" data-lang-content="t3-desc">
+                                문제풀이를 넘어 구조의 오류를 파악하기 위해 노력합니다.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Milestone 4: Month 5-6 (Pyramids of Giza) -->
+                    <!-- Bottom-Left Desktop, Fourth Mobile -->
+                    <!-- STACK REWRITTEN: IM 실전 패스로 축약 & "테스트를 통과하고 2학기를 준비합니다" -->
+                    <div class="order-4 md:order-3 flex flex-col items-center md:items-start text-center md:text-left timeline-card group" id="card-4">
+                        <!-- Node Circle -->
+                        <div id="node-4-dot" class="timeline-node w-16 h-16 rounded-full bg-gradient-to-b from-slate-900 to-slate-950 border-2 border-sandGold/50 hover:border-crystalGold shadow-gold-box hover:shadow-gold-intense flex items-center justify-center text-xl text-sandGold transition-all duration-300 transform group-hover:scale-110 mb-5 relative z-10">
+                            <i class="fa-solid fa-mountain"></i>
+                        </div>
+                        <div class="bg-slate-950/80 p-6 rounded-2xl border border-sandGold/10 hover:border-sandGold/30 max-w-sm transition-all duration-300 backdrop-blur-md">
+                            <span class="text-[10px] text-sandGold tracking-widest font-bold uppercase block mb-1">Month 5-6</span>
+                            <h4 class="font-serif text-lg text-white font-bold mb-2" data-lang-content="t4-title">IM 실전 패스</h4>
+                            <p class="text-xs sm:text-sm text-slate-300 font-light leading-relaxed border-t border-slate-900 pt-3" data-lang-content="t4-desc">
+                                테스트를 통과하고 2학기를 준비합니다.
+                            </p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- NEW SECTION 1: URIM & THUMMIM DIVINATION (image_f37d92.png) -->
+    <section class="relative py-20 px-4 bg-desertNavy dark:bg-desertNavy transition-colors duration-500 z-30 overflow-hidden border-t border-slate-900/60">
+        <div class="max-w-4xl mx-auto">
+            <div class="text-center mb-8">
+                <span class="text-xs font-bold uppercase tracking-widest text-sandGold block mb-2">
+                    ◆ URIM & THUMMIM DIVINATION
+                </span>
+                <h3 class="font-serif text-3xl text-white dark:text-white transition-colors duration-500" data-lang-content="divination-title">
+                    우림과 둠밈에게 길을 묻다
+                </h3>
+                <p class="text-slate-400 dark:text-slate-400 text-xs sm:text-sm mt-3 max-w-xl mx-auto leading-relaxed" data-lang-content="divination-desc">
+                    마음속에 깊이 고민 중인 '예/아니오' 질문을 떠올린 후, 주머니 속 신비한 돌을 꺼내어 보세요.
+                </p>
+            </div>
+
+            <div class="bg-slate-950/90 border border-sandGold/25 rounded-2xl p-8 sm:p-10 shadow-gold-box flex flex-col md:flex-row items-center gap-10">
+                <!-- Pouch / Bag Trigger on the Left -->
+                <!-- SACK REWRITTEN: Removed shopping bag layout. Replaced with beautiful hand-drawn, drawstring, nomadic rustic leather sack SVG. Enlarged to almost fill the block. -->
+                <div class="flex flex-col items-center gap-3">
+                    <button id="pouch-btn" onclick="drawUrimThummim()" class="w-44 h-44 border-2 border-dashed border-amber-900/50 hover:border-sandGold/50 rounded-2xl bg-amber-950/20 hover:bg-amber-950/40 flex items-center justify-center transition-all duration-300 cursor-pointer group p-2">
+                        <!-- Custom drawstring nomadic leather sack SVG -->
+                        <svg class="w-full h-full text-amber-800/80 group-hover:text-sandGold group-hover:scale-105 transition-all duration-300" viewBox="0 0 100 100" fill="currentColor">
+                            <!-- Drawstring ribbon tie -->
+                            <path d="M 50,30 C 42,28 35,22 35,14 C 35,8 45,10 50,22 C 55,10 65,8 65,14 C 65,22 58,28 50,30 Z" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+                            <!-- Sack Main Body -->
+                            <path d="M 50,34 C 42,34 32,38 24,48 C 16,58 14,75 22,86 C 30,94 70,94 78,86 C 86,75 84,58 76,48 C 68,38 58,34 50,34 Z" stroke="currentColor" stroke-width="3" stroke-linejoin="round"/>
+                            <!-- Rustic Stitching line -->
+                            <path d="M 32,54 C 36,64 36,76 42,86" stroke="currentColor" stroke-width="2" stroke-dasharray="3,3" fill="none"/>
+                            <path d="M 68,54 C 64,64 64,76 58,86" stroke="currentColor" stroke-width="2" stroke-dasharray="3,3" fill="none"/>
+                            <!-- Sacred Embellishment Symbol (Alchemical triangle + cross) -->
+                            <polygon points="50,52 42,66 58,66" fill="none" stroke="currentColor" stroke-width="2"/>
+                            <line x1="50" y1="66" x2="50" y2="76" stroke="currentColor" stroke-width="2"/>
+                            <line x1="44" y1="71" x2="56" y2="71" stroke="currentColor" stroke-width="2"/>
+                        </svg>
+                    </button>
+                    <span class="text-[11px] text-slate-500 tracking-wider" data-lang-content="divination-click">주머니 클릭하여 돌 꺼내기</span>
+                </div>
+
+                <!-- Divination Result Box on the Right -->
+                <div id="divination-result" class="flex-1 w-full min-h-[100px] flex items-center justify-center border-l-0 md:border-l border-slate-900 md:pl-10">
+                    <div class="text-center md:text-left w-full" id="divination-initial-text">
+                        <p class="text-sm text-slate-500 italic" data-lang-content="divination-prompt">주머니를 눌러 결단을 위한 계시의 보석을 확인하세요.</p>
+                    </div>
+
+                    <!-- Hidden Stone State Template -->
+                    <div id="divination-gem-card" class="hidden flex flex-col md:flex-row items-center gap-5 w-full transition-all duration-500 scale-95 opacity-0">
+                        <div id="gem-color-circle" class="w-14 h-14 rounded-full border border-slate-500/45 shadow-md flex-shrink-0"></div>
+                        <div class="flex-1">
+                            <div class="flex flex-col md:flex-row items-center gap-2 mb-1.5">
+                                <h4 id="gem-name" class="font-serif text-xl text-white font-bold tracking-wider">Urim</h4>
+                                <span id="gem-indicator" class="text-xs px-2 py-0.5 rounded bg-sandGold/10 text-sandGold font-bold">긍정의 표지 (YES)</span>
+                            </div>
+                            <blockquote id="gem-quote" class="font-serif text-sm text-slate-300 italic border-l-2 border-sandGold/40 pl-3.5 py-1 leading-relaxed">
+                                "네가 무언가를 간절히 원할 때, 온 우주는 너의 꿈이 실현되도록 도와준다네."
+                            </blockquote>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- NEW SECTION 2: PERSONAL LEGEND SCROLL (image_f37daf.png) -->
+    <section class="relative py-20 px-4 bg-desertNavy dark:bg-desertNavy transition-colors duration-500 z-30 overflow-hidden border-t border-slate-900/60">
+        <div class="max-w-4xl mx-auto">
+            <div class="text-center mb-8">
+                <span class="text-xs font-bold uppercase tracking-widest text-sandGold block mb-2">
+                    ✍ PERSONAL LEGEND SCROLL
+                </span>
+                <h3 class="font-serif text-3xl text-white dark:text-white transition-colors duration-500" data-lang-content="scroll-title">
+                    당신의 '자아의 신화'는 무엇인가요?
+                </h3>
+                <p class="text-slate-400 dark:text-slate-400 text-xs sm:text-sm mt-3 max-w-xl mx-auto leading-relaxed" data-lang-content="scroll-desc">
+                    가슴 깊이 간직한 당신의 소중한 꿈을 적고 기록하여 황금빛 양고문서로 transmute 하세요.
+                </p>
+            </div>
+
+            <div class="bg-slate-950/90 border border-sandGold/25 rounded-2xl p-8 sm:p-10 shadow-gold-box">
+                <!-- Submission Form Area -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-5">
+                    <div class="flex flex-col gap-1.5">
+                        <label class="text-xs text-sandGold font-bold tracking-widest" data-lang-content="scroll-form-name">당신의 성함과 자아의 신화 기록하기</label>
+                        <input type="text" id="legend-author" placeholder="성함 (예: 이재원)" class="w-full bg-slate-900/90 border border-slate-800 focus:border-sandGold/50 rounded-xl px-4 py-3 text-sm text-white placeholder-slate-600 outline-none transition-all duration-300">
+                    </div>
+                    <div class="flex flex-col gap-1.5 justify-end">
+                        <input type="text" id="legend-text" placeholder="당신의 일생의 꿈과 지향을 기록해보세요..." class="w-full bg-slate-900/90 border border-slate-800 focus:border-sandGold/50 rounded-xl px-4 py-3 text-sm text-white placeholder-slate-600 outline-none transition-all duration-300">
+                    </div>
+                </div>
+
+                <button onclick="commitPersonalLegend()" class="w-full py-4 bg-gradient-to-r from-sandGold to-crystalGold text-slate-950 font-bold tracking-widest rounded-xl shadow-md hover:scale-[1.01] active:scale-[0.99] transition-all duration-300 flex items-center justify-center gap-2 text-sm">
+                    <span data-lang-content="scroll-submit">양고문서에 새겨넣기</span> <i class="fa-solid fa-file-contract"></i>
+                </button>
+
+                <!-- Listed Documents Below -->
+                <div class="mt-10 border-t border-slate-900/80 pt-8">
+                    <h4 class="text-xs font-bold tracking-widest text-slate-500 uppercase mb-4" data-lang-content="scroll-list-title">기록된 자아의 신화들</h4>
+                    
+                    <div id="legends-scroll-container" class="space-y-4 max-h-[300px] overflow-y-auto pr-2">
+                        <!-- Default pre-loaded dream cards -->
+                        <div class="bg-slate-900/40 border border-slate-900 p-5 rounded-xl flex items-center justify-between gap-5 relative overflow-hidden group">
+                            <div>
+                                <p class="font-serif text-sm sm:text-base text-slate-200 italic leading-relaxed">
+                                    "내면의 열정을 따라 세상에 선한 발자취를 남기는 것"
+                                </p>
+                                <span class="text-[10px] text-slate-500 tracking-wider block mt-1">BY 이재원</span>
+                            </div>
+                            <button onclick="copyToClipboard(this, '내면의 열정을 따라 세상에 선한 발자취를 남기는 것')" class="px-3 py-1.5 border border-slate-800 hover:border-sandGold/40 text-[10px] tracking-widest text-slate-400 hover:text-sandGold rounded-lg transition-all flex items-center gap-1 flex-shrink-0">
+                                <i class="fa-solid fa-copy"></i> COPY
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- UNIVERSE WHISPER / OMEN CARD GENERATOR -->
     <section class="relative py-24 px-4 bg-desertNavy dark:bg-desertNavy transition-colors duration-500 z-30 overflow-hidden border-t border-slate-900/60">
         <div class="absolute bottom-0 right-[10%] w-[180px] h-[100px] opacity-10 pointer-events-none">
@@ -613,7 +872,7 @@
                     </p>
                 </div>
 
-                <!-- Runestone Buttons -->
+                <!-- Runestone Buttons with Distinct Neon Glowing Effects -->
                 <div class="flex flex-wrap justify-center gap-4 sm:gap-6 mb-12">
                     <button onclick="drawOmen(1)" class="runestone rune-cyan w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-gradient-to-b from-slate-900 to-slate-950 border hover:scale-110 active:scale-95 transition-all duration-300 flex items-center justify-center text-2xl font-serif">𐎠</button>
                     <button onclick="drawOmen(2)" class="runestone rune-amber w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-gradient-to-b from-slate-900 to-slate-950 border hover:scale-110 active:scale-95 transition-all duration-300 flex items-center justify-center text-2xl font-serif">𐎡</button>
@@ -679,7 +938,6 @@
 
     <!-- INTERACTIVE SCRIPTS -->
     <script>
-        // Global variables
         let isLightMode = false;
         let currentLanguage = 'ko'; // 'ko' or 'en'
         let constellationMode = true;
@@ -692,11 +950,11 @@
             'ko': {
                 'constellation-on': '별자리 그리기 ON',
                 'constellation-off': '별자리 그리기 OFF',
-                'hero-label': 'MY FAVORITE BOOK',
+                'hero-label': 'My Favorite Book',
                 'hero-sub': '이재원의 추천 책',
                 'hero-title': '연금술사',
-                'hero-desc-1': '“자신의 삶을 사랑하고, 끊임없이 여정을 떠나는 이들을 위하여”',
-                'hero-desc-2': '파울로 코엘료의 소설 『연금술사』는 제게 깊은 울림을 준 인생 책입니다. 소설 속에서 깊은 인상을 남겼던 네 가지 명장면과 그 속에 담긴 의미를 소개합니다.',
+                'hero-desc-1': '“한 편의 소설로 읽는 인생의 지도, 산티아고와 함께 걷는 길”',
+                'hero-desc-2': '파울로 코엘료의 소설 『연금술사』는 저에게 깊은 인상을 준 인생 책입니다.<br>소설 속에서 발견한 가장 가슴 뛰는 네 가지 명장면과 그 상징적 통찰을 여러분과 공유합니다.',
                 'hero-cta': '여정 시작하기',
                 'book-subtitle': 'My Picked Scenes',
                 'book-title': '소설 속 인상 깊은 네 가지 장면',
@@ -712,35 +970,55 @@
                 'cover-help': '[ 책을 누르면 펼쳐집니다 ]',
                 'p1-title': '안주하지 않는 용기',
                 'p1-quote': '"안주하는 순간, 꿈은 단지 기억 너머 박제가 된다."',
-                'p1-desc': '산티아고는 편안하고 확실한 크리스탈 가게 주인의 삶을 선택해 안락함에 정착할 수 있었음에도, 마음속 깊은 떨림을 믿고 다시 거친 사막으로 발을 디뎠습니다. 현실의 안도감에 안주하려는 본능을 이겨내고 나아가는 첫걸음의 소중함을 말해줍니다.',
+                'p1-desc': '안전하고 번창하는 크리스탈 상점 점원의 평온함을 마다하고, 다시 거칠고 예측 불가능한 사막 한가운데로 첫 걸음을 내딛던 산티아고의 결단을 보여주는 장면입니다. 평범한 일상의 안락함이 주는 유혹을 단호히 극복하고 나아가는 인간 본연의 주체적 용기를 의미합니다.',
                 'p2-title': '늘 존재하는 징조',
                 'p2-quote': '"우주는 우리가 눈치채지 못할 뿐, 늘 표지를 남긴다네."',
-                'p2-desc': '산티아고는 모래 한 알, 하늘 위 독수리의 날갯짓 속에서 우주가 보내는 메시지(징조)를 직관적으로 읽고 위기를 대비해 나갑니다. 우리가 무심코 지나치는 사소한 변화와 신호 속에, 삶의 방향을 전환해 줄 기회들이 늘 숨어있음을 보여줍니다.',
+                'p2-desc': '사막의 모래알 한 톨, 바람의 향기, 하늘 위 독수리의 엇갈리는 날갯짓 속에서 우주가 건네는 보이지 않는 계시와 \'표지\'를 조용히 해독해 내던 장면입니다. 일상의 스쳐 지나가는 우연한 조언과 예기치 못한 실패 속에 늘 우리를 인도할 최선의 해답들이 숨어있음을 의미합니다.',
                 'p3-title': '발밑에 숨겨진 진짜 보물',
                 'p3-quote': '"가장 소중한 보물은 처음 자네가 누워있던 곳에 있었지."',
-                'p3-desc': '험난한 여정 끝에 도착한 피라미드 아래에는 황금이 없었습니다. 진짜 보물은 출발지였던 낡은 무화과나무 밑에 잠들어 있었습니다. 목적지에 도달하는 것보다 그 과정에서 겪은 수많은 깨달음과 성장이 결국 인생을 채워주는 보물이었음을 깨닫게 만듭니다.',
+                'p3-desc': '험난한 여정을 지나 간신히 당도한 이집트 피라미드 밑이 아니라, 출발지였던 낡은 교회의 쓰러진 무화과나무 밑에서 마침내 금화를 발굴하는 장면입니다. 꿈의 정점이나 지향하는 결과보다, 도달하는 사막의 궤적 안에서 정화되고 단단해진 영혼의 \'성장 과정\' 그 자체가 보물임을 일깨웁니다.',
                 'p4-title': '만물은 하나',
-                'p4-quote': '"우리가 진정으로 간절히 원할 때, 만물은 하나가 된다네."',
-                'p4-desc': '사막 한가운데서 자신을 바람으로 변화시키는 산티아고의 모습은 소설의 가장 영성적이고 압도적인 순간입니다. 세상의 모든 존재가 하나의 연결된 숨을 쉬고 있으며, 강한 소망과 믿음이 물리적 한계마저 극복하는 근원이 된다는 장엄한 진리를 건넵니다.',
+                'p4-quote': '"우리가 진정으로 원할 때, 만물은 하나가 된다네."',
+                'p4-desc': '군대 앞에 가로막혀 목숨의 위협을 받던 순간, 바람의 호흡과 일치되어 무자비한 사막의 모래바람으로 스스로의 물질 구조를 완전하게 변환시키던 절정의 영성 장면입니다. 세상 삼라만상의 모든 요소가 결국 단 하나의 생명으로 밀접하게 공명하고 연대하고 있음을 선사합니다.',
                 'backcover-label': 'The End of my Story',
                 'backcover-title': '자아의 신화는 언제나 현재 진행형',
                 'backcover-desc': '"자아의 신화는 언제나 현재 진행형이라네."',
                 'backcover-btn': '처음부터 다시 읽기',
                 'book-foot-help': '※ 책의 양쪽 페이지를 직접 클릭하면 부드럽게 한 장씩 양방향으로 넘어갑니다.',
+                'timeline-subtitle': '25주간의 연금술 로드맵',
+                'timeline-title': '위대한 학습 여정',
+                'timeline-desc': '0-베이징에서 시작해 SWEA 알고리즘 역량 등급을 취득하고 최정예 웹 서비스를 다지기까지, 산티아고의 사막 행로에 빗댄 단계별 성장 궤적입니다.',
+                't1-title': '파이썬 기초 문법 및 SWEA D1 해결',
+                't1-desc': '변수, 조건문, 반복문 기초를 다지고 단순 연산 문제를 내 힘으로 해결합니다.',
+                't2-title': 'SWEA D2 정복 및 2차원 탐색 마스터',
+                't2-desc': '중첩 반복문, 문자열 처리 및 격자판 상하좌우 탐색의 기본 기틀을 다집니다.',
+                't3-title': 'SWEA D3 진입 및 스스로 디버깅 훈련',
+                't3-desc': '문제풀이를 넘어 구조의 오류를 파악하기 위해 노력합니다.',
+                't4-title': 'IM 실전 패스',
+                't4-desc': '테스트를 통과하고 2학기를 준비합니다.',
                 'oracle-sub': 'Oracle of the Desert',
                 'oracle-title': '오늘의 징조',
                 'oracle-desc': '신비한 에너지를 머금은 5개의 고대 룬스톤 문양 중 하나를 선택하세요. 소설 속 지혜의 메시지를 빌려, 오늘 가슴 깊이 품을 문장을 선물합니다.',
                 'footer-quote': '"그대의 마음이 머무는 곳에, 그대의 보물이 있을 것이네."',
-                'footer-desc': '우리가 걷는 인생의 모든 단계는 때론 어둡고 막막해 보일지도 모릅니다. 하지만 우주의 징조들을 신뢰하며 나아갈 때, 우리는 우리 안의 진짜 금을 발견할 것입니다.'
+                'footer-desc': '우리가 걷는 인생의 모든 단계는 때론 어둡고 막막해 보일지도 모릅니다. 하지만 우주의 징조들을 신뢰하며 나아갈 때, 우리는 우리 안의 진짜 금을 발견할 것입니다.',
+                'divination-title': '우림과 둠밈에게 길을 묻다',
+                'divination-desc': '마음속에 깊이 고민 중인 \'예/아니오\' 질문을 떠올린 후, 주머니 속 신비한 돌을 꺼내어 보세요.',
+                'divination-click': '주머니 클릭하여 돌 꺼내기',
+                'divination-prompt': '주머니를 눌러 결단을 위한 계시의 보석을 확인하세요.',
+                'scroll-title': '당신의 \'자아의 신화\'는 무엇인가요?',
+                'scroll-desc': '가슴 깊이 간직한 당신의 소중한 꿈을 적고 기록하여 황금빛 양고문서로 transmute 하세요.',
+                'scroll-form-name': '당신의 성함과 자아의 신화 기록하기',
+                'scroll-submit': '양고문서에 새겨넣기',
+                'scroll-list-title': '기록된 자아의 신화들'
             },
             'en': {
                 'constellation-on': 'Constellations ON',
                 'constellation-off': 'Constellations OFF',
-                'hero-label': 'MY FAVORITE BOOK',
+                'hero-label': 'My Favorite Book',
                 'hero-sub': 'Jaewon\'s Recommendation',
                 'hero-title': 'The Alchemist',
-                'hero-desc-1': '“For those who love their lives and endlessly journey on”',
-                'hero-desc-2': 'Paulo Coelho\'s novel "The Alchemist" is a book of my life that resonates deeply. Here are four impressive scenes and their values.',
+                'hero-desc-1': '“A map of life read as a novel, walking alongside Santiago”',
+                'hero-desc-2': 'Paulo Coelho\'s masterpiece "The Alchemist" is a book of my life that resonates deeply.<br>Here are four impressive scenes and their values.',
                 'hero-cta': 'Begin Journey',
                 'book-subtitle': 'My Picked Scenes',
                 'book-title': 'Four Profound Scenes in the Novel',
@@ -756,35 +1034,53 @@
                 'cover-help': '[ Click to Open the Book ]',
                 'p1-title': 'Courage Not to Settle',
                 'p1-quote': '"When you settle, dreams turn into taxidermy beyond memory."',
-                'p1-desc': 'Santiago could have chosen comfort and settled into the secure life of a crystal shop merchant, yet he trusted his inner tremor and stepped into the wild desert once more. It shows the value of taking that first brave step away from safety.',
+                'p1-desc': 'This scene portrays Santiago rejecting the comfort of a successful crystal shop and venturing back into the wild, unpredictable desert. It symbolizes human courage to overcome cozy routines and march toward growth.',
                 'p2-title': 'Ever-Present Omens',
                 'p2-quote': '"The universe always leaves signs, we just fail to notice them."',
-                'p2-desc': 'In a single grain of sand and the majestic flight of eagles, Santiago read the signs of the universe to prepare for danger. It shows how critical opportunities to shift our path hide in the subtle daily signals we ignore.',
+                'p2-desc': 'This scene details Santiago reading invisible signals from bird flights and desert breezes. It teaches that our optimal guide paths hide inside trivial daily advice or unexpected failures.',
                 'p3-title': 'The Treasure Inside',
                 'p3-quote': '"The most precious treasure was where you first slept."',
-                'p3-desc': 'There was no gold beneath the pyramids after all his struggles. The real treasure lay under the old sycamore tree at his starting point. It reveals that the endless growth and wisdom gained on the road, rather than the goal, is the true treasure.',
+                'p3-desc': 'Instead of finding the treasure beneath the giant pyramids, Santiago digs it up under the ruined church back home. It reveals that the spiritual purification during the trials of the journey is the true gold.',
                 'p4-title': 'All Things Are One',
                 'p4-quote': '"When we truly desire something, all things become one."',
-                'p4-desc': 'Santiago transforming himself into the wind is the most spiritual and breathtaking climax of the novel. It teaches the profound truth that all creation shares a single breath, and fierce belief conquers even physical boundaries.',
+                'p4-desc': 'Faced with death, Santiago aligns his breath with the universe to transform himself into a massive sandstorm. It proves that all entities are fundamentally connected in one grand breath of life.',
                 'backcover-label': 'The End of my Story',
                 'backcover-title': 'Personal Legend is Still in Motion',
                 'backcover-desc': '"Personal Legend is always work in progress."',
                 'backcover-btn': 'Restart Journey',
                 'book-foot-help': '※ Click left/right pages of the book directly to flip back and forth dynamically.',
+                'timeline-subtitle': '25-Week Alchemy Roadmap',
+                'timeline-title': 'Great Learning Journey',
+                'timeline-desc': 'Starting from zero-base to conquering the SWEA algorithm grades and launching interactive web services, this is the developmental trace comparing to Santiago\'s desert journey.',
+                't1-title': 'Python Syntax and D1 Problem Solving',
+                't1-desc': 'Consolidate variables, conditionals, and loops, solving introductory D1 mathematical and output problems.',
+                't2-title': 'Conquering SWEA D2 & 2D Grid Mastery',
+                't2-desc': 'Study nested loops, list operations, and 2D grid multi-directional delta search strategies.',
+                't3-title': 'Transition to D3 & Independent Debugging',
+                't3-desc': 'Strive to identify architectural failures and logic bugs beyond simple code execution.',
+                't4-title': 'IM Verification',
+                't4-desc': 'Succeed in passing the actual IM level SW test and prepare for the upcoming second semester.',
                 'oracle-sub': 'Oracle of the Desert',
                 'oracle-title': 'Today\'s Omen',
                 'oracle-desc': 'Choose one of the 5 ancient runestones infused with mystical energy. Draw a wise message from the novel to light up your path.',
                 'footer-quote': '"Wherever your heart is, there you will find your treasure."',
-                'footer-desc': 'Every stage of the journey may seem dark and daunting. But as we trust the universe\'s omens, we will realize the real gold within ourselves.'
+                'footer-desc': 'Every stage of the journey may seem dark and daunting. But as we trust the universe\'s omens, we will realize the real gold within ourselves.',
+                'divination-title': 'Asking Urim & Thummim',
+                'divination-desc': 'Bring an active "Yes/No" question to your mind, then draw out a mystical stone from the sacred bag.',
+                'divination-click': 'Click Pouch to Draw Stone',
+                'divination-prompt': 'Click the pouch to reveal the stones of guidance.',
+                'scroll-title': 'What is Your Personal Legend?',
+                'scroll-desc': 'Record the precious dream kept inside your heart on the golden alchemical scroll.',
+                'scroll-form-name': 'Record Your Name and Personal Legend',
+                'scroll-submit': 'Engrave on Alchemical Scroll',
+                'scroll-list-title': 'Recorded Personal Legends'
             }
         };
 
-        // CUSTOM MOUSE CURSOR & GOLDEN PARTICLE DUST
         window.addEventListener('mousemove', (e) => {
             mouse.x = e.clientX;
             mouse.y = e.clientY;
 
-            // Generate occasional golden dust trails
             if (Math.random() < 0.12) {
                 createGoldDust(e.clientX, e.clientY);
             }
@@ -797,7 +1093,6 @@
             dust.style.top = y + 'px';
             document.body.appendChild(dust);
 
-            // Random micro trajectory
             const angle = Math.random() * Math.PI * 2;
             const distance = Math.random() * 25 + 5;
             const tx = Math.cos(angle) * distance;
@@ -812,21 +1107,18 @@
             }).onfinish = () => dust.remove();
         }
 
-        // Custom particle explosions on click
         window.addEventListener('click', (e) => {
             for (let i = 0; i < 8; i++) {
                 createGoldDust(e.clientX, e.clientY);
             }
         });
 
-        // INTRO LOADING AND APPEARANCE ANIMATION
         window.addEventListener('DOMContentLoaded', () => {
             setTimeout(() => {
                 const introScreen = document.getElementById('intro-screen');
                 introScreen.style.opacity = '0';
                 introScreen.style.visibility = 'hidden';
                 
-                // Add staggered entrance animations to hero titles
                 setTimeout(() => {
                     const heroElements = document.querySelectorAll('header h1, header p, header div, header button');
                     heroElements.forEach((el, index) => {
@@ -843,10 +1135,12 @@
                         });
                     });
                 }, 300);
+
+                // Initial calculation of S-curve
+                drawSPath();
             }, 1800);
         });
 
-        // LIGHT / DARK THEME TOGGLE LOGIC
         function toggleTheme() {
             isLightMode = !isLightMode;
             const html = document.documentElement;
@@ -855,35 +1149,28 @@
             const celestialCrescent = document.getElementById('celestial-crescent');
             const starfield = document.getElementById('starfield');
 
-            // Pyramids Capstones (Peak Glows in Light Mode)
             const capLarge = document.getElementById('pyr-cap-large');
             const capSmall = document.getElementById('pyr-cap-small');
 
             if (isLightMode) {
-                // LIGHT MODE ACTIVATED
                 html.classList.add('light');
                 themeIcon.className = 'fa-solid fa-sun';
                 
-                // Transmuting Moon to Sun
                 celestialBody.className = 'w-16 h-16 rounded-full bg-gradient-to-r from-amber-400 via-orange-500 to-yellow-300 opacity-95 blur-[0.2px] relative flex items-center justify-center transition-all duration-700 sun-active';
-                celestialCrescent.style.opacity = '0'; // Hide moon slice to form complete Sun
+                celestialCrescent.style.opacity = '0';
 
-                // Highlight pyramid golden peaks (Capstone)
                 capLarge.style.opacity = '1';
                 capSmall.style.opacity = '1';
 
-                // Change SVG Gradients for daytime desert look
-                // 1. Pyramid Lights (Sunlit Side - Pure White glare)
+                // Change SVG Gradients for daytime
                 document.getElementById('pyr-light-stop1').setAttribute('stop-color', '#c2935c');
                 document.getElementById('pyr-light-stop2').setAttribute('stop-color', '#fff3e0');
                 document.getElementById('pyr-light-stop3').setAttribute('stop-color', '#ffffff');
                 document.getElementById('pyr-light-stop4').setAttribute('stop-color', '#ffffff');
 
-                // 2. Pyramid Shadows (Warm shadow side)
                 document.getElementById('pyr-shadow-stop1').setAttribute('stop-color', '#a16c38');
                 document.getElementById('pyr-shadow-stop2').setAttribute('stop-color', '#5c3814');
 
-                // 3. Dunes Gradients (Sunlit Sand)
                 document.getElementById('dune-back-stop1').setAttribute('stop-color', '#f59e0b');
                 document.getElementById('dune-back-stop2').setAttribute('stop-color', '#d97706');
                 document.getElementById('dune-back-stop3').setAttribute('stop-color', '#fafaf9');
@@ -892,19 +1179,15 @@
                 document.getElementById('dune-front-stop2').setAttribute('stop-color', '#f59e0b');
                 document.getElementById('dune-front-stop3').setAttribute('stop-color', '#f5f5f4');
             } else {
-                // DARK MODE ACTIVATED
                 html.classList.remove('light');
                 themeIcon.className = 'fa-solid fa-moon';
 
-                // Transmuting Sun back to Crescent Moon
                 celestialBody.className = 'w-14 h-14 rounded-full bg-gradient-to-tr from-amber-50 to-amber-200 opacity-95 blur-[0.5px] relative flex items-center justify-center transition-all duration-700';
                 celestialCrescent.style.opacity = '1';
 
-                // Hide pyramid peaks glow
                 capLarge.style.opacity = '0';
                 capSmall.style.opacity = '0';
 
-                // Revert to Night Theme SVG Gradients
                 document.getElementById('pyr-light-stop1').setAttribute('stop-color', '#8a5e34');
                 document.getElementById('pyr-light-stop2').setAttribute('stop-color', '#e0a96d');
                 document.getElementById('pyr-light-stop3').setAttribute('stop-color', '#fffbeb');
@@ -922,16 +1205,14 @@
                 document.getElementById('dune-front-stop3').setAttribute('stop-color', '#050814');
             }
 
-            // Adjust Canvas background color
             initCanvas();
+            setTimeout(drawSPath, 100);
         }
 
-        // LANGUAGE TOGGLE SYSTEM
         function toggleLanguage() {
             currentLanguage = (currentLanguage === 'ko') ? 'en' : 'ko';
             document.getElementById('lang-btn-text').innerText = currentLanguage.toUpperCase();
             
-            // Translate all elements with 'data-lang-content'
             const elements = document.querySelectorAll('[data-lang-content]');
             elements.forEach(el => {
                 const translationKey = el.getAttribute('data-lang-content');
@@ -944,17 +1225,14 @@
                 }
             });
 
-            // Refresh Omen texts if active
             const omenCard = document.getElementById('omen-card');
             if (!omenCard.classList.contains('hidden') && currentOmenId !== null) {
                 drawOmen(currentOmenId);
             }
 
-            // Refresh dynamic book indicator
             updateBookState3D();
         }
 
-        // Starfield Canvas Logic
         const canvas = document.getElementById('starfield');
         const ctx = canvas.getContext('2d');
 
@@ -981,6 +1259,7 @@
 
         window.addEventListener('resize', () => {
             initCanvas();
+            drawSPath();
         });
 
         window.addEventListener('mouseleave', () => {
@@ -991,12 +1270,11 @@
         function animateStars() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             
-            // Dynamic Sky Coloring via Canvas in Light Mode
             if (isLightMode) {
                 let grad = ctx.createLinearGradient(0, 0, 0, canvas.height);
-                grad.addColorStop(0, '#bae6fd'); // sky-200
+                grad.addColorStop(0, '#bae6fd');
                 grad.addColorStop(0.5, '#bae6fd');
-                grad.addColorStop(1, '#ffedd5'); // orange-100
+                grad.addColorStop(1, '#ffedd5');
                 ctx.fillStyle = grad;
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
             } else {
@@ -1007,7 +1285,6 @@
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
             }
             
-            // Render Stars (or floating gold dust particles in daytime)
             stars.forEach(star => {
                 star.alpha += star.speed * star.direction;
                 if (star.alpha > 1 || star.alpha < 0.2) {
@@ -1015,10 +1292,8 @@
                 }
 
                 if (isLightMode) {
-                    // Floating golden specks in sunlight
                     ctx.fillStyle = `rgba(217, 119, 6, ${star.alpha * 0.4})`;
                 } else {
-                    // Twinkling white stars in deep space
                     ctx.fillStyle = `rgba(255, 255, 255, ${star.alpha})`;
                 }
 
@@ -1030,7 +1305,6 @@
                 if (star.x > canvas.width) star.x = 0;
             });
 
-            // Draw Constellations
             if (constellationMode) {
                 for (let i = 0; i < stars.length; i++) {
                     for (let j = i + 1; j < stars.length; j++) {
@@ -1048,9 +1322,9 @@
                             }
 
                             if (isLightMode) {
-                                ctx.strokeStyle = `rgba(217, 119, 6, ${opacity * 0.5})`; // Warm gold-amber links
+                                ctx.strokeStyle = `rgba(217, 119, 6, ${opacity * 0.5})`;
                             } else {
-                                ctx.strokeStyle = `rgba(224, 169, 109, ${opacity})`; // Cool sand gold links
+                                ctx.strokeStyle = `rgba(224, 169, 109, ${opacity})`;
                             }
                             ctx.lineWidth = 0.5;
                             ctx.beginPath();
@@ -1065,13 +1339,14 @@
             requestAnimationFrame(animateStars);
         }
 
-        // Initialize Starfield on Window Load
         window.onload = function() {
             initCanvas();
             animateStars();
+            // Fire S-Curve renderer
+            drawSPath();
+            animateTravelingBall();
         }
 
-        // Toggle Constellation Mode
         const constellationBtn = document.getElementById('constellation-toggle');
         const constellationTxt = document.getElementById('constellation-text');
         
@@ -1094,7 +1369,6 @@
             }
         }
 
-        // Dynamic Scroll Progress Bar
         window.addEventListener('scroll', () => {
             const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
             const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
@@ -1102,7 +1376,6 @@
             document.getElementById('scroll-bar').style.width = scrolled + '%';
         });
 
-        // Smooth Scroll Helper
         function scrollToSection(id) {
             const element = document.getElementById(id);
             if (element) {
@@ -1110,8 +1383,7 @@
             }
         }
 
-        // REAL 3D BOOK FLOW CONTROLLER
-        let currentPaper = 0; // 0: Closed(Front Cover), 1: Pages 1&2, 2: Pages 3&4, 3: Back Cover Closed
+        let currentPaper = 0;
         const maxPaper = 3;
 
         const book = document.getElementById('book-3d');
@@ -1136,7 +1408,6 @@
             prevBtn.disabled = (currentPaper === 0);
             nextBtn.disabled = (currentPaper === maxPaper);
 
-            // Update text dynamically based on current language
             if (currentPaper === 0) {
                 indicator.setAttribute('data-lang-content', 'book-status-closed');
                 indicator.innerText = TRANSLATIONS[currentLanguage]['book-status-closed'];
@@ -1155,7 +1426,6 @@
                 book.className = "book-container is-closed-back";
             }
 
-            // Paper 1 (p1)
             if (currentPaper > 0) {
                 p1.classList.add('flipped');
                 p1.style.zIndex = 1;
@@ -1164,7 +1434,6 @@
                 p1.style.zIndex = 5; 
             }
 
-            // Paper 2 (p2)
             if (currentPaper > 1) {
                 p2.classList.add('flipped');
                 p2.style.zIndex = 2;
@@ -1173,7 +1442,6 @@
                 p2.style.zIndex = 4;
             }
 
-            // Paper 3 (p3)
             if (currentPaper > 2) {
                 p3.classList.add('flipped');
                 p3.style.zIndex = 3;
@@ -1200,6 +1468,92 @@
         function resetBook3D() {
             currentPaper = 0;
             updateBookState3D();
+        }
+
+        function drawSPath() {
+            const svgPath = document.getElementById('s-curve-line');
+            const svgElement = document.getElementById('s-curve-svg');
+            const container = document.getElementById('timeline-container');
+            
+            const nodes = [
+                document.getElementById('node-1-dot'),
+                document.getElementById('node-2-dot'),
+                document.getElementById('node-3-dot'),
+                document.getElementById('node-4-dot')
+            ];
+
+            if (!svgPath || !svgElement || !container || nodes.some(n => !n)) return;
+
+            const containerRect = container.getBoundingClientRect();
+            const coords = nodes.map(node => {
+                const rect = node.getBoundingClientRect();
+                return {
+                    x: rect.left - containerRect.left + rect.width / 2,
+                    y: rect.top - containerRect.top + rect.height / 2
+                };
+            });
+
+            let d = `M ${coords[0].x} ${coords[0].y}`;
+            const isDesktop = window.innerWidth >= 768;
+
+            for (let i = 0; i < coords.length - 1; i++) {
+                const p0 = coords[i];
+                const p1 = coords[i+1];
+                const dx = p1.x - p0.x;
+                const dy = p1.y - p0.y;
+                
+                let cp1x, cp1y, cp2x, cp2y;
+
+                if (isDesktop) {
+                    // Perfect S-Curve connecting:
+                    // Month 1 (Top-Left) -> Month 2-3 (Top-Right) -> Month 4 (Bottom-Right) -> Month 5-6 (Bottom-Left)
+                    if (i === 0) { // 1 -> 2 (Top horizontal curve)
+                        cp1x = p0.x + dx * 0.4;
+                        cp1y = p0.y - 45; 
+                        cp2x = p0.x + dx * 0.6;
+                        cp2y = p1.y - 45;
+                    } else if (i === 1) { // 2 -> 3 (Right vertical loop down)
+                        cp1x = p0.x + 85; 
+                        cp1y = p0.y + dy * 0.3;
+                        cp2x = p1.x + 85;
+                        cp2y = p0.y + dy * 0.7;
+                    } else if (i === 2) { // 3 -> 4 (Bottom horizontal curve, winding back left)
+                        cp1x = p0.x + dx * 0.4;
+                        cp1y = p0.y + 45; 
+                        cp2x = p0.x + dx * 0.6;
+                        cp2y = p1.y + 45;
+                    }
+                } else {
+                    // Serpentine winding wave on Mobile (flowing downward)
+                    const waveOffset = 50;
+                    const direction = (i % 2 === 0) ? 1 : -1;
+                    cp1x = p0.x + waveOffset * direction;
+                    cp1y = p0.y + dy * 0.3;
+                    cp2x = p1.x + waveOffset * direction;
+                    cp2y = p0.y + dy * 0.7;
+                }
+
+                d += ` C ${cp1x} ${cp1y}, ${cp2x} ${cp2y}, ${p1.x} ${p1.y}`;
+            }
+
+            svgPath.setAttribute('d', d);
+        }
+
+        // Animated traveling Shepherd character along the S-curve
+        let ballProgress = 0;
+        function animateTravelingBall() {
+            const ball = document.getElementById('s-curve-progress-ball');
+            const path = document.getElementById('s-curve-line');
+            
+            if (ball && path && path.getTotalLength) {
+                const totalLength = path.getTotalLength();
+                if (totalLength > 0) {
+                    ballProgress = (ballProgress + 0.65) % totalLength;
+                    const point = path.getPointAtLength(ballProgress);
+                    ball.setAttribute('transform', `translate(${point.x}, ${point.y})`);
+                }
+            }
+            requestAnimationFrame(animateTravelingBall);
         }
 
         // MULTILINGUAL RUNESTONE / OMEN DATA
@@ -1298,13 +1652,11 @@
             const data = omensList[currentLanguage][stoneId - 1];
             const iconContainer = document.getElementById('omen-icon-container');
 
-            // Set multilingual content
             document.getElementById('omen-icon').className = `fa-solid ${data.icon}`;
             document.getElementById('omen-type').innerText = data.title;
             document.getElementById('omen-quote').innerText = data.quote;
             document.getElementById('omen-interpretation').innerText = data.desc;
 
-            // Apply glow styling based on chosen rune
             iconContainer.className = `w-12 h-12 rounded-full mx-auto flex items-center justify-center text-lg mb-4 ${data.colorClass}`;
 
             omenCard.classList.remove('hidden');
@@ -1324,8 +1676,166 @@
             omenCard.classList.remove('scale-100', 'opacity-100');
             omenCard.classList.add('scale-95', 'opacity-0');
             setTimeout(() => {
-                omenCard.classList.add('hidden');
+                omenCard.add('hidden');
             }, 500);
+        }
+
+        // NEW: URIM & THUMMIM DIVINATION DRAW MECHANISM (image_f37d92.png)
+        const urimThummimStones = {
+            'ko': [
+                {
+                    name: '우림 (Urim)',
+                    indicator: '긍정의 표지 (YES)',
+                    quote: '"네가 무언가를 간절히 원할 때, 온 우주는 너의 꿈이 실현되도록 도와준다네."',
+                    color: 'bg-white border-slate-300 shadow-[0_0_15px_rgba(255,255,255,0.7)]'
+                },
+                {
+                    name: '둠밈 (Thummim)',
+                    indicator: '부정의 표지 (NO)',
+                    quote: '"때로는 질문을 멈추고 네 마음의 목소리에 온전히 귀를 기울여야 할 때도 있는 법이라네."',
+                    color: 'bg-slate-900 border-slate-700 shadow-[0_0_15px_rgba(0,0,0,0.8)] text-slate-400'
+                }
+            ],
+            'en': [
+                {
+                    name: 'Urim',
+                    indicator: 'Affirmative Sign (YES)',
+                    quote: '"When you want something, all the universe conspires in helping you to achieve it."',
+                    color: 'bg-white border-slate-300 shadow-[0_0_15px_rgba(255,255,255,0.7)]'
+                },
+                {
+                    name: 'Thummim',
+                    indicator: 'Negative Sign (NO)',
+                    quote: '"Sometimes, you must stop asking and fully listen to the voice of your heart instead."',
+                    color: 'bg-slate-900 border-slate-700 shadow-[0_0_15px_rgba(0,0,0,0.8)] text-slate-400'
+                }
+            ]
+        };
+
+        function drawUrimThummim() {
+            const pouch = document.getElementById('pouch-btn');
+            const initialText = document.getElementById('divination-initial-text');
+            const card = document.getElementById('divination-gem-card');
+            const gemCircle = document.getElementById('gem-color-circle');
+            const gemName = document.getElementById('gem-name');
+            const gemIndicator = document.getElementById('gem-indicator');
+            const gemQuote = document.getElementById('gem-quote');
+
+            // Trigger Pouch Shake animation
+            pouch.classList.add('shaking');
+            
+            // Temporary loading state
+            initialText.innerHTML = `<p class="text-sm text-sandGold animate-pulse font-serif" id="divination-prompt-loading">신비의 돌을 꺼내는 중...</p>`;
+            card.classList.add('hidden');
+
+            setTimeout(() => {
+                pouch.classList.remove('shaking');
+                
+                // Draw randomized stone (0: Urim, 1: Thummim)
+                const rollIndex = Math.floor(Math.random() * 2);
+                const drawn = urimThummimStones[currentLanguage][rollIndex];
+
+                // Configure card parameters
+                gemCircle.className = `w-14 h-14 rounded-full border flex-shrink-0 ${drawn.color}`;
+                gemName.innerText = drawn.name;
+                gemIndicator.innerText = drawn.indicator;
+                gemQuote.innerText = drawn.quote;
+
+                // Adjust badge class based on result
+                if (rollIndex === 0) {
+                    gemIndicator.className = "text-xs px-2 py-0.5 rounded bg-sandGold/15 text-sandGold font-bold";
+                } else {
+                    gemIndicator.className = "text-xs px-2 py-0.5 rounded bg-slate-800 text-slate-400 font-bold border border-slate-700";
+                }
+
+                initialText.classList.add('hidden');
+                card.classList.remove('hidden');
+                setTimeout(() => {
+                    card.classList.remove('scale-95', 'opacity-0');
+                    card.classList.add('scale-100', 'opacity-100');
+                }, 50);
+
+            }, 800);
+        }
+
+        // NEW: PERSONAL LEGEND SCROLL CONTROLLERS (image_f37daf.png)
+        function commitPersonalLegend() {
+            const authorInput = document.getElementById('legend-author');
+            const textInput = document.getElementById('legend-text');
+            const container = document.getElementById('legends-scroll-container');
+
+            const author = authorInput.value.trim();
+            const text = textInput.value.trim();
+
+            if (!author || !text) {
+                // Customized Modal Alternative to alert()
+                alertWarning();
+                return;
+            }
+
+            // Create new record card
+            const newCard = document.createElement('div');
+            newCard.className = "bg-slate-900/40 border border-slate-900 p-5 rounded-xl flex items-center justify-between gap-5 relative overflow-hidden group animate-fade-in";
+            
+            // Escaped string for coping
+            const escapedText = text.replace(/'/g, "\\'");
+
+            newCard.innerHTML = `
+                <div>
+                    <p class="font-serif text-sm sm:text-base text-slate-200 italic leading-relaxed">
+                        "${text}"
+                    </p>
+                    <span class="text-[10px] text-slate-500 tracking-wider block mt-1">BY ${author}</span>
+                </div>
+                <button onclick="copyToClipboard(this, '${escapedText}')" class="px-3 py-1.5 border border-slate-800 hover:border-sandGold/40 text-[10px] tracking-widest text-slate-400 hover:text-sandGold rounded-lg transition-all flex items-center gap-1 flex-shrink-0">
+                    <i class="fa-solid fa-copy"></i> COPY
+                </button>
+            `;
+
+            container.prepend(newCard);
+
+            // Clean inputs
+            authorInput.value = '';
+            textInput.value = '';
+        }
+
+        // Clip board helper utilizing document.execCommand('copy') per CSP/Frame regulations
+        function copyToClipboard(button, textToCopy) {
+            const el = document.createElement('textarea');
+            el.value = textToCopy;
+            el.setAttribute('readonly', '');
+            el.style.position = 'absolute';
+            el.style.left = '-9999px';
+            document.body.appendChild(el);
+            el.select();
+            
+            try {
+                const successful = document.execCommand('copy');
+                if (successful) {
+                    const origHtml = button.innerHTML;
+                    button.innerHTML = '<i class="fa-solid fa-check text-green-500"></i> COPIED';
+                    button.classList.add('border-green-500/50', 'text-green-400');
+                    setTimeout(() => {
+                        button.innerHTML = origHtml;
+                        button.classList.remove('border-green-500/50', 'text-green-400');
+                    }, 1200);
+                }
+            } catch (err) {
+                console.error('Copy failed', err);
+            }
+            document.body.removeChild(el);
+        }
+
+        function alertWarning() {
+            // Non-blocking beautiful banner trigger instead of browser alert
+            const banner = document.createElement('div');
+            banner.className = "fixed bottom-10 left-1/2 transform -translate-x-1/2 px-6 py-3 bg-red-950 border border-red-500 text-red-200 text-xs tracking-widest font-bold rounded-full shadow-lg z-50 transition-all duration-300";
+            banner.innerText = currentLanguage === 'ko' ? "이름과 자아의 신화를 모두 기입해주세요!" : "Please fill out both Name and Personal Legend!";
+            document.body.appendChild(banner);
+            setTimeout(() => {
+                banner.style.opacity = '0';
+                setTimeout(() => banner.remove(), 400);
+            }, 2000);
         }
     </script>
 </body>
