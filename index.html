@@ -89,25 +89,52 @@
             box-shadow: 0 0 35px rgba(212, 175, 55, 0.35);
         }
 
-        /* Real 3D Book Flip System */
+        /* */
+        /* Real 3D Book Proportional Layout */
         .book-viewport {
             perspective: 2000px;
             display: flex;
             justify-content: center;
             align-items: center;
+            width: 100%;
+            overflow: visible;
+            height: 580px; /* Default Desktop height */
+            transition: height 0.5s ease-in-out;
         }
         
         .book-container {
-            width: 100%;
-            max-width: 860px;
-            height: 580px; 
+            width: 800px; /* Fixed logical width for proportion scaling */
+            height: 520px; /* Fixed logical height */
             position: relative;
             transform-style: preserve-3d;
             transition: transform 1s cubic-bezier(0.25, 1, 0.5, 1);
+            flex-shrink: 0;
+        }
+
+        /* Responsive scaling factor for book-container (Solves mobile squishing flawlessly) */
+        @media (max-width: 840px) {
+            .book-container { transform: scale(0.85); }
+            .book-viewport { height: 460px; }
+        }
+        @media (max-width: 720px) {
+            .book-container { transform: scale(0.7); }
+            .book-viewport { height: 380px; }
+        }
+        @media (max-width: 600px) {
+            .book-container { transform: scale(0.55); }
+            .book-viewport { height: 300px; }
+        }
+        @media (max-width: 480px) {
+            .book-container { transform: scale(0.44); }
+            .book-viewport { height: 240px; }
+        }
+        @media (max-width: 380px) {
+            .book-container { transform: scale(0.36); }
+            .book-viewport { height: 200px; }
         }
 
         .book-container.is-open {
-            transform: translateX(0);
+            transform: scale(var(--tw-scale-x, 1)) translateX(0); /* preserves custom scale overrides */
         }
 
         .book-page-3d {
@@ -318,6 +345,7 @@
     <!-- STARFIELD BACKGROUND CANVAS -->
     <canvas id="starfield" class="fixed top-0 left-0 w-full h-full -z-20 pointer-events-none transition-all duration-500"></canvas>
 
+    <!-- -->
     <!-- FLOATING CONTROLS (Language Switcher, Theme Toggle, Constellation Toggle) -->
     <div class="fixed top-6 right-6 z-50 flex items-center gap-2 sm:gap-3 flex-wrap justify-end">
         <!-- Language Switcher Button -->
@@ -379,9 +407,10 @@
             </div>
         </div>
 
-        <!-- 3D Pyramids & Sand Dunes with Moonlight reflection -->
+        <!-- -->
+        <!-- 3D Pyramids & Sand Dunes with Moonlight reflection (preserveAspectRatio set to prevent mobile squishing) -->
         <div class="absolute bottom-0 left-0 w-full h-[320px] z-10 pointer-events-none select-none overflow-hidden">
-            <svg class="w-full h-full" viewBox="0 0 1440 320" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+            <svg class="w-full h-full" viewBox="0 0 1440 320" preserveAspectRatio="xMidYMax slice" xmlns="http://www.w3.org/2000/svg">
                 <defs>
                     <!-- Moonlight (Dark mode) / Sunlight (Light mode) reflections -->
                     <linearGradient id="pyr-light-grad" x1="0%" y1="100%" x2="100%" y2="0%">
@@ -437,6 +466,7 @@
         </div>
     </header>
 
+    <!-- -->
     <!-- INTERACTIVE 3D BOOK SECTION -->
     <section id="book-section" class="relative py-24 px-4 bg-desertDeep dark:bg-desertDeep border-t border-slate-900/40 transition-colors duration-500 z-30">
         <!-- Decorative Background Layer -->
@@ -470,7 +500,7 @@
             </div>
 
             <!-- 3D Book Viewport -->
-            <div class="book-viewport py-10">
+            <div class="book-viewport">
                 <div class="book-container is-closed-front" id="book-3d">
                     
                     <!-- PAGE 1: Front Cover & Scene 1 (Page 1) -->
@@ -593,6 +623,7 @@
         </div>
     </section>
 
+    <!-- -->
     <!-- REAL CURVED S-SHAPE LEARNING ROADMAP SECTION (DESKTOP SNAKE, MOBILE VERTICAL WAVE) -->
     <section id="roadmap-section" class="relative py-28 px-4 bg-desertNavy dark:bg-desertNavy transition-colors duration-500 z-30 overflow-hidden border-t border-slate-900/60">
         
@@ -733,6 +764,7 @@
         </div>
     </section>
 
+    <!-- -->
     <!-- NEW SECTION 1: URIM & THUMMIM DIVINATION (image_f37d92.png) -->
     <section class="relative py-20 px-4 bg-desertNavy dark:bg-desertNavy transition-colors duration-500 z-30 overflow-hidden border-t border-slate-900/60">
         <div class="max-w-4xl mx-auto">
@@ -795,6 +827,7 @@
         </div>
     </section>
 
+    <!-- -->
     <!-- NEW SECTION 2: PERSONAL LEGEND SCROLL (image_f37daf.png) -->
     <section class="relative py-20 px-4 bg-desertNavy dark:bg-desertNavy transition-colors duration-500 z-30 overflow-hidden border-t border-slate-900/60">
         <div class="max-w-4xl mx-auto">
@@ -849,6 +882,7 @@
         </div>
     </section>
 
+    <!-- -->
     <!-- UNIVERSE WHISPER / OMEN CARD GENERATOR -->
     <section class="relative py-24 px-4 bg-desertNavy dark:bg-desertNavy transition-colors duration-500 z-30 overflow-hidden border-t border-slate-900/60">
         <div class="absolute bottom-0 right-[10%] w-[180px] h-[100px] opacity-10 pointer-events-none">
@@ -936,6 +970,7 @@
         </div>
     </footer>
 
+    <!-- -->
     <!-- INTERACTIVE SCRIPTS -->
     <script>
         let isLightMode = false;
@@ -1556,7 +1591,7 @@
             requestAnimationFrame(animateTravelingBall);
         }
 
-        // MULTILINGUAL RUNESTONE / OMEN DATA
+        //        // MULTILINGUAL RUNESTONE / OMEN DATA
         let currentOmenId = null;
 
         const omensList = {
@@ -1680,7 +1715,7 @@
             }, 500);
         }
 
-        // NEW: URIM & THUMMIM DIVINATION DRAW MECHANISM (image_f37d92.png)
+        //        // NEW: URIM & THUMMIM DIVINATION DRAW MECHANISM (image_f37d92.png)
         const urimThummimStones = {
             'ko': [
                 {
@@ -1758,7 +1793,7 @@
             }, 800);
         }
 
-        // NEW: PERSONAL LEGEND SCROLL CONTROLLERS (image_f37daf.png)
+        //        // NEW: PERSONAL LEGEND SCROLL CONTROLLERS (image_f37daf.png)
         function commitPersonalLegend() {
             const authorInput = document.getElementById('legend-author');
             const textInput = document.getElementById('legend-text');
