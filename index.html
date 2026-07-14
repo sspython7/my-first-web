@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ko" class="scroll-smooth">
+<html lang="ko" class="scroll-smooth dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -43,7 +43,7 @@
             background: #050814;
         }
         .light ::-webkit-scrollbar-track {
-            background: #fcfcf9;
+            background: #FAF7F2;
         }
         ::-webkit-scrollbar-thumb {
             background: #D4AF3740;
@@ -326,7 +326,7 @@
         }
     </style>
 </head>
-<body class="bg-desertNavy dark:bg-desertNavy text-slate-200 dark:text-slate-200 font-sans overflow-x-hidden relative min-h-screen transition-colors duration-500">
+<body class="bg-[#FAF7F2] dark:bg-desertNavy text-slate-800 dark:text-slate-200 font-sans overflow-x-hidden relative min-h-screen transition-colors duration-500">
 
     <!-- INTRO OPENING ANIMATION OVERLAY -->
     <div id="intro-screen">
@@ -341,30 +341,30 @@
     <!-- Scroll Progress Bar -->
     <div id="scroll-bar" class="fixed top-0 left-0 h-1 bg-gradient-to-r from-sandGold to-crystalGold z-50 transition-all duration-100" style="width: 0%;"></div>
 
-    <!-- STARFIELD BACKGROUND CANVAS -->
+    <!-- STARFIELD BACKGROUND CANVAS (With Gilded Wind Particle Engine) -->
     <canvas id="starfield" class="fixed top-0 left-0 w-full h-full -z-20 pointer-events-none transition-all duration-500"></canvas>
 
     <!-- FLOATING CONTROLS -->
     <div class="fixed top-6 right-6 z-50 flex items-center gap-2 sm:gap-3 flex-wrap justify-end">
         <!-- Language Switcher Button -->
-        <button id="lang-toggle" onclick="toggleLanguage()" class="px-3 py-1.5 sm:px-4 sm:py-2 bg-slate-900/80 dark:bg-slate-900/80 border border-sandGold/40 hover:border-crystalGold text-xs font-semibold tracking-wider text-sandGold rounded-full backdrop-blur-md transition-all duration-300 hover:scale-105 active:scale-95 flex items-center gap-1.5 shadow-gold-box">
+        <button id="lang-toggle" onclick="toggleLanguage()" class="px-3 py-1.5 sm:px-4 sm:py-2 bg-white/80 dark:bg-slate-900/80 border border-amber-500/20 dark:border-sandGold/40 hover:border-amber-600 dark:hover:border-crystalGold text-xs font-semibold tracking-wider text-amber-800 dark:text-sandGold rounded-full backdrop-blur-md transition-all duration-300 hover:scale-105 active:scale-95 flex items-center gap-1.5 shadow-md dark:shadow-gold-box">
             <i class="fa-solid fa-globe"></i>
             <span id="lang-btn-text">KO</span>
         </button>
 
         <!-- Theme Toggle Button (Dark / Light) -->
-        <button id="theme-toggle" onclick="toggleTheme()" class="w-9 h-9 sm:w-10 sm:h-10 bg-slate-900/80 dark:bg-slate-900/80 border border-sandGold/40 hover:border-crystalGold text-sm text-sandGold rounded-full backdrop-blur-md transition-all duration-300 hover:scale-105 active:scale-95 flex items-center justify-center shadow-gold-box" title="테마 변경">
+        <button id="theme-toggle" onclick="toggleTheme()" class="w-9 h-9 sm:w-10 sm:h-10 bg-white/80 dark:bg-slate-900/80 border border-amber-500/20 dark:border-sandGold/40 hover:border-amber-600 dark:hover:border-crystalGold text-sm text-amber-800 dark:text-sandGold rounded-full backdrop-blur-md transition-all duration-300 hover:scale-105 active:scale-95 flex items-center justify-center shadow-md dark:shadow-gold-box" title="테마 변경">
             <i id="theme-icon" class="fa-solid fa-moon"></i>
         </button>
 
         <!-- Constellation Mode Toggle -->
-        <button id="constellation-toggle" class="px-3 py-1.5 sm:px-4 sm:py-2 bg-slate-900/80 dark:bg-slate-900/80 border border-sandGold/40 hover:border-crystalGold text-xs font-medium tracking-widest text-sandGold rounded-full backdrop-blur-md transition-all duration-300 hover:scale-105 active:scale-95 flex items-center gap-2 shadow-gold-box">
+        <button id="constellation-toggle" class="px-3 py-1.5 sm:px-4 sm:py-2 bg-white/80 dark:bg-slate-900/80 border border-amber-500/20 dark:border-sandGold/40 hover:border-amber-600 dark:hover:border-crystalGold text-xs font-medium tracking-widest text-amber-800 dark:text-sandGold rounded-full backdrop-blur-md transition-all duration-300 hover:scale-105 active:scale-95 flex items-center gap-2 shadow-md dark:shadow-gold-box">
             <i class="fa-solid fa-wand-magic-sparkles animate-pulse"></i>
             <span id="constellation-text" data-lang-content="constellation-on">별자리 그리기 ON</span>
         </button>
     </div>
 
-    <!-- HERO SECTION (Central Layout) -->
+    <!-- HERO SECTION (Central Layout with Pyramids and Desert Dunes) -->
     <header class="relative min-h-screen flex flex-col justify-center items-center px-4 overflow-hidden py-12 z-30 transition-all duration-500">
         <!-- Main Copy & Titles -->
         <div class="text-center z-40 max-w-4xl mx-auto px-4 relative flex flex-col items-center">
@@ -372,34 +372,34 @@
             <!-- Glowing Celestial Body -->
             <div class="mb-5 flex flex-col items-center pointer-events-none">
                 <div id="celestial-body" class="w-14 h-14 rounded-full bg-gradient-to-tr from-amber-50 to-amber-200 opacity-95 blur-[0.5px] shadow-[0_0_35px_rgba(255,255,255,0.7)] relative flex items-center justify-center transition-all duration-700">
-                    <div id="celestial-crescent" class="absolute w-11 h-11 rounded-full bg-desertNavy -top-1 -right-2.5 transition-all duration-700"></div>
+                    <div id="celestial-crescent" class="absolute w-11 h-11 rounded-full bg-[#FAF7F2] dark:bg-desertNavy -top-1 -right-2.5 transition-all duration-700"></div>
                 </div>
             </div>
 
             <!-- Pre-title Info -->
-            <div class="inline-flex items-center gap-2 px-3.5 py-1 bg-slate-950/80 dark:bg-slate-950/80 border border-sandGold/25 rounded-full text-[11px] font-semibold uppercase tracking-widest text-sandGold mb-3.5 backdrop-blur-md transition-all duration-500">
+            <div class="inline-flex items-center gap-2 px-3.5 py-1 bg-white/90 dark:bg-slate-950/80 border border-amber-500/20 dark:border-sandGold/25 rounded-full text-[11px] font-semibold uppercase tracking-widest text-amber-800 dark:text-sandGold mb-3.5 backdrop-blur-md transition-all duration-500">
                 <i class="fa-solid fa-book-open"></i> <span data-lang-content="hero-label">My Favorite Book</span>
             </div>
             
             <!-- User recommendation badge -->
-            <div class="font-serif text-sm sm:text-base text-sandGold font-bold tracking-widest mb-1.5 drop-shadow-md" data-lang-content="hero-sub">
+            <div class="font-serif text-sm sm:text-base text-amber-800 dark:text-sandGold font-bold tracking-widest mb-1.5 drop-shadow-md" data-lang-content="hero-sub">
                 이재원의 추천 책
             </div>
             
             <!-- Book Title -->
-            <h1 class="font-serif text-5xl sm:text-6xl md:text-8xl font-extrabold text-transparent bg-clip-text bg-gradient-to-b from-white via-amber-50 to-sandGold tracking-wide leading-tight mb-5 filter drop-shadow-lg" data-lang-content="hero-title">
+            <h1 class="font-serif text-5xl sm:text-6xl md:text-8xl font-extrabold text-transparent bg-clip-text bg-gradient-to-b from-slate-900 via-amber-700 to-amber-900 dark:from-white dark:via-amber-50 dark:to-sandGold tracking-wide leading-tight mb-5 filter drop-shadow-lg" data-lang-content="hero-title">
                 연금술사
             </h1>
-            <p class="font-serif text-base sm:text-lg md:text-xl text-sandGold/90 leading-relaxed italic mb-6 tracking-wide max-w-2xl" data-lang-content="hero-desc-1">
+            <p class="font-serif text-base sm:text-lg md:text-xl text-amber-800 dark:text-sandGold/90 leading-relaxed italic mb-6 tracking-wide max-w-2xl" data-lang-content="hero-desc-1">
                 “한 편의 소설로 읽는 인생의 지도, 산티아고와 함께 걷는 길”
             </p>
-            <p class="max-w-xl mx-auto text-xs sm:text-sm text-slate-400 dark:text-slate-400 font-light leading-relaxed mb-8 transition-colors duration-500" data-lang-content="hero-desc-2">
+            <p class="max-w-xl mx-auto text-xs sm:text-sm text-slate-600 dark:text-slate-400 font-light leading-relaxed mb-8 transition-colors duration-500" data-lang-content="hero-desc-2">
                 파울로 코엘료의 소설 『연금술사』는 저에게 깊은 인상을 준 인생 책입니다.<br>소설 속에서 발견한 가장 가슴 뛰는 네 가지 명장면과 그 상징적 통찰을 여러분과 공유합니다.
             </p>
             
             <!-- Journey trigger CTA -->
             <div class="flex justify-center items-center pointer-events-auto relative z-50">
-                <button onclick="startJourney()" class="px-10 py-4 bg-gradient-to-r from-sandGold to-crystalGold text-slate-950 font-bold tracking-widest rounded-full shadow-gold-intense hover:scale-105 active:scale-95 transition-all duration-300 flex items-center gap-2 cursor-pointer text-sm sm:text-base">
+                <button onclick="startJourney()" class="px-10 py-4 bg-gradient-to-r from-sandGold to-crystalGold text-slate-950 font-bold tracking-widest rounded-full shadow-lg dark:shadow-gold-intense hover:scale-105 active:scale-95 transition-all duration-300 flex items-center gap-2 cursor-pointer text-sm sm:text-base">
                     <span data-lang-content="hero-cta">여정 시작하기</span> <i class="fa-solid fa-compass"></i>
                 </button>
             </div>
@@ -470,7 +470,7 @@
     </header>
 
     <!-- INTERACTIVE 3D BOOK SECTION -->
-    <section id="book-section" class="relative py-24 px-4 bg-desertDeep dark:bg-desertDeep border-t border-slate-900/40 transition-colors duration-500 z-30 overflow-hidden">
+    <section id="book-section" class="relative py-24 px-4 bg-[#F5EFE6] dark:bg-desertDeep border-t border-amber-900/10 dark:border-slate-900/40 transition-colors duration-500 z-30 overflow-hidden">
         <!-- Decorative Background Layer -->
         <div class="absolute right-0 bottom-0 w-64 h-64 opacity-15 pointer-events-none select-none">
             <svg class="w-full h-full fill-sandGold" viewBox="0 0 100 100" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
@@ -480,9 +480,9 @@
 
         <div class="max-w-6xl mx-auto">
             <div class="text-center mb-12">
-                <span class="text-xs tracking-widest text-sandGold font-bold uppercase"><i class="fa-solid fa-star text-[9px] mr-1"></i> <span data-lang-content="book-subtitle">My Picked Scenes</span></span>
-                <h2 class="font-serif text-3xl sm:text-4xl text-white dark:text-white mt-2 transition-colors duration-500" data-lang-content="book-title">소설 속 인상 깊은 네 가지 장면</h2>
-                <p class="text-slate-400 dark:text-slate-400 text-xs sm:text-sm mt-3 max-w-xl mx-auto leading-relaxed transition-colors duration-500" data-lang-content="book-desc">
+                <span class="text-xs tracking-widest text-amber-700 dark:text-sandGold font-bold uppercase"><i class="fa-solid fa-star text-[9px] mr-1"></i> <span data-lang-content="book-subtitle">My Picked Scenes</span></span>
+                <h2 class="font-serif text-3xl sm:text-4xl text-slate-900 dark:text-white mt-2 transition-colors duration-500" data-lang-content="book-title">소설 속 인상 깊은 네 가지 장면</h2>
+                <p class="text-slate-600 dark:text-slate-400 text-xs sm:text-sm mt-3 max-w-xl mx-auto leading-relaxed transition-colors duration-500" data-lang-content="book-desc">
                     페이지의 좌/우 면을 직접 클릭하면 책장이 부드럽게 넘어갑니다.<br>
                     닫혀있는 책을 열어 보물 같은 장면들을 만나보세요.
                 </p>
@@ -490,13 +490,13 @@
 
             <!-- Page Indicators / Navigation Controls -->
             <div class="flex justify-center items-center gap-3 mb-8">
-                <button onclick="prevPage3D()" class="w-10 h-10 bg-slate-950/80 dark:bg-slate-950/80 hover:bg-slate-900 border border-sandGold/20 text-sandGold rounded-full flex items-center justify-center transition-all duration-300 hover:scale-105 active:scale-95 disabled:opacity-30 disabled:pointer-events-none" id="prev-btn-3d" disabled>
+                <button onclick="prevPage3D()" class="w-10 h-10 bg-white dark:bg-slate-950/80 hover:bg-slate-100 dark:hover:bg-slate-900 border border-amber-500/20 dark:border-sandGold/20 text-amber-800 dark:text-sandGold rounded-full flex items-center justify-center transition-all duration-300 hover:scale-105 active:scale-95 disabled:opacity-30 disabled:pointer-events-none" id="prev-btn-3d" disabled>
                     <i class="fa-solid fa-arrow-left text-xs"></i>
                 </button>
-                <div class="px-5 py-2 rounded-full bg-slate-950/50 dark:bg-slate-950/50 border border-sandGold/10 text-xs tracking-widest text-sandGold font-semibold font-serif transition-colors duration-500" id="page-indicator-3d" data-lang-content="book-status-closed">
+                <div class="px-5 py-2 rounded-full bg-white/90 dark:bg-slate-950/50 border border-amber-500/20 dark:border-sandGold/10 text-xs tracking-widest text-amber-800 dark:text-sandGold font-semibold font-serif transition-colors duration-500" id="page-indicator-3d" data-lang-content="book-status-closed">
                     책이 닫혀 있음
                 </div>
-                <button onclick="nextPage3D()" class="w-10 h-10 bg-slate-950/80 dark:bg-slate-950/80 hover:bg-slate-900 border border-sandGold/20 text-sandGold rounded-full flex items-center justify-center transition-all duration-300 hover:scale-105 active:scale-95" id="next-btn-3d">
+                <button onclick="nextPage3D()" class="w-10 h-10 bg-white dark:bg-slate-950/80 hover:bg-slate-100 dark:hover:bg-slate-900 border border-amber-500/20 dark:border-sandGold/20 text-amber-800 dark:text-sandGold rounded-full flex items-center justify-center transition-all duration-300 hover:scale-105 active:scale-95" id="next-btn-3d">
                     <i class="fa-solid fa-arrow-right text-xs"></i>
                 </button>
             </div>
@@ -510,7 +510,7 @@
                         <!-- PAGE 1: Front Cover & Scene 1 (Page 1) -->
                         <div class="book-page-3d" id="p3d-1" style="z-index: 5;">
                             <!-- Front Cover -->
-                            <div class="page-side front-side bg-gradient-to-b from-amber-950 to-slate-950 dark:from-amber-950 dark:to-slate-950 border border-sandGold/30 flex flex-col justify-between p-8 text-center cursor-pointer select-none shadow-gold-box" onclick="nextPage3D()">
+                            <div class="page-side front-side bg-gradient-to-b from-amber-900 to-amber-950 dark:from-amber-950 dark:to-slate-950 border border-sandGold/30 flex flex-col justify-between p-8 text-center cursor-pointer select-none shadow-md dark:shadow-gold-box" onclick="nextPage3D()">
                                 <div class="border border-sandGold/10 rounded-lg h-full w-full p-4 flex flex-col justify-between items-center">
                                     <span class="text-xs tracking-widest text-sandGold/80 uppercase font-bold" data-lang-content="cover-label">A Book That Inspired Me</span>
                                     <div class="my-auto py-4">
@@ -518,98 +518,98 @@
                                         <h3 class="font-serif text-3xl sm:text-4xl text-white font-extrabold tracking-wider leading-tight" data-lang-content="cover-title">연 금 술 사</h3>
                                         <p class="text-[11px] text-amber-200/70 tracking-widest mt-3">The Alchemist</p>
                                     </div>
-                                    <div class="text-xs text-slate-500 tracking-wider animate-pulse" data-lang-content="cover-help">
+                                    <div class="text-xs text-amber-200/50 dark:text-slate-500 tracking-wider animate-pulse" data-lang-content="cover-help">
                                         [ 책을 누르면 펼쳐집니다 ]
                                     </div>
                                 </div>
                             </div>
                             
                             <!-- Back of Paper (Page 1 - 자아의 신화) -->
-                            <div class="page-side back-side bg-slate-950/95 dark:bg-slate-950/95 border-y border-l border-sandGold/20 flex flex-col justify-between p-8 sm:p-10 cursor-pointer" onclick="prevPage3D()">
-                                <div class="absolute top-2 left-2 right-2 bottom-2 border border-sandGold/5 rounded pointer-events-none"></div>
+                            <div class="page-side back-side bg-[#FCFBF7] dark:bg-slate-950/95 border-y border-l border-amber-600/20 dark:border-sandGold/20 flex flex-col justify-between p-8 sm:p-10 cursor-pointer" onclick="prevPage3D()">
+                                <div class="absolute top-2 left-2 right-2 bottom-2 border border-amber-600/5 dark:border-sandGold/5 rounded pointer-events-none"></div>
                                 <div class="flex flex-col justify-center h-full">
                                     <div class="flex items-center gap-3 mb-4">
-                                        <span class="w-7 h-7 rounded-full bg-sandGold/10 flex items-center justify-center text-sandGold font-bold font-serif text-sm">01</span>
-                                        <h4 class="font-serif text-xl sm:text-2xl text-amber-100 font-bold" data-lang-content="p1-title">안주하지 않는 용기</h4>
+                                        <span class="w-7 h-7 rounded-full bg-amber-500/10 dark:bg-sandGold/10 flex items-center justify-center text-amber-800 dark:text-sandGold font-bold font-serif text-sm">01</span>
+                                        <h4 class="font-serif text-xl sm:text-2xl text-amber-950 dark:text-amber-100 font-bold" data-lang-content="p1-title">안주하지 않는 용기</h4>
                                     </div>
-                                    <p class="font-serif text-xl sm:text-2xl text-sandGold font-bold italic leading-relaxed mb-5 border-l-2 border-sandGold/30 pl-4 py-1" data-lang-content="p1-quote">
+                                    <p class="font-serif text-xl sm:text-2xl text-amber-800 dark:text-sandGold font-bold italic leading-relaxed mb-5 border-l-2 border-amber-500/30 dark:border-sandGold/30 pl-4 py-1" data-lang-content="p1-quote">
                                         "안주하는 순간, 꿈은 단지 기억 너머 박제가 된다."
                                     </p>
-                                    <p class="text-base sm:text-lg text-slate-300 leading-relaxed font-light" data-lang-content="p1-desc">
+                                    <p class="text-base sm:text-lg text-slate-700 dark:text-slate-300 leading-relaxed font-light" data-lang-content="p1-desc">
                                         안전하고 번창하는 크리스탈 상점 점원의 평온함을 마다하고, 다시 거칠고 예측 불가능한 사막 한가운데로 첫 걸음을 내딛던 산티아고의 결단을 보여주는 장면입니다. 평범한 일상의 안락함이 주는 유혹을 단호히 극복하고 나아가는 인간 본연의 주체적 용기를 의미합니다.
                                     </p>
                                 </div>
-                                <span class="text-xs text-slate-500 font-serif block text-left">P. 01</span>
+                                <span class="text-xs text-slate-400 dark:text-slate-500 font-serif block text-left">P. 01</span>
                             </div>
                         </div>
 
                         <!-- PAGE 2: Scene 2 (Page 2) & Scene 3 (Page 3) -->
                         <div class="book-page-3d" id="p3d-2" style="z-index: 4;">
                             <!-- Front of Paper (Page 2 - 징조) -->
-                            <div class="page-side front-side bg-slate-950/95 dark:bg-slate-950/95 border-y border-r border-sandGold/20 flex flex-col justify-between p-8 sm:p-10 cursor-pointer" onclick="nextPage3D()">
-                                <div class="absolute top-2 left-2 right-2 bottom-2 border border-sandGold/5 rounded pointer-events-none"></div>
+                            <div class="page-side front-side bg-[#FCFBF7] dark:bg-slate-950/95 border-y border-r border-amber-600/20 dark:border-sandGold/20 flex flex-col justify-between p-8 sm:p-10 cursor-pointer" onclick="nextPage3D()">
+                                <div class="absolute top-2 left-2 right-2 bottom-2 border border-amber-600/5 dark:border-sandGold/5 rounded pointer-events-none"></div>
                                 <div class="flex flex-col justify-center h-full">
                                     <div class="flex items-center gap-3 mb-4">
-                                        <span class="w-7 h-7 rounded-full bg-sandGold/10 flex items-center justify-center text-sandGold font-bold font-serif text-sm">02</span>
-                                        <h4 class="font-serif text-xl sm:text-2xl text-amber-100 font-bold" data-lang-content="p2-title">늘 존재하는 징조</h4>
+                                        <span class="w-7 h-7 rounded-full bg-amber-500/10 dark:bg-sandGold/10 flex items-center justify-center text-amber-800 dark:text-sandGold font-bold font-serif text-sm">02</span>
+                                        <h4 class="font-serif text-xl sm:text-2xl text-amber-950 dark:text-amber-100 font-bold" data-lang-content="p2-title">늘 존재하는 징조</h4>
                                     </div>
-                                    <p class="font-serif text-xl sm:text-2xl text-sandGold font-bold italic leading-relaxed mb-5 border-l-2 border-sandGold/30 pl-4 py-1" data-lang-content="p2-quote">
+                                    <p class="font-serif text-xl sm:text-2xl text-amber-800 dark:text-sandGold font-bold italic leading-relaxed mb-5 border-l-2 border-amber-500/30 dark:border-sandGold/30 pl-4 py-1" data-lang-content="p2-quote">
                                         "우주는 우리가 눈치채지 못할 뿐, 늘 표지를 남긴다네."
                                     </p>
-                                    <p class="text-base sm:text-lg text-slate-300 leading-relaxed font-light" data-lang-content="p2-desc">
+                                    <p class="text-base sm:text-lg text-slate-700 dark:text-slate-300 leading-relaxed font-light" data-lang-content="p2-desc">
                                         사막의 모래알 한 톨, 바람의 향기, 하늘 위 독수리의 엇갈리는 날갯짓 속에서 우주가 건네는 보이지 않는 계시와 '표지'를 조용히 해독해 내던 장면입니다. 일상의 스쳐 지나가는 우연한 조언과 예기치 못한 실패 속에 늘 우리를 인도할 최선의 해답들이 숨어있음을 의미합니다.
                                     </p>
                                 </div>
-                                <span class="text-xs text-slate-500 font-serif block text-right">P. 02</span>
+                                <span class="text-xs text-slate-400 dark:text-slate-500 font-serif block text-right">P. 02</span>
                             </div>
                             
                             <!-- Back of Paper (Page 3 - 진짜 보물) -->
-                            <div class="page-side back-side bg-slate-950/95 dark:bg-slate-950/95 border-y border-l border-sandGold/20 flex flex-col justify-between p-8 sm:p-10 cursor-pointer" onclick="prevPage3D()">
-                                <div class="absolute top-2 left-2 right-2 bottom-2 border border-sandGold/5 rounded pointer-events-none"></div>
+                            <div class="page-side back-side bg-[#FCFBF7] dark:bg-slate-950/95 border-y border-l border-amber-600/20 dark:border-sandGold/20 flex flex-col justify-between p-8 sm:p-10 cursor-pointer" onclick="prevPage3D()">
+                                <div class="absolute top-2 left-2 right-2 bottom-2 border border-amber-600/5 dark:border-sandGold/5 rounded pointer-events-none"></div>
                                 <div class="flex flex-col justify-center h-full">
                                     <div class="flex items-center gap-3 mb-4">
-                                        <span class="w-7 h-7 rounded-full bg-sandGold/10 flex items-center justify-center text-sandGold font-bold font-serif text-sm">03</span>
-                                        <h4 class="font-serif text-xl sm:text-2xl text-amber-100 font-bold" data-lang-content="p3-title">발밑에 숨겨진 진짜 보물</h4>
+                                        <span class="w-7 h-7 rounded-full bg-amber-500/10 dark:bg-sandGold/10 flex items-center justify-center text-amber-800 dark:text-sandGold font-bold font-serif text-sm">03</span>
+                                        <h4 class="font-serif text-xl sm:text-2xl text-amber-950 dark:text-amber-100 font-bold" data-lang-content="p3-title">발밑에 숨겨진 진짜 보물</h4>
                                     </div>
-                                    <p class="font-serif text-xl sm:text-2xl text-sandGold font-bold italic leading-relaxed mb-5 border-l-2 border-sandGold/30 pl-4 py-1" data-lang-content="p3-quote">
+                                    <p class="font-serif text-xl sm:text-2xl text-amber-800 dark:text-sandGold font-bold italic leading-relaxed mb-5 border-l-2 border-amber-500/30 dark:border-sandGold/30 pl-4 py-1" data-lang-content="p3-quote">
                                         "가장 소중한 보물은 처음 자네가 누워있던 곳에 있었지."
                                     </p>
-                                    <p class="text-base sm:text-lg text-slate-300 leading-relaxed font-light" data-lang-content="p3-desc">
+                                    <p class="text-base sm:text-lg text-slate-700 dark:text-slate-300 leading-relaxed font-light" data-lang-content="p3-desc">
                                         험난한 여정을 지나 간신히 당도한 이집트 피라미드 밑이 아니라, 출발지였던 낡은 교회의 쓰러진 무화과나무 밑에서 마침내 금화를 발굴하는 장면입니다. 꿈의 정점이나 지향하는 결과보다, 도달하는 사막의 궤적 안에서 정화되고 단단해진 영혼의 '성장 과정' 그 자체가 보물임을 일깨웁니다.
                                     </p>
                                 </div>
-                                <span class="text-xs text-slate-500 font-serif block text-left">P. 03</span>
+                                <span class="text-xs text-slate-400 dark:text-slate-500 font-serif block text-left">P. 03</span>
                             </div>
                         </div>
 
                         <!-- PAGE 3: Scene 4 (Page 4) & Back Cover -->
                         <div class="book-page-3d" id="p3d-3" style="z-index: 3;">
                             <!-- Front of Paper (Page 4 - 만물은 하나) -->
-                            <div class="page-side front-side bg-slate-950/95 dark:bg-slate-950/95 border-y border-r border-sandGold/20 flex flex-col justify-between p-8 sm:p-10 cursor-pointer" onclick="nextPage3D()">
-                                <div class="absolute top-2 left-2 right-2 bottom-2 border border-sandGold/5 rounded pointer-events-none"></div>
+                            <div class="page-side front-side bg-[#FCFBF7] dark:bg-slate-950/95 border-y border-r border-amber-600/20 dark:border-sandGold/20 flex flex-col justify-between p-8 sm:p-10 cursor-pointer" onclick="nextPage3D()">
+                                <div class="absolute top-2 left-2 right-2 bottom-2 border border-amber-600/5 dark:border-sandGold/5 rounded pointer-events-none"></div>
                                 <div class="flex flex-col justify-center h-full">
                                     <div class="flex items-center gap-3 mb-4">
-                                        <span class="w-7 h-7 rounded-full bg-sandGold/10 flex items-center justify-center text-sandGold font-bold font-serif text-sm">04</span>
-                                        <h4 class="font-serif text-xl sm:text-2xl text-amber-100 font-bold" data-lang-content="p4-title">만물은 하나</h4>
+                                        <span class="w-7 h-7 rounded-full bg-amber-500/10 dark:bg-sandGold/10 flex items-center justify-center text-amber-800 dark:text-sandGold font-bold font-serif text-sm">04</span>
+                                        <h4 class="font-serif text-xl sm:text-2xl text-amber-950 dark:text-amber-100 font-bold" data-lang-content="p4-title">만물은 하나</h4>
                                     </div>
-                                    <p class="font-serif text-xl sm:text-2xl text-sandGold font-bold italic leading-relaxed mb-5 border-l-2 border-sandGold/30 pl-4 py-1" data-lang-content="p4-quote">
+                                    <p class="font-serif text-xl sm:text-2xl text-amber-800 dark:text-sandGold font-bold italic leading-relaxed mb-5 border-l-2 border-amber-500/30 dark:border-sandGold/30 pl-4 py-1" data-lang-content="p4-quote">
                                         "우리가 진정으로 원할 때, 만물은 하나가 된다네."
                                     </p>
-                                    <p class="text-base sm:text-lg text-slate-300 leading-relaxed font-light" data-lang-content="p4-desc">
+                                    <p class="text-base sm:text-lg text-slate-700 dark:text-slate-300 leading-relaxed font-light" data-lang-content="p4-desc">
                                         군대 앞에 가로막혀 목숨의 위협을 받던 순간, 바람의 호흡과 일치되어 무자비한 사막의 모래바람으로 스스로의 물질 구조를 완전하게 변환시키던 절정의 영성 장면입니다. 세상 삼라만상의 모든 요소가 결국 단 하나의 생명으로 밀접하게 공명하고 연대하고 있음을 선사합니다.
                                     </p>
                                 </div>
-                                <span class="text-xs text-slate-500 font-serif block text-right">P. 04</span>
+                                <span class="text-xs text-slate-400 dark:text-slate-500 font-serif block text-right">P. 04</span>
                             </div>
                             
                             <!-- Back Cover -->
-                            <div class="page-side back-side bg-gradient-to-b from-slate-950 to-amber-950 dark:from-slate-950 dark:to-amber-950 border border-sandGold/30 flex flex-col justify-between p-8 text-center select-none shadow-gold-box cursor-pointer" onclick="prevPage3D()">
+                            <div class="page-side back-side bg-gradient-to-b from-slate-900 to-amber-950 dark:from-slate-950 dark:to-amber-950 border border-sandGold/30 flex flex-col justify-between p-8 text-center select-none shadow-md dark:shadow-gold-box cursor-pointer" onclick="prevPage3D()">
                                 <div class="border border-sandGold/10 rounded-lg h-full w-full p-4 flex flex-col justify-between items-center" onclick="event.stopPropagation()">
                                     <span class="text-xs tracking-widest text-sandGold/80 uppercase font-bold" data-lang-content="backcover-label">The End of my Story</span>
                                     <div class="my-auto py-4">
                                         <i class="fa-solid fa-hourglass-end text-5xl text-sandGold mb-4 block animate-bounce"></i>
                                         <h3 class="font-serif text-2xl text-white font-extrabold tracking-wider leading-relaxed" data-lang-content="backcover-title">자아의 신화는<br><span class="text-sandGold">언제나 현재 진행형</span></h3>
-                                        <p class="text-xs text-slate-400 mt-3 leading-relaxed" data-lang-content="backcover-desc">"자아의 신화는 언제나 현재 진행형이라네."</p>
+                                        <p class="text-xs text-amber-200/70 dark:text-slate-400 mt-3 leading-relaxed" data-lang-content="backcover-desc">"자아의 신화는 언제나 현재 진행형이라네."</p>
                                     </div>
                                     <button onclick="event.stopPropagation(); resetBook3D()" class="px-6 py-3 bg-sandGold/10 border border-sandGold/30 hover:border-sandGold hover:bg-sandGold/20 rounded-full text-xs font-bold text-sandGold tracking-widest transition-all duration-300 relative z-50">
                                         <span data-lang-content="backcover-btn">처음부터 다시 읽기</span> <i class="fa-solid fa-rotate-right ml-1"></i>
@@ -629,13 +629,14 @@
     </section>
 
     <!-- REAL CURVED S-SHAPE LEARNING ROADMAP SECTION (DESKTOP SNAKE, MOBILE VERTICAL WAVE) -->
-    <section id="roadmap-section" class="relative py-28 px-4 bg-desertNavy dark:bg-desertNavy transition-colors duration-500 z-30 overflow-hidden border-t border-slate-900/60">
+    <!-- ROADMAP THEME TUNED: Background colors and border colors adjusted dynamically -->
+    <section id="roadmap-section" class="relative py-28 px-4 bg-[#FAF7F2] dark:bg-desertNavy transition-colors duration-500 z-30 overflow-hidden border-t border-amber-900/10 dark:border-slate-900/60">
         
         <!-- Subtle Star/Dune Background Graphics -->
-        <div class="absolute inset-0 opacity-[0.03] pointer-events-none">
+        <div class="absolute inset-0 opacity-[0.03] dark:opacity-[0.03] pointer-events-none">
             <svg class="w-full h-full" xmlns="http://www.w3.org/2000/svg">
                 <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
-                    <path d="M 40 0 L 0 0 0 40" fill="none" stroke="white" stroke-width="0.5"/>
+                    <path d="M 40 0 L 0 0 0 40" fill="none" stroke="currentColor" stroke-width="0.5" class="text-slate-500 dark:text-white"/>
                 </pattern>
                 <rect width="100%" height="100%" fill="url(#grid)" />
             </svg>
@@ -643,19 +644,19 @@
 
         <div class="max-w-6xl mx-auto relative">
             <div class="text-center mb-16">
-                <span class="text-xs font-bold uppercase tracking-widest text-sandGold block mb-2">
+                <span class="text-xs font-bold uppercase tracking-widest text-amber-700 dark:text-sandGold block mb-2">
                     <i class="fa-solid fa-compass animate-spin" style="animation-duration: 4s;"></i> 
                     <span data-lang-content="timeline-subtitle">25주간의 연금술 로드맵</span>
                 </span>
-                <h3 class="font-serif text-3xl sm:text-4xl text-white dark:text-white transition-colors duration-500" data-lang-content="timeline-title">
+                <h3 class="font-serif text-3xl sm:text-4xl text-slate-900 dark:text-white transition-colors duration-500" data-lang-content="timeline-title">
                     위대한 학습 여정
                 </h3>
-                <p class="text-slate-400 dark:text-slate-400 text-xs sm:text-sm mt-3 max-w-xl mx-auto leading-relaxed transition-colors duration-500" data-lang-content="timeline-desc">
+                <p class="text-slate-600 dark:text-slate-400 text-xs sm:text-sm mt-3 max-w-xl mx-auto leading-relaxed transition-colors duration-500" data-lang-content="timeline-desc">
                     0-베이징에서 시작해 SWEA 알고리즘 역량 등급을 취득하고 최정예 웹 서비스를 다지기까지,<br>산티아고의 사막 행로에 빗댄 단계별 성장 궤적입니다.
                 </p>
             </div>
 
-            <!-- DYNAMIC S-CURVE SVG (Sits behind the cards and tracks coordinate changes) -->
+            <!-- DYNAMIC S-CURVE SVG -->
             <div id="timeline-container" class="relative min-h-[850px] md:min-h-[600px]">
                 <svg id="s-curve-svg" class="absolute inset-0 w-full h-full pointer-events-none z-0 overflow-visible">
                     <defs>
@@ -674,7 +675,6 @@
                     <path id="s-curve-line" d="" fill="none" stroke="url(#s-curve-grad)" stroke-width="4.5" stroke-dasharray="10,8" stroke-linecap="round" class="transition-all duration-300"/>
                     
                     <!-- Shepherd Character holding a staff, walking along S-Curve -->
-                    <!-- SKELETON SCALE-UP: Scale shepherd up to 2.0x as requested -->
                     <g id="s-curve-progress-ball" filter="url(#shepherd-glow)" class="transition-all duration-75" transform="scale(2)">
                         <!-- Head -->
                         <circle cx="0" cy="-15" r="5.5" fill="#F8FAFC" stroke="#D4AF37" stroke-width="1.5" />
@@ -685,49 +685,45 @@
                     </g>
                 </svg>
 
-                <!-- THE 4 ROADMAP MILESTONE NODES -->
+                <!-- THE 4 ROADMAP MILESTONE NODES (Strict Alternating "S" Columns on Desktop) -->
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-y-24 md:gap-y-36 md:gap-x-12 relative z-10">
                     
                     <!-- Milestone 1: Month 1 (Spain Meadows) -->
-                    <!-- Top-Left Desktop, First Mobile -->
                     <div class="order-1 flex flex-col items-center md:items-start text-center md:text-left timeline-card group" id="card-1">
                         <!-- Node Circle (Floating anchor point) -->
-                        <div id="node-1-dot" class="timeline-node w-16 h-16 rounded-full bg-gradient-to-b from-slate-900 to-slate-950 border-2 border-sandGold/50 hover:border-crystalGold shadow-gold-box hover:shadow-gold-intense flex items-center justify-center text-xl text-sandGold transition-all duration-300 transform group-hover:scale-110 mb-5 relative z-10">
+                        <div id="node-1-dot" class="timeline-node w-16 h-16 rounded-full bg-gradient-to-b from-white to-amber-50 dark:from-slate-900 dark:to-slate-950 border-2 border-amber-500/40 dark:border-sandGold/50 hover:border-amber-600 dark:hover:border-crystalGold shadow-md dark:shadow-gold-box hover:shadow-lg dark:hover:shadow-gold-intense flex items-center justify-center text-xl text-amber-800 dark:text-sandGold transition-all duration-300 transform group-hover:scale-110 mb-5 relative z-10">
                             <i class="fa-solid fa-campground"></i>
                         </div>
-                        <div class="bg-slate-950/80 p-6 rounded-2xl border border-sandGold/10 hover:border-sandGold/30 max-w-sm transition-all duration-300 backdrop-blur-md">
-                            <span class="text-[10px] text-sandGold tracking-widest font-bold uppercase block mb-1">Month 1</span>
-                            <h4 class="font-serif text-lg text-white font-bold mb-2" data-lang-content="t1-title">파이썬 기초 문법 및 SWEA D1 해결</h4>
-                            <p class="text-xs sm:text-sm text-slate-300 font-light leading-relaxed border-t border-slate-900 pt-3" data-lang-content="t1-desc">
+                        <div class="bg-white/95 dark:bg-slate-950/80 p-6 rounded-2xl border border-amber-600/10 dark:border-sandGold/10 hover:border-amber-500/30 dark:hover:border-sandGold/30 max-w-sm transition-all duration-300 backdrop-blur-md shadow-sm dark:shadow-none">
+                            <span class="text-[10px] text-amber-700 dark:text-sandGold tracking-widest font-bold uppercase block mb-1">Month 1</span>
+                            <h4 class="font-serif text-lg text-slate-900 dark:text-white font-bold mb-2" data-lang-content="t1-title">파이썬 기초 문법 및 SWEA D1 해결</h4>
+                            <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 font-light leading-relaxed border-t border-slate-100 dark:border-slate-900 pt-3" data-lang-content="t1-desc">
                                 변수, 조건문, 반복문 기초를 다지고 단순 연산 문제를 내 힘으로 해결합니다.
                             </p>
                         </div>
                     </div>
 
                     <!-- Milestone 2: Month 2-3 (Crystal Shop) -->
-                    <!-- Top-Right Desktop, Second Mobile -->
                     <div class="order-2 flex flex-col items-center md:items-end text-center md:text-right timeline-card group" id="card-2">
                         <!-- Node Circle -->
-                        <div id="node-2-dot" class="timeline-node w-16 h-16 rounded-full bg-gradient-to-b from-slate-900 to-slate-950 border-2 border-sandGold/50 hover:border-crystalGold shadow-gold-box hover:shadow-gold-intense flex items-center justify-center text-xl text-sandGold transition-all duration-300 transform group-hover:scale-110 mb-5 relative z-10">
+                        <div id="node-2-dot" class="timeline-node w-16 h-16 rounded-full bg-gradient-to-b from-white to-amber-50 dark:from-slate-900 dark:to-slate-950 border-2 border-amber-500/40 dark:border-sandGold/50 hover:border-amber-600 dark:hover:border-crystalGold shadow-md dark:shadow-gold-box hover:shadow-lg dark:hover:shadow-gold-intense flex items-center justify-center text-xl text-amber-800 dark:text-sandGold transition-all duration-300 transform group-hover:scale-110 mb-5 relative z-10">
                             <i class="fa-solid fa-gem animate-pulse"></i>
                         </div>
-                        <div class="bg-slate-950/80 p-6 rounded-2xl border border-sandGold/10 hover:border-sandGold/30 max-w-sm transition-all duration-300 backdrop-blur-md">
-                            <span class="text-[10px] text-sandGold tracking-widest font-bold uppercase block mb-1">Month 2-3</span>
-                            <h4 class="font-serif text-lg text-white font-bold mb-2" data-lang-content="t2-title">SWEA D2 정복 및 2차원 탐색 마스터</h4>
-                            <p class="text-xs sm:text-sm text-slate-300 font-light leading-relaxed border-t border-slate-900 pt-3" data-lang-content="t2-desc">
+                        <div class="bg-white/95 dark:bg-slate-950/80 p-6 rounded-2xl border border-amber-600/10 dark:border-sandGold/10 hover:border-amber-500/30 dark:hover:border-sandGold/30 max-w-sm transition-all duration-300 backdrop-blur-md shadow-sm dark:shadow-none">
+                            <span class="text-[10px] text-amber-700 dark:text-sandGold tracking-widest font-bold uppercase block mb-1">Month 2-3</span>
+                            <h4 class="font-serif text-lg text-slate-900 dark:text-white font-bold mb-2" data-lang-content="t2-title">SWEA D2 정복 및 2차원 탐색 마스터</h4>
+                            <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 font-light leading-relaxed border-t border-slate-100 dark:border-slate-900 pt-3" data-lang-content="t2-desc">
                                 중첩 반복문, 문자열 처리 및 격자판 상하좌우 탐색의 기본 기틀을 다집니다.
                             </p>
                         </div>
                     </div>
 
                     <!-- Milestone 3: Month 4 (Oasis with Palm Tree) -->
-                    <!-- Bottom-Right Desktop, Third Mobile -->
-                    <!-- STACK REWRITTEN: "print() 문" -> "문제풀이를 넘어 구조의 오류를 파악하기 위해 노력합니다." -->
                     <div class="order-3 md:order-4 flex flex-col items-center md:items-end text-center md:text-right timeline-card group" id="card-3">
                         <!-- Node Circle containing beautiful custom Palm Tree SVG -->
-                        <div id="node-3-dot" class="timeline-node w-16 h-16 rounded-full bg-gradient-to-b from-slate-900 to-slate-950 border-2 border-sandGold/50 hover:border-crystalGold shadow-gold-box hover:shadow-gold-intense flex items-center justify-center text-xl text-sandGold transition-all duration-300 transform group-hover:scale-110 mb-5 relative z-10">
+                        <div id="node-3-dot" class="timeline-node w-16 h-16 rounded-full bg-gradient-to-b from-white to-amber-50 dark:from-slate-900 dark:to-slate-950 border-2 border-amber-500/40 dark:border-sandGold/50 hover:border-amber-600 dark:hover:border-crystalGold shadow-md dark:shadow-gold-box hover:shadow-lg dark:hover:shadow-gold-intense flex items-center justify-center text-xl text-amber-800 dark:text-sandGold transition-all duration-300 transform group-hover:scale-110 mb-5 relative z-10">
                             <!-- Custom inline Palm Tree SVG -->
-                            <svg class="w-8 h-8 text-sandGold" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <svg class="w-8 h-8 text-amber-800 dark:text-sandGold" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <path d="M13 22H11" />
                                 <path d="M12 22C12 17 10.5 13 8 10" />
                                 <path d="M12 22C12 15 13.5 11 16 8" />
@@ -737,27 +733,25 @@
                                 <path d="M12 8C12 5 12 2 12 2C13 4 13 6 12 8Z" fill="currentColor" />
                             </svg>
                         </div>
-                        <div class="bg-slate-950/80 p-6 rounded-2xl border border-sandGold/10 hover:border-sandGold/30 max-w-sm transition-all duration-300 backdrop-blur-md">
-                            <span class="text-[10px] text-sandGold tracking-widest font-bold uppercase block mb-1">Month 4</span>
-                            <h4 class="font-serif text-lg text-white font-bold mb-2" data-lang-content="t3-title">SWEA D3 진입 및 스스로 디버깅 훈련</h4>
-                            <p class="text-xs sm:text-sm text-slate-300 font-light leading-relaxed border-t border-slate-900 pt-3" data-lang-content="t3-desc">
+                        <div class="bg-white/95 dark:bg-slate-950/80 p-6 rounded-2xl border border-amber-600/10 dark:border-sandGold/10 hover:border-amber-500/30 dark:hover:border-sandGold/30 max-w-sm transition-all duration-300 backdrop-blur-md shadow-sm dark:shadow-none">
+                            <span class="text-[10px] text-amber-700 dark:text-sandGold tracking-widest font-bold uppercase block mb-1">Month 4</span>
+                            <h4 class="font-serif text-lg text-slate-900 dark:text-white font-bold mb-2" data-lang-content="t3-title">SWEA D3 진입 및 스스로 디버깅 훈련</h4>
+                            <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 font-light leading-relaxed border-t border-slate-100 dark:border-slate-900 pt-3" data-lang-content="t3-desc">
                                 문제풀이를 넘어 구조의 오류를 파악하기 위해 노력합니다.
                             </p>
                         </div>
                     </div>
 
                     <!-- Milestone 4: Month 5-6 (Pyramids of Giza) -->
-                    <!-- Bottom-Left Desktop, Fourth Mobile -->
-                    <!-- STACK REWRITTEN: IM 실전 패스로 축약 & "테스트를 통과하고 2학기를 준비합니다" -->
                     <div class="order-4 md:order-3 flex flex-col items-center md:items-start text-center md:text-left timeline-card group" id="card-4">
                         <!-- Node Circle -->
-                        <div id="node-4-dot" class="timeline-node w-16 h-16 rounded-full bg-gradient-to-b from-slate-900 to-slate-950 border-2 border-sandGold/50 hover:border-crystalGold shadow-gold-box hover:shadow-gold-intense flex items-center justify-center text-xl text-sandGold transition-all duration-300 transform group-hover:scale-110 mb-5 relative z-10">
+                        <div id="node-4-dot" class="timeline-node w-16 h-16 rounded-full bg-gradient-to-b from-white to-amber-50 dark:from-slate-900 dark:to-slate-950 border-2 border-amber-500/40 dark:border-sandGold/50 hover:border-amber-600 dark:hover:border-crystalGold shadow-md dark:shadow-gold-box hover:shadow-lg dark:hover:shadow-gold-intense flex items-center justify-center text-xl text-amber-800 dark:text-sandGold transition-all duration-300 transform group-hover:scale-110 mb-5 relative z-10">
                             <i class="fa-solid fa-mountain"></i>
                         </div>
-                        <div class="bg-slate-950/80 p-6 rounded-2xl border border-sandGold/10 hover:border-sandGold/30 max-w-sm transition-all duration-300 backdrop-blur-md">
-                            <span class="text-[10px] text-sandGold tracking-widest font-bold uppercase block mb-1">Month 5-6</span>
-                            <h4 class="font-serif text-lg text-white font-bold mb-2" data-lang-content="t4-title">IM 실전 패스</h4>
-                            <p class="text-xs sm:text-sm text-slate-300 font-light leading-relaxed border-t border-slate-900 pt-3" data-lang-content="t4-desc">
+                        <div class="bg-white/95 dark:bg-slate-950/80 p-6 rounded-2xl border border-amber-600/10 dark:border-sandGold/10 hover:border-amber-500/30 dark:hover:border-sandGold/30 max-w-sm transition-all duration-300 backdrop-blur-md shadow-sm dark:shadow-none">
+                            <span class="text-[10px] text-amber-700 dark:text-sandGold tracking-widest font-bold uppercase block mb-1">Month 5-6</span>
+                            <h4 class="font-serif text-lg text-slate-900 dark:text-white font-bold mb-2" data-lang-content="t4-title">IM 실전 패스</h4>
+                            <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 font-light leading-relaxed border-t border-slate-100 dark:border-slate-900 pt-3" data-lang-content="t4-desc">
                                 테스트를 통과하고 2학기를 준비합니다.
                             </p>
                         </div>
@@ -768,28 +762,27 @@
         </div>
     </section>
 
-    <!-- NEW SECTION 1: URIM & THUMMIM DIVINATION (image_f37d92.png) -->
-    <section class="relative py-20 px-4 bg-desertNavy dark:bg-desertNavy transition-colors duration-500 z-30 overflow-hidden border-t border-slate-900/60">
+    <!-- NEW SECTION 1: URIM & THUMMIM DIVINATION -->
+    <section class="relative py-20 px-4 bg-[#FAF7F2] dark:bg-desertNavy transition-colors duration-500 z-30 overflow-hidden border-t border-amber-900/10 dark:border-slate-900/60">
         <div class="max-w-4xl mx-auto">
             <div class="text-center mb-8">
-                <span class="text-xs font-bold uppercase tracking-widest text-sandGold block mb-2">
+                <span class="text-xs font-bold uppercase tracking-widest text-amber-700 dark:text-sandGold block mb-2">
                     ◆ URIM & THUMMIM DIVINATION
                 </span>
-                <h3 class="font-serif text-3xl text-white dark:text-white transition-colors duration-500" data-lang-content="divination-title">
+                <h3 class="font-serif text-3xl text-slate-900 dark:text-white transition-colors duration-500" data-lang-content="divination-title">
                     우림과 둠밈에게 길을 묻다
                 </h3>
-                <p class="text-slate-400 dark:text-slate-400 text-xs sm:text-sm mt-3 max-w-xl mx-auto leading-relaxed" data-lang-content="divination-desc">
+                <p class="text-slate-600 dark:text-slate-400 text-xs sm:text-sm mt-3 max-w-xl mx-auto leading-relaxed" data-lang-content="divination-desc">
                     마음속에 깊이 고민 중인 '예/아니오' 질문을 떠올린 후, 주머니 속 신비한 돌을 꺼내어 보세요.
                 </p>
             </div>
 
-            <div class="bg-slate-950/90 border border-sandGold/25 rounded-2xl p-8 sm:p-10 shadow-gold-box flex flex-col md:flex-row items-center gap-10">
+            <div class="bg-white/90 dark:bg-slate-950/90 border border-amber-600/20 dark:border-sandGold/25 rounded-2xl p-8 sm:p-10 shadow-md dark:shadow-gold-box flex flex-col md:flex-row items-center gap-10">
                 <!-- Pouch / Bag Trigger on the Left -->
-                <!-- SACK REWRITTEN: Removed shopping bag layout. Replaced with beautiful hand-drawn, drawstring, nomadic rustic leather sack SVG. Enlarged to almost fill the block. -->
                 <div class="flex flex-col items-center gap-3">
-                    <button id="pouch-btn" onclick="drawUrimThummim()" class="w-44 h-44 border-2 border-dashed border-amber-900/50 hover:border-sandGold/50 rounded-2xl bg-amber-950/20 hover:bg-amber-950/40 flex items-center justify-center transition-all duration-300 cursor-pointer group p-2">
+                    <button id="pouch-btn" onclick="drawUrimThummim()" class="w-44 h-44 border-2 border-dashed border-amber-900/20 dark:border-amber-900/50 rounded-2xl bg-amber-50/20 dark:bg-amber-950/20 hover:bg-amber-100/30 dark:hover:bg-amber-950/40 flex items-center justify-center transition-all duration-300 cursor-pointer group p-2">
                         <!-- Custom drawstring nomadic leather sack SVG -->
-                        <svg class="w-full h-full text-amber-800/80 group-hover:text-sandGold group-hover:scale-105 transition-all duration-300" viewBox="0 0 100 100" fill="currentColor">
+                        <svg class="w-full h-full text-amber-700/80 dark:text-amber-800/80 group-hover:text-amber-600 dark:group-hover:text-sandGold group-hover:scale-105 transition-all duration-300" viewBox="0 0 100 100" fill="currentColor">
                             <!-- Drawstring ribbon tie -->
                             <path d="M 50,30 C 42,28 35,22 35,14 C 35,8 45,10 50,22 C 55,10 65,8 65,14 C 65,22 58,28 50,30 Z" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
                             <!-- Sack Main Body -->
@@ -797,7 +790,7 @@
                             <!-- Rustic Stitching line -->
                             <path d="M 32,54 C 36,64 36,76 42,86" stroke="currentColor" stroke-width="2" stroke-dasharray="3,3" fill="none"/>
                             <path d="M 68,54 C 64,64 64,76 58,86" stroke="currentColor" stroke-width="2" stroke-dasharray="3,3" fill="none"/>
-                            <!-- Sacred Embellishment Symbol (Alchemical triangle + cross) -->
+                            <!-- Sacred Embellishment Symbol -->
                             <polygon points="50,52 42,66 58,66" fill="none" stroke="currentColor" stroke-width="2"/>
                             <line x1="50" y1="66" x2="50" y2="76" stroke="currentColor" stroke-width="2"/>
                             <line x1="44" y1="71" x2="56" y2="71" stroke="currentColor" stroke-width="2"/>
@@ -807,7 +800,7 @@
                 </div>
 
                 <!-- Divination Result Box on the Right -->
-                <div id="divination-result" class="flex-1 w-full min-h-[100px] flex items-center justify-center border-l-0 md:border-l border-slate-900 md:pl-10">
+                <div id="divination-result" class="flex-1 w-full min-h-[100px] flex items-center justify-center border-l-0 md:border-l border-amber-100 dark:border-slate-900 md:pl-10">
                     <div class="text-center md:text-left w-full" id="divination-initial-text">
                         <p class="text-sm text-slate-500 italic" data-lang-content="divination-prompt">주머니를 눌러 결단을 위한 계시의 보석을 확인하세요.</p>
                     </div>
@@ -817,10 +810,10 @@
                         <div id="gem-color-circle" class="w-14 h-14 rounded-full border border-slate-500/45 shadow-md flex-shrink-0"></div>
                         <div class="flex-1">
                             <div class="flex flex-col md:flex-row items-center gap-2 mb-1.5">
-                                <h4 id="gem-name" class="font-serif text-xl text-white font-bold tracking-wider">Urim</h4>
+                                <h4 id="gem-name" class="font-serif text-xl text-slate-900 dark:text-white font-bold tracking-wider">Urim</h4>
                                 <span id="gem-indicator" class="text-xs px-2 py-0.5 rounded bg-sandGold/10 text-sandGold font-bold">긍정의 표지 (YES)</span>
                             </div>
-                            <blockquote id="gem-quote" class="font-serif text-sm text-slate-300 italic border-l-2 border-sandGold/40 pl-3.5 py-1 leading-relaxed">
+                            <blockquote id="gem-quote" class="font-serif text-sm text-slate-600 dark:text-slate-300 italic border-l-2 border-amber-500/30 dark:border-sandGold/40 pl-3.5 py-1 leading-relaxed">
                                 "네가 무언가를 간절히 원할 때, 온 우주는 너의 꿈이 실현되도록 도와준다네."
                             </blockquote>
                         </div>
@@ -830,30 +823,30 @@
         </div>
     </section>
 
-    <!-- NEW SECTION 2: PERSONAL LEGEND SCROLL (image_f37daf.png) -->
-    <section class="relative py-20 px-4 bg-desertNavy dark:bg-desertNavy transition-colors duration-500 z-30 overflow-hidden border-t border-slate-900/60">
+    <!-- NEW SECTION 2: PERSONAL LEGEND SCROLL -->
+    <section class="relative py-20 px-4 bg-[#FAF7F2] dark:bg-desertNavy transition-colors duration-500 z-30 overflow-hidden border-t border-amber-900/10 dark:border-slate-900/60">
         <div class="max-w-4xl mx-auto">
             <div class="text-center mb-8">
-                <span class="text-xs font-bold uppercase tracking-widest text-sandGold block mb-2">
+                <span class="text-xs font-bold uppercase tracking-widest text-amber-700 dark:text-sandGold block mb-2">
                     ✍ PERSONAL LEGEND SCROLL
                 </span>
-                <h3 class="font-serif text-3xl text-white dark:text-white transition-colors duration-500" data-lang-content="scroll-title">
+                <h3 class="font-serif text-3xl text-slate-900 dark:text-white transition-colors duration-500" data-lang-content="scroll-title">
                     당신의 '자아의 신화'는 무엇인가요?
                 </h3>
-                <p class="text-slate-400 dark:text-slate-400 text-xs sm:text-sm mt-3 max-w-xl mx-auto leading-relaxed" data-lang-content="scroll-desc">
+                <p class="text-slate-600 dark:text-slate-400 text-xs sm:text-sm mt-3 max-w-xl mx-auto leading-relaxed" data-lang-content="scroll-desc">
                     가슴 깊이 간직한 당신의 소중한 꿈을 적고 기록하여 황금빛 양고문서로 transmute 하세요.
                 </p>
             </div>
 
-            <div class="bg-slate-950/90 border border-sandGold/25 rounded-2xl p-8 sm:p-10 shadow-gold-box">
+            <div class="bg-white/90 dark:bg-slate-950/90 border border-amber-600/20 dark:border-sandGold/25 rounded-2xl p-8 sm:p-10 shadow-md dark:shadow-gold-box">
                 <!-- Submission Form Area -->
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-5">
                     <div class="flex flex-col gap-1.5">
-                        <label class="text-xs text-sandGold font-bold tracking-widest" data-lang-content="scroll-form-name">당신의 성함과 자아의 신화 기록하기</label>
-                        <input type="text" id="legend-author" placeholder="성함 (예: 이재원)" class="w-full bg-slate-900/90 border border-slate-800 focus:border-sandGold/50 rounded-xl px-4 py-3 text-sm text-white placeholder-slate-600 outline-none transition-all duration-300">
+                        <label class="text-xs text-amber-800 dark:text-sandGold font-bold tracking-widest" data-lang-content="scroll-form-name">당신의 성함과 자아의 신화 기록하기</label>
+                        <input type="text" id="legend-author" placeholder="성함 (예: 이재원)" class="w-full bg-amber-50/50 dark:bg-slate-900/90 border border-amber-200 dark:border-slate-800 focus:border-amber-500 dark:focus:border-sandGold/50 rounded-xl px-4 py-3 text-sm text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-600 outline-none transition-all duration-300">
                     </div>
                     <div class="flex flex-col gap-1.5 justify-end">
-                        <input type="text" id="legend-text" placeholder="당신의 일생의 꿈과 지향을 기록해보세요..." class="w-full bg-slate-900/90 border border-slate-800 focus:border-sandGold/50 rounded-xl px-4 py-3 text-sm text-white placeholder-slate-600 outline-none transition-all duration-300">
+                        <input type="text" id="legend-text" placeholder="당신의 일생의 꿈과 지향을 기록해보세요..." class="w-full bg-amber-50/50 dark:bg-slate-900/90 border border-amber-200 dark:border-slate-800 focus:border-amber-500 dark:focus:border-sandGold/50 rounded-xl px-4 py-3 text-sm text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-600 outline-none transition-all duration-300">
                     </div>
                 </div>
 
@@ -862,19 +855,19 @@
                 </button>
 
                 <!-- Listed Documents Below -->
-                <div class="mt-10 border-t border-slate-900/80 pt-8">
+                <div class="mt-10 border-t border-slate-200 dark:border-slate-900/80 pt-8">
                     <h4 class="text-xs font-bold tracking-widest text-slate-500 uppercase mb-4" data-lang-content="scroll-list-title">기록된 자아의 신화들</h4>
                     
                     <div id="legends-scroll-container" class="space-y-4 max-h-[300px] overflow-y-auto pr-2">
-                        <!-- Default pre-loaded dream cards -->
-                        <div class="bg-slate-900/40 border border-slate-900 p-5 rounded-xl flex items-center justify-between gap-5 relative overflow-hidden group">
+                        <!-- Default dream card -->
+                        <div class="bg-amber-50/30 dark:bg-slate-900/40 border border-amber-100 dark:border-slate-900 p-5 rounded-xl flex items-center justify-between gap-5 relative overflow-hidden group">
                             <div>
-                                <p class="font-serif text-sm sm:text-base text-slate-200 italic leading-relaxed">
+                                <p class="font-serif text-sm sm:text-base text-slate-700 dark:text-slate-200 italic leading-relaxed">
                                     "내면의 열정을 따라 세상에 선한 발자취를 남기는 것"
                                 </p>
-                                <span class="text-[10px] text-slate-500 tracking-wider block mt-1">BY 이재원</span>
+                                <span class="text-[10px] text-slate-500 dark:text-slate-500 tracking-wider block mt-1">BY 이재원</span>
                             </div>
-                            <button onclick="copyToClipboard(this, '내면의 열정을 따라 세상에 선한 발자취를 남기는 것')" class="px-3 py-1.5 border border-slate-800 hover:border-sandGold/40 text-[10px] tracking-widest text-slate-400 hover:text-sandGold rounded-lg transition-all flex items-center gap-1 flex-shrink-0">
+                            <button onclick="copyToClipboard(this, '내면의 열정을 따라 세상에 선한 발자취를 남기는 것')" class="px-3 py-1.5 border border-amber-200 dark:border-slate-800 hover:border-amber-500/40 dark:hover:border-sandGold/40 text-[10px] tracking-widest text-slate-500 dark:text-slate-400 hover:text-amber-800 dark:hover:text-sandGold rounded-lg transition-all flex items-center gap-1 flex-shrink-0">
                                 <i class="fa-solid fa-copy"></i> COPY
                             </button>
                         </div>
@@ -885,7 +878,7 @@
     </section>
 
     <!-- UNIVERSE WHISPER / OMEN CARD GENERATOR -->
-    <section class="relative py-24 px-4 bg-desertNavy dark:bg-desertNavy transition-colors duration-500 z-30 overflow-hidden border-t border-slate-900/60">
+    <section class="relative py-24 px-4 bg-[#FAF7F2] dark:bg-desertNavy transition-colors duration-500 z-30 overflow-hidden border-t border-amber-900/10 dark:border-slate-900/60">
         <div class="absolute bottom-0 right-[10%] w-[180px] h-[100px] opacity-10 pointer-events-none">
             <svg class="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
                 <polygon points="50,0 0,100 100,100" fill="url(#pyr-light-grad)"></polygon>
@@ -893,44 +886,44 @@
         </div>
 
         <div class="max-w-4xl mx-auto">
-            <div class="bg-gradient-to-tr from-slate-950/95 to-slate-900/60 border border-sandGold/20 rounded-3xl p-8 sm:p-12 shadow-gold-box backdrop-blur-md relative overflow-hidden">
+            <div class="bg-gradient-to-tr from-white to-amber-50/40 dark:from-slate-950/95 dark:to-slate-900/60 border border-amber-600/20 dark:border-sandGold/20 rounded-3xl p-8 sm:p-12 shadow-md dark:shadow-gold-box backdrop-blur-md relative overflow-hidden">
                 <!-- Decorative Circle -->
-                <div class="absolute -right-24 -bottom-24 w-64 h-64 rounded-full border border-sandGold/5 pointer-events-none flex items-center justify-center">
-                    <div class="w-48 h-48 rounded-full border border-dashed border-sandGold/5"></div>
+                <div class="absolute -right-24 -bottom-24 w-64 h-64 rounded-full border border-amber-500/10 dark:border-sandGold/5 pointer-events-none flex items-center justify-center">
+                    <div class="w-48 h-48 rounded-full border border-dashed border-amber-500/10 dark:border-sandGold/5"></div>
                 </div>
 
                 <div class="text-center max-w-2xl mx-auto mb-10">
-                    <span class="text-xs font-bold uppercase tracking-widest text-sandGold block mb-2"><i class="fa-solid fa-wand-magic-sparkles"></i> <span data-lang-content="oracle-sub">Oracle of the Desert</span></span>
-                    <h3 class="font-serif text-2xl sm:text-3xl text-white dark:text-white transition-colors duration-500" data-lang-content="oracle-title">오늘의 징조</h3>
-                    <p class="text-slate-400 dark:text-slate-400 text-xs sm:text-sm mt-3 transition-colors duration-500" data-lang-content="oracle-desc">
+                    <span class="text-xs font-bold uppercase tracking-widest text-amber-700 dark:text-sandGold block mb-2"><i class="fa-solid fa-wand-magic-sparkles"></i> <span data-lang-content="oracle-sub">Oracle of the Desert</span></span>
+                    <h3 class="font-serif text-2xl sm:text-3xl text-slate-900 dark:text-white transition-colors duration-500" data-lang-content="oracle-title">오늘의 징조</h3>
+                    <p class="text-slate-600 dark:text-slate-400 text-xs sm:text-sm mt-3 transition-colors duration-500" data-lang-content="oracle-desc">
                         신비한 에너지를 머금은 5개의 고대 룬스톤 문양 중 하나를 선택하세요.<br>소설 속 지혜의 메시지를 빌려, 오늘 가슴 깊이 품을 문장을 선물합니다.
                     </p>
                 </div>
 
-                <!-- Runestone Buttons with Distinct Neon Glowing Effects -->
+                <!-- Runestone Buttons -->
                 <div class="flex flex-wrap justify-center gap-4 sm:gap-6 mb-12">
-                    <button onclick="drawOmen(1)" class="runestone rune-cyan w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-gradient-to-b from-slate-900 to-slate-950 border hover:scale-110 active:scale-95 transition-all duration-300 flex items-center justify-center text-2xl font-serif">𐎠</button>
-                    <button onclick="drawOmen(2)" class="runestone rune-amber w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-gradient-to-b from-slate-900 to-slate-950 border hover:scale-110 active:scale-95 transition-all duration-300 flex items-center justify-center text-2xl font-serif">𐎡</button>
-                    <button onclick="drawOmen(3)" class="runestone rune-purple w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-gradient-to-b from-slate-900 to-slate-950 border hover:scale-110 active:scale-95 transition-all duration-300 flex items-center justify-center text-2xl font-serif">𐎢</button>
-                    <button onclick="drawOmen(4)" class="runestone rune-emerald w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-gradient-to-b from-slate-900 to-slate-950 border hover:scale-110 active:scale-95 transition-all duration-300 flex items-center justify-center text-2xl font-serif">𐏃</button>
-                    <button onclick="drawOmen(5)" class="runestone rune-rose w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-gradient-to-b from-slate-900 to-slate-950 border hover:scale-110 active:scale-95 transition-all duration-300 flex items-center justify-center text-2xl font-serif">𐎧</button>
+                    <button onclick="drawOmen(1)" class="runestone rune-cyan w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-gradient-to-b from-white to-amber-50 dark:from-slate-900 dark:to-slate-950 border border-amber-200 dark:border-slate-800 hover:scale-110 active:scale-95 transition-all duration-300 flex items-center justify-center text-2xl font-serif">𐎠</button>
+                    <button onclick="drawOmen(2)" class="runestone rune-amber w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-gradient-to-b from-white to-amber-50 dark:from-slate-900 dark:to-slate-950 border border-amber-200 dark:border-slate-800 hover:scale-110 active:scale-95 transition-all duration-300 flex items-center justify-center text-2xl font-serif">𐎡</button>
+                    <button onclick="drawOmen(3)" class="runestone rune-purple w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-gradient-to-b from-white to-amber-50 dark:from-slate-900 dark:to-slate-950 border border-amber-200 dark:border-slate-800 hover:scale-110 active:scale-95 transition-all duration-300 flex items-center justify-center text-2xl font-serif">𐎢</button>
+                    <button onclick="drawOmen(4)" class="runestone rune-emerald w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-gradient-to-b from-white to-amber-50 dark:from-slate-900 dark:to-slate-950 border border-amber-200 dark:border-slate-800 hover:scale-110 active:scale-95 transition-all duration-300 flex items-center justify-center text-2xl font-serif">𐏃</button>
+                    <button onclick="drawOmen(5)" class="runestone rune-rose w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-gradient-to-b from-white to-amber-50 dark:from-slate-900 dark:to-slate-950 border border-amber-200 dark:border-slate-800 hover:scale-110 active:scale-95 transition-all duration-300 flex items-center justify-center text-2xl font-serif">𐎧</button>
                 </div>
 
                 <!-- Omen Result Display Card -->
-                <div id="omen-card" class="max-w-xl mx-auto hidden bg-slate-950/95 dark:bg-slate-950/95 border-2 border-crystalGold/30 rounded-2xl p-6 sm:p-8 shadow-gold-intense text-center relative overflow-hidden transition-all duration-500 scale-95 opacity-0">
+                <div id="omen-card" class="max-w-xl mx-auto hidden bg-white dark:bg-slate-950/95 border-2 border-amber-500/30 dark:border-crystalGold/30 rounded-2xl p-6 sm:p-8 shadow-md dark:shadow-gold-intense text-center relative overflow-hidden transition-all duration-500 scale-95 opacity-0">
                     <div class="absolute top-2 right-2">
-                        <button onclick="closeOmen()" class="text-slate-500 hover:text-sandGold p-2 text-sm">
+                        <button onclick="closeOmen()" class="text-slate-400 hover:text-amber-700 dark:hover:text-sandGold p-2 text-sm">
                             <i class="fa-solid fa-times"></i>
                         </button>
                     </div>
                     <div id="omen-icon-container" class="w-12 h-12 rounded-full mx-auto flex items-center justify-center text-lg mb-4">
                         <i id="omen-icon" class="fa-solid"></i>
                     </div>
-                    <div id="omen-type" class="text-xs font-bold tracking-widest uppercase mb-2">우주의 지혜</div>
-                    <blockquote id="omen-quote" class="font-serif text-sm sm:text-lg text-slate-200 leading-relaxed italic mb-4">
+                    <div id="omen-type" class="text-xs font-bold tracking-widest uppercase mb-2 text-amber-900 dark:text-white">우주의 지혜</div>
+                    <blockquote id="omen-quote" class="font-serif text-sm sm:text-lg text-slate-800 dark:text-slate-200 leading-relaxed italic mb-4">
                         "보물을 찾고 싶다면, 먼저 징조를 따르게나."
                     </blockquote>
-                    <p id="omen-interpretation" class="text-xs sm:text-sm text-slate-400 font-light leading-relaxed border-t border-slate-900/60 pt-4">
+                    <p id="omen-interpretation" class="text-xs sm:text-sm text-slate-600 dark:text-slate-400 font-light leading-relaxed border-t border-amber-100 dark:border-slate-900/60 pt-4">
                         해당 징조에 대한 지혜로운 해설이 여기에 출력됩니다.
                     </p>
                 </div>
@@ -940,11 +933,11 @@
     </section>
 
     <!-- FOOTER -->
-    <footer class="relative bg-desertDeep dark:bg-desertDeep text-slate-400 dark:text-slate-400 py-16 px-4 border-t border-sandGold/10 overflow-hidden z-20 transition-all duration-500">
-        <div class="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-desertNavy to-transparent opacity-60 pointer-events-none"></div>
+    <footer class="relative bg-[#F5EFE6] dark:bg-desertDeep text-slate-600 dark:text-slate-400 py-16 px-4 border-t border-amber-600/20 dark:border-sandGold/10 overflow-hidden z-20 transition-all duration-500">
+        <div class="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-[#FAF7F2] dark:from-desertNavy to-transparent opacity-60 pointer-events-none"></div>
 
         <div class="max-w-5xl mx-auto relative z-10 text-center">
-            <h3 class="font-serif text-2xl sm:text-3xl text-white dark:text-white mb-4 transition-colors duration-500" data-lang-content="footer-quote">
+            <h3 class="font-serif text-2xl sm:text-3xl text-slate-900 dark:text-white mb-4 transition-colors duration-500" data-lang-content="footer-quote">
                 "그대의 마음이 머무는 곳에,<br>그대의 보물이 있을 것이네."
             </h3>
             <p class="text-xs sm:text-sm text-slate-500 max-w-xl mx-auto leading-relaxed mb-8" data-lang-content="footer-desc">
@@ -953,18 +946,18 @@
             </p>
 
             <div class="flex justify-center gap-6 mb-12">
-                <a href="#" class="w-10 h-10 rounded-full border border-slate-800 hover:border-sandGold/50 hover:text-white flex items-center justify-center transition-all duration-300 hover:scale-110">
+                <a href="#" class="w-10 h-10 rounded-full border border-amber-200 dark:border-slate-800 hover:border-amber-500 dark:hover:border-sandGold/50 hover:text-amber-900 dark:hover:text-white flex items-center justify-center transition-all duration-300 hover:scale-110">
                     <i class="fa-solid fa-envelope text-xs"></i>
                 </a>
-                <a href="#" class="w-10 h-10 rounded-full border border-slate-800 hover:border-sandGold/50 hover:text-white flex items-center justify-center transition-all duration-300 hover:scale-110">
+                <a href="#" class="w-10 h-10 rounded-full border border-amber-200 dark:border-slate-800 hover:border-amber-500 dark:hover:border-sandGold/50 hover:text-amber-900 dark:hover:text-white flex items-center justify-center transition-all duration-300 hover:scale-110">
                     <i class="fa-brands fa-github text-xs"></i>
                 </a>
-                <a href="https://search.shopping.naver.com/search/all?query=%EC%97%B0%EA%B8%88%EC%88%A0%EC%82%AC" target="_blank" class="w-10 h-10 rounded-full border border-slate-800 hover:border-sandGold/50 hover:text-white flex items-center justify-center transition-all duration-300 hover:scale-110" title="도서 정보 보기">
+                <a href="https://search.shopping.naver.com/search/all?query=%EC%97%B0%EA%B8%88%EC%88%A0%EC%82%AC" target="_blank" class="w-10 h-10 rounded-full border border-amber-200 dark:border-slate-800 hover:border-amber-500 dark:hover:border-sandGold/50 hover:text-amber-900 dark:hover:text-white flex items-center justify-center transition-all duration-300 hover:scale-110" title="도서 정보 보기">
                     <i class="fa-solid fa-book-bookmark text-xs"></i>
                 </a>
             </div>
 
-            <div class="text-[10px] tracking-widest text-slate-600 uppercase">
+            <div class="text-[10px] tracking-widest text-slate-500 dark:text-slate-600 uppercase">
                 <p class="mb-2">The Alchemist - A Journey of Destiny</p>
                 <p>&copy; 2026 The Alchemist. All rights reserved.</p>
             </div>
@@ -979,6 +972,13 @@
         let stars = [];
         let numStars = 100;
         let mouse = { x: null, y: null, radius: 150 };
+
+        // MOMENTUM RESPONSIVE SANDSTORM PARTICLES STATE
+        let sandParticles = [];
+        let lastScrollY = window.scrollY;
+        let scrollSpeed = 0;
+        let targetWindForce = 0;
+        let currentWindForce = 0; 
 
         // TRANSLATION DICTIONARY
         const TRANSLATIONS = {
@@ -1072,7 +1072,7 @@
                 'p1-desc': 'This scene portrays Santiago rejecting the comfort of a successful crystal shop and venturing back into the wild, unpredictable desert. It symbolizes human courage to overcome cozy routines and march toward growth.',
                 'p2-title': 'Ever-Present Omens',
                 'p2-quote': '"The universe always leaves signs, we just fail to notice them."',
-                'p2-desc': 'This scene details Santiago reading invisible signals from bird flights and desert breezes. It teaches that our optimal guide paths hide inside trivial daily advice or unexpected failures.',
+                'p2-desc': 'This scene details Santiago reading invisible signals from bird flights and desert breezes. It teaches that our optimal guide paths hide inside daily advice or unexpected failures.',
                 'p3-title': 'The Treasure Inside',
                 'p3-quote': '"The most precious treasure was where you first slept."',
                 'p3-desc': 'Instead of finding the treasure beneath the giant pyramids, Santiago digs it up under the ruined church back home. It reveals that the spiritual purification during the trials of the journey is the true gold.',
@@ -1112,6 +1112,7 @@
             }
         };
 
+        // Gilded Mouse Dust Particles
         window.addEventListener('mousemove', (e) => {
             mouse.x = e.clientX;
             mouse.y = e.clientY;
@@ -1176,6 +1177,7 @@
             }, 1800);
         });
 
+        // Toggle Dark/Light theme values (Natively using class-based dark mode rules)
         function toggleTheme() {
             isLightMode = !isLightMode;
             const html = document.documentElement;
@@ -1188,6 +1190,7 @@
             const capSmall = document.getElementById('pyr-cap-small');
 
             if (isLightMode) {
+                html.classList.remove('dark');
                 html.classList.add('light');
                 themeIcon.className = 'fa-solid fa-sun';
                 
@@ -1214,6 +1217,7 @@
                 document.getElementById('dune-front-stop2').setAttribute('stop-color', '#f59e0b');
                 document.getElementById('dune-front-stop3').setAttribute('stop-color', '#f5f5f4');
             } else {
+                html.classList.add('dark');
                 html.classList.remove('light');
                 themeIcon.className = 'fa-solid fa-moon';
 
@@ -1244,6 +1248,7 @@
             setTimeout(drawSPath, 100);
         }
 
+        // Language Switcher
         function toggleLanguage() {
             currentLanguage = (currentLanguage === 'ko') ? 'en' : 'ko';
             document.getElementById('lang-btn-text').innerText = currentLanguage.toUpperCase();
@@ -1268,6 +1273,7 @@
             updateBookState3D();
         }
 
+        // CANVAS BACKGROUND STARFIELD ENGINE & SCROLL SAND WIND
         const canvas = document.getElementById('starfield');
         const ctx = canvas.getContext('2d');
 
@@ -1290,6 +1296,20 @@
                     direction: Math.random() > 0.5 ? 1 : -1
                 });
             }
+
+            // Gilded dust/sand wind particles
+            sandParticles = [];
+            for (let i = 0; i < 35; i++) {
+                sandParticles.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    size: Math.random() * 1.6 + 0.6,
+                    speedX: -(Math.random() * 0.6 + 0.3), // Drifts right-to-left
+                    speedY: -(Math.random() * 0.2 + 0.05), // Moves slightly upwards
+                    alpha: Math.random() * 0.12 + 0.03, // Delicate starting opacity
+                    angle: Math.random() * Math.PI
+                });
+            }
         }
 
         window.addEventListener('resize', () => {
@@ -1307,8 +1327,8 @@
             
             if (isLightMode) {
                 let grad = ctx.createLinearGradient(0, 0, 0, canvas.height);
-                grad.addColorStop(0, '#bae6fd');
-                grad.addColorStop(0.5, '#bae6fd');
+                grad.addColorStop(0, '#FAF7F2');
+                grad.addColorStop(0.5, '#F5EFE6');
                 grad.addColorStop(1, '#ffedd5');
                 ctx.fillStyle = grad;
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -1320,6 +1340,7 @@
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
             }
             
+            // Render twinkling stars
             stars.forEach(star => {
                 star.alpha += star.speed * star.direction;
                 if (star.alpha > 1 || star.alpha < 0.2) {
@@ -1327,7 +1348,7 @@
                 }
 
                 if (isLightMode) {
-                    ctx.fillStyle = `rgba(217, 119, 6, ${star.alpha * 0.4})`;
+                    ctx.fillStyle = `rgba(180, 122, 62, ${star.alpha * 0.15})`;
                 } else {
                     ctx.fillStyle = `rgba(255, 255, 255, ${star.alpha})`;
                 }
@@ -1340,6 +1361,7 @@
                 if (star.x > canvas.width) star.x = 0;
             });
 
+            // Constellation line connections
             if (constellationMode) {
                 for (let i = 0; i < stars.length; i++) {
                     for (let j = i + 1; j < stars.length; j++) {
@@ -1357,7 +1379,7 @@
                             }
 
                             if (isLightMode) {
-                                ctx.strokeStyle = `rgba(217, 119, 6, ${opacity * 0.5})`;
+                                ctx.strokeStyle = `rgba(180, 122, 62, ${opacity * 0.15})`;
                             } else {
                                 ctx.strokeStyle = `rgba(224, 169, 109, ${opacity})`;
                             }
@@ -1371,17 +1393,61 @@
                 }
             }
 
+            // DECELERATING SANDSTORM WIND SYSTEM
+            currentWindForce += (targetWindForce - currentWindForce) * 0.1;
+            targetWindForce *= 0.92; 
+
+            // Render flowing golden sand particles
+            sandParticles.forEach(p => {
+                // Apply wind boost horizontally and slightly vertically
+                const activeSpeedX = p.speedX - (currentWindForce * 0.35);
+                const activeSpeedY = p.speedY - (currentWindForce * 0.08);
+
+                p.x += activeSpeedX;
+                p.y += activeSpeedY;
+                p.angle += 0.025; 
+
+                // Wrap-around borders
+                if (p.x < -15) {
+                    p.x = canvas.width + 15;
+                    p.y = Math.random() * canvas.height;
+                }
+                if (p.y < -15) {
+                    p.y = canvas.height + 15;
+                    p.x = Math.random() * canvas.width;
+                }
+
+                ctx.save();
+                ctx.translate(p.x, p.y);
+                ctx.rotate(p.angle);
+
+                // Dynamically glow slightly more during active sand wind gusts
+                const activeAlpha = Math.min(p.alpha + (currentWindForce * 0.03), 0.28);
+                ctx.fillStyle = isLightMode ? `rgba(180, 122, 62, ${activeAlpha * 0.7})` : `rgba(224, 169, 109, ${activeAlpha})`;
+
+                // Premium diamond particle outline
+                ctx.beginPath();
+                ctx.moveTo(0, -p.size);
+                ctx.lineTo(p.size * 0.7, 0);
+                ctx.lineTo(0, p.size);
+                ctx.lineTo(-p.size * 0.7, 0);
+                ctx.closePath();
+                ctx.fill();
+
+                ctx.restore();
+            });
+
             requestAnimationFrame(animateStars);
         }
 
         window.onload = function() {
             initCanvas();
             animateStars();
-            // Fire S-Curve renderer
             drawSPath();
             animateTravelingBall();
         }
 
+        // Constellation trigger
         const constellationBtn = document.getElementById('constellation-toggle');
         const constellationTxt = document.getElementById('constellation-text');
         
@@ -1389,26 +1455,35 @@
             constallationStateToggle();
         });
 
-        function constallationStateToggle() {
+        function constellationStateToggle() {
             constellationMode = !constellationMode;
             if (constellationMode) {
                 constellationTxt.setAttribute('data-lang-content', 'constellation-on');
                 constellationTxt.innerText = TRANSLATIONS[currentLanguage]['constellation-on'];
-                constellationBtn.classList.add('shadow-gold-box');
+                constellationBtn.classList.add('shadow-md', 'dark:shadow-gold-box');
                 constellationBtn.classList.remove('opacity-65');
             } else {
                 constellationTxt.setAttribute('data-lang-content', 'constellation-off');
                 constellationTxt.innerText = TRANSLATIONS[currentLanguage]['constellation-off'];
-                constellationBtn.classList.remove('shadow-gold-box');
+                constellationBtn.classList.remove('shadow-md', 'dark:shadow-gold-box');
                 constellationBtn.classList.add('opacity-65');
             }
         }
 
+        // Scroll Progress & Wind velocity boost
         window.addEventListener('scroll', () => {
             const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
             const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
             const scrolled = (winScroll / height) * 100;
             document.getElementById('scroll-bar').style.width = scrolled + '%';
+
+            // Calculate wind velocity boost based on scroll speed
+            const currentScrollY = window.scrollY;
+            scrollSpeed = Math.abs(currentScrollY - lastScrollY);
+            lastScrollY = currentScrollY;
+
+            // Instantly increase wind velocity target
+            targetWindForce = Math.min(scrollSpeed * 0.12, 3.2);
         });
 
         function scrollToSection(id) {
@@ -1418,6 +1493,7 @@
             }
         }
 
+        // 3D Flip book controls
         let currentPaper = 0;
         const maxPaper = 3;
 
@@ -1505,6 +1581,7 @@
             updateBookState3D();
         }
 
+        // Calculate and render S-Curve path connects
         function drawSPath() {
             const svgPath = document.getElementById('s-curve-line');
             const svgElement = document.getElementById('s-curve-svg');
@@ -1540,8 +1617,6 @@
                 let cp1x, cp1y, cp2x, cp2y;
 
                 if (isDesktop) {
-                    // Perfect S-Curve connecting:
-                    // Month 1 (Top-Left) -> Month 2-3 (Top-Right) -> Month 4 (Bottom-Right) -> Month 5-6 (Bottom-Left)
                     if (i === 0) { // 1 -> 2 (Top horizontal curve)
                         cp1x = p0.x + dx * 0.4;
                         cp1y = p0.y - 45; 
@@ -1559,7 +1634,6 @@
                         cp2y = p1.y + 45;
                     }
                 } else {
-                    // Serpentine winding wave on Mobile (flowing downward)
                     const waveOffset = 50;
                     const direction = (i % 2 === 0) ? 1 : -1;
                     cp1x = p0.x + waveOffset * direction;
@@ -1810,19 +1884,19 @@
 
             // Create new record card
             const newCard = document.createElement('div');
-            newCard.className = "bg-slate-900/40 border border-slate-900 p-5 rounded-xl flex items-center justify-between gap-5 relative overflow-hidden group animate-fade-in";
+            newCard.className = "bg-amber-50/30 dark:bg-slate-900/40 border border-amber-100 dark:border-slate-900 p-5 rounded-xl flex items-center justify-between gap-5 relative overflow-hidden group animate-fade-in";
             
             // Escaped string for coping
             const escapedText = text.replace(/'/g, "\\'");
 
             newCard.innerHTML = `
                 <div>
-                    <p class="font-serif text-sm sm:text-base text-slate-200 italic leading-relaxed">
+                    <p class="font-serif text-sm sm:text-base text-slate-700 dark:text-slate-200 italic leading-relaxed">
                         "${text}"
                     </p>
-                    <span class="text-[10px] text-slate-500 tracking-wider block mt-1">BY ${author}</span>
+                    <span class="text-[10px] text-slate-500 dark:text-slate-500 tracking-wider block mt-1">BY ${author}</span>
                 </div>
-                <button onclick="copyToClipboard(this, '${escapedText}')" class="px-3 py-1.5 border border-slate-800 hover:border-sandGold/40 text-[10px] tracking-widest text-slate-400 hover:text-sandGold rounded-lg transition-all flex items-center gap-1 flex-shrink-0">
+                <button onclick="copyToClipboard(this, '${escapedText}')" class="px-3 py-1.5 border border-amber-200 dark:border-slate-800 hover:border-amber-500/40 dark:hover:border-sandGold/40 text-[10px] tracking-widest text-slate-500 dark:text-slate-400 hover:text-amber-800 dark:hover:text-sandGold rounded-lg transition-all flex items-center gap-1 flex-shrink-0">
                     <i class="fa-solid fa-copy"></i> COPY
                 </button>
             `;
